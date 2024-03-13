@@ -5,7 +5,7 @@ const Searching = () => {
     return(
         <div className='flex'>
             <SearchingButton />
-            <div className="ms-3">
+            <div className="ms-3 w-full">
                 <SearchingText />
             </div>
         </div>
