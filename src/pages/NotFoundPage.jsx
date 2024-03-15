@@ -2,8 +2,8 @@ import React from "react";
 
 const NotFoundPage = () => {
     return(
-        <div>
-            <p>404</p>
+        <div className="h-screen py-72">
+            <p className="tracking-widest text-5xl font-black text-center">404</p>
         </div>
     )
 }
