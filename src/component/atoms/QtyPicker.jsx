@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const QtyPicker = () => {
+const QtyPicker = ({ className }) => {
     const [qty, setQty] = useState(0);
 
     const incrementQty = () => {
@@ -14,7 +14,7 @@ const QtyPicker = () => {
     };
 
     return(
-        <div className="flex items-center justify-star mt-1">
+        <div className={`${className}`}>
             <button onClick={decrementQty} className="bg-[#4caf50] rounded-full py-1 px-2 text-xs">
                 <i className="fa-solid fa-minus text-white"></i>
             </button>

@@ -4,10 +4,12 @@ import MenuCategory from "../atoms/MenuCategory";
 
 const Home = () => {
     return(
-        <div className="mx-7 my-4">
+        <div>
             <Navbar />
-            <BannerImage />
-            <MenuCategory />
+            <div className="mx-7 my-4">
+                <BannerImage />
+                <MenuCategory />
+            </div>
         </div>
     )
 }

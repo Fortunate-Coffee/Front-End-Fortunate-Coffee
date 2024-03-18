@@ -10,12 +10,14 @@ const Menu = () => {
     const selectedCategory = categoryFiles.find(category => category.slug === categorySlug);
 
     return(
-        <div className="mx-7 my-4">
-            <div className='flex'>
+        <div>
+            <div className='shadow-lg flex px-7 py-4'>
                 <BackButton />
                 {selectedCategory && <h1 className='grow font-medium'>{selectedCategory.title}</h1>}
             </div>
-            <MenuItem />
+            <div className="mx-7 my-4">
+                <MenuItem />
+            </div>
         </div>
     )
 }
