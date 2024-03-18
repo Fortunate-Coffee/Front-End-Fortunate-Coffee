@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import NotFoundPage from './pages/NotFoundPage';
 import MenuPage from './pages/MenuPage';
+import DetailMenuPage from './pages/DetailMenuPage';
 
 const App = () => {
   return(
@@ -11,6 +12,7 @@ const App = () => {
       <Routes>
         <Route path='/' element = {<HomePage />} />
         <Route path='/category/:categorySlug' element = {<MenuPage />} />
+        <Route path='/detail/:categorySlug/:menuSlug' element = {<DetailMenuPage />}/>
         <Route path='/*' element = {<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

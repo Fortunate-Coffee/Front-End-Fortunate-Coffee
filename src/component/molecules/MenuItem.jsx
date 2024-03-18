@@ -4,14 +4,14 @@ import QtyPicker from "../atoms/QtyPicker";
 import NoteButton from "../atoms/NoteButton";
 import { formatPrice } from "../../menu";
 
-const MenuItem = () => {
+const MenuItem = ({ categoryName }) => {
     const { categorySlug } = useParams();
 
     // Menemukan objek kategori yang sesuai dengan categorySlug
     const selectedCategory = categoryFiles.find(category => category.slug === categorySlug);
 
-    return(
-        <div className="flex flex-col mt-7">
+    return (
+        <div className="flex flex-col">
             {selectedCategory && selectedCategory.items.map((item, index) => (
                 <div key={index} className="flex flex-row w-full justify-between my-4">
                     <img 
@@ -21,16 +21,16 @@ const MenuItem = () => {
                     />
                     <div className="flex flex-col w-6/12">
                         <p className="text-left">{item.name}</p>
-                        <QtyPicker />
+                        <QtyPicker className="flex items-center justify-start mt-1" />
                     </div>
                     <div className="flex flex-col w-3/12">
                         <p className="text-right">Rp. {formatPrice(item.price)}</p>
-                        <NoteButton />
+                        <NoteButton categoryName={categorySlug} menuItemName={item.name}/>
                     </div>
                 </div>
             ))}
         </div>
-    )
-}
+    );
+};
 
 export default MenuItem;

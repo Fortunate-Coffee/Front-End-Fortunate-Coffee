@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const ShoppingCartButton = () => {
     return(
-        <div className=''>
+        <div className='flex w-[2.5%] justify-end'>
             <Link to={'/'}><i className="fa-solid fa-cart-shopping fa-bounce" style={{color: "#000000;"}}></i></Link>
         </div>
     )
