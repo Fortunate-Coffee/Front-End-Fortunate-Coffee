@@ -25,14 +25,14 @@ const DetailMenu = () => {
 
     return(
         <div>
-            <div className='shadow-lg flex px-7 py-4'>
+            <div className='fixed top-0 z-0 w-full h-auto bg-white shadow-lg flex px-7 py-4'>
                 <BackButton />
                 <h1 className="grow font-medium">Details</h1>
             </div>
             <img 
                 src={`/images/Menu/${selectedItem.image}`}
                 alt={selectedItem.name}
-                className="w-full h-72"
+                className="mt-16 w-full h-72"
             />
             <div className="mx-7 my-6">
                 <div className="flex font-semibold">
