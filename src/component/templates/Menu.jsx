@@ -11,11 +11,11 @@ const Menu = () => {
 
     return(
         <div>
-            <div className='shadow-lg flex px-7 py-4'>
+            <div className='fixed z-0 top-0 w-full h-auto bg-white shadow-lg flex px-7 py-4'>
                 <BackButton />
                 {selectedCategory && <h1 className='grow font-medium'>{selectedCategory.title}</h1>}
             </div>
-            <div className="mx-7 my-4">
+            <div className="mt-16 mx-7 my-4">
                 <MenuItem />
             </div>
         </div>
