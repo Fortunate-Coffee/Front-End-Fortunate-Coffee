@@ -47,11 +47,11 @@ export const menuData = {
     "Spaghetti": {
         title: "Spaghetti",
         items: [
-            {image: "Spaghetti.jpg", name: "S/F Blackpepper", price: 42000, detail: "Indonesian Food, we serve the best of combined rice and beancurd w/ blackpepper spices sauce and no MSG potato spices soup."},
-            {image: "Spaghetti.jpg", name: "S/F Carbonara", price: 42000, detail: "Indonesian Food, we serve the best of combined rice and beancurd w/ blackpepper spices sauce and no MSG potato spices soup."},
+            {image: "Spaghetti.jpg", name: "SF Blackpepper", price: 42000, detail: "Indonesian Food, we serve the best of combined rice and beancurd w/ blackpepper spices sauce and no MSG potato spices soup."},
+            {image: "Spaghetti.jpg", name: "SF Carbonara", price: 42000, detail: "Indonesian Food, we serve the best of combined rice and beancurd w/ blackpepper spices sauce and no MSG potato spices soup."},
             {image: "Spaghetti.jpg", name: "Mashed Potato", price: 38000, detail: "Indonesian Food, we serve the best of combined rice and beancurd w/ blackpepper spices sauce and no MSG potato spices soup."},
-            {image: "Spaghetti.jpg", name: "S/F Marinade", price: 42000},
-            {image: "Spaghetti.jpg", name: "S/F Aglio Olio", price: 42000, detail: "Indonesian Food, we serve the best of combined rice and beancurd w/ blackpepper spices sauce and no MSG potato spices soup."}
+            {image: "Spaghetti.jpg", name: "SF Marinade", price: 42000},
+            {image: "Spaghetti.jpg", name: "SF Aglio Olio", price: 42000, detail: "Indonesian Food, we serve the best of combined rice and beancurd w/ blackpepper spices sauce and no MSG potato spices soup."}
         ]
     },
 
