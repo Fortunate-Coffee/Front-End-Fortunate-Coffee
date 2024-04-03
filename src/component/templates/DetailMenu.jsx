@@ -5,6 +5,7 @@ import { formatPrice } from "../../menu";
 import ReqOrder from "../atoms/ReqOrder";
 import TextArea from "../atoms/TextArea";
 import QtyPicker from "../atoms/QtyPicker";
+import ShoppingCartButton from "../atoms/ShoppingCartButton";
 import AddToCartButton from "../atoms/AddToCartButton";
 
 const DetailMenu = () => {
@@ -28,6 +29,7 @@ const DetailMenu = () => {
             <div className='fixed top-0 z-0 w-full h-auto bg-white shadow-lg flex px-7 py-4'>
                 <BackButton />
                 <h1 className="grow font-medium">Details</h1>
+                <ShoppingCartButton />
             </div>
             <img 
                 src={`/images/Menu/${selectedItem.image}`}

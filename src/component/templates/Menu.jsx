@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import BackButton from '../atoms/BackButton';
 import { categoryFiles } from "../../menu";
 import MenuItem from '../molecules/MenuItem';
+import ShoppingCartButton from '../atoms/ShoppingCartButton';
 
 const Menu = () => {
     const { categorySlug } = useParams();
@@ -14,6 +15,7 @@ const Menu = () => {
             <div className='fixed z-0 top-0 w-full h-auto bg-white shadow-lg flex px-7 py-4'>
                 <BackButton />
                 {selectedCategory && <h1 className='grow font-medium'>{selectedCategory.title}</h1>}
+                <ShoppingCartButton />
             </div>
             <div className="mt-16 mx-7 my-4">
                 <MenuItem />
