@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // pages
@@ -7,12 +8,20 @@ import MenuPage from './pages/MenuPage';
 import DetailMenuPage from './pages/DetailMenuPage';
 import CartPage from './pages/CartPage';
 import PaymentPage from './pages/PaymentPage';
+import SplashPage from './pages/SplashPage';
 
 const App = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+  }, []);
   return(
     <BrowserRouter>
       <Routes>
-        <Route path='/' element = {<HomePage />} />
+        <Route path='/' element={isLoading ? <SplashPage /> : <HomePage />} />
         <Route path='/category/:categorySlug' element = {<MenuPage />} />
         <Route path='/detail/:categorySlug/:menuSlug' element = {<DetailMenuPage />}/>
         <Route path='/cart' element = {<CartPage />} />
