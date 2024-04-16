@@ -17,7 +17,7 @@ export const menuData = {
     "Limited Offer": {
         title: "Limited Offer",
         items: [
-            {image: "Limited Offer.jpg", name: "Grilled", price: 42000, detail: "Indonesian Food, we serve the best of combined rice and beancurd w/ blackpepper spices sauce and no MSG potato spices soup."},
+            {image: "Limited Offer.jpg", name: "Grilled Cheese Rice", price: 42000, detail: "Indonesian Food, we serve the best of combined rice and beancurd w/ blackpepper spices sauce and no MSG potato spices soup."},
             {image: "Limited Offer.jpg", name: "Mentai Cheesy Rice", price: 47000, detail: "Indonesian Food, we serve the best of combined rice and beancurd w/ blackpepper spices sauce and no MSG potato spices soup."},
             {image: "Limited Offer.jpg", name: "Delightful Rice", price: 42000, detail: "Indonesian Food, we serve the best of combined rice and beancurd w/ blackpepper spices sauce and no MSG potato spices soup."}
         ]
