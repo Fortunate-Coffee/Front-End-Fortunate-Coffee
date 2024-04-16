@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 // pages
 import HomePage from './pages/HomePage';
@@ -10,8 +10,15 @@ import CartPage from './pages/CartPage';
 import PaymentPage from './pages/PaymentPage';
 import SplashPage from './pages/SplashPage';
 
+import AdminHomePage from './pages/AdminHomePage';
+import AdminMenuPage from './pages/AdminMenuPage';
+import LoginPage from './pages/LoginPage';
+import StockPage from './pages/StockPage';
+import OrderHistoryPage from './pages/OrderHistoryPage';
+
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   useEffect(() => {
     setTimeout(() => {
@@ -27,6 +34,17 @@ const App = () => {
         <Route path='/cart' element = {<CartPage />} />
         <Route path= '/payment' element = {<PaymentPage />} />
         <Route path='/*' element = {<NotFoundPage />} />
+
+        <Route
+          path='/login'
+          element={<LoginPage onLogin={() => setIsLoggedIn(true)} />} 
+        />
+        <Route path="/admin" element={isLoggedIn ? <AdminHomePage /> : <Navigate to="/login" />}>
+          <Route index element={<AdminMenuPage />} />
+          <Route path="/admin/menu" element={<AdminMenuPage />} />
+          <Route path="/admin/stock" element={<StockPage />} />
+          <Route path="/admin/order-history" element={<OrderHistoryPage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   )
