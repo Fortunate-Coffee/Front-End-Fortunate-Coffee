@@ -4,6 +4,7 @@ import AdminCategoriesForm from '../organisms/AdminCategoriesForm';
 import AdminNewMenuForm from '../organisms/AdminNewMenuForm';
 import AdminMenuItems from '../organisms/AdminMenuItems';
 import AdminFoodIngredientsForm from '../organisms/AdminFoodIngredientsForm';
+import GetDataButton from '../atoms/GetDataButton';
 
 const AdminMenu = () => {
     const [showCategoriesForm, setShowCategoriesForm] = useState(false);
@@ -39,15 +40,13 @@ const AdminMenu = () => {
             </div>
             <div className="mt-6 p-3">
                 <div className="flex items-center">
-                    <label htmlFor="selectOption" className="me-4 text-[#43745B]">Categories</label>
+                    <label htmlFor="selectOption" className="font-medium me-4 text-[#43745B]">Categories</label>
                     <select id="selectOption" name="selectOption" className="border border-[#43745B] rounded-xl shadow-xl p-2 px-3 me-2">
                         {categories.map((category, index) => (
                             <option key={index} value={category.text}>{category.text}</option>
                         ))}
                     </select>
-                    <button type="submit" className="bg-[#43745B] hover:bg-green-800 text-white font-bold py-2 px-4 shadow-xl rounded-xl">
-                        Get Data
-                    </button>
+                    <GetDataButton />
                 </div>
                 <AdminMenuItems />
             </div>

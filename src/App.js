@@ -13,8 +13,8 @@ import SplashPage from './pages/SplashPage';
 import AdminHomePage from './pages/AdminHomePage';
 import AdminMenuPage from './pages/AdminMenuPage';
 import LoginPage from './pages/LoginPage';
-import StockPage from './pages/StockPage';
-import OrderHistoryPage from './pages/OrderHistoryPage';
+import AdminStockPage from './pages/AdminStockPage';
+import AdminOrderHistoryPage from './pages/AdminOrderHistoryPage';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -42,8 +42,8 @@ const App = () => {
         <Route path="/admin" element={isLoggedIn ? <AdminHomePage /> : <Navigate to="/login" />}>
           <Route index element={<AdminMenuPage />} />
           <Route path="/admin/menu" element={<AdminMenuPage />} />
-          <Route path="/admin/stock" element={<StockPage />} />
-          <Route path="/admin/order-history" element={<OrderHistoryPage />} />
+          <Route path="/admin/stock" element={<AdminStockPage />} />
+          <Route path="/admin/order-history" element={<AdminOrderHistoryPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
