@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import AdminCategoriesForm from '../organisms/AdminCategoriesForm';
-import AdminNewMenuForm from '../organisms/AdminNewMenuForm';
+import AdminAddMenuForm from '../organisms/AdminAddMenuForm';
 import AdminMenuItems from '../organisms/AdminMenuItems';
-import AdminFoodIngredientsForm from '../organisms/AdminFoodIngredientsForm';
+import AdminAddMenuIngredientsForm from '../organisms/AdminAddMenuIngredientsForm';
 import GetDataButton from '../atoms/GetDataButton';
 
 const AdminMenu = () => {
     const [showCategoriesForm, setShowCategoriesForm] = useState(false);
     const [showAddMenuForm, setShowAddMenuForm] = useState(false);
-    const [showFoodIngredientsForm ,setShowFoodIngredientsForm] = useState(false);
+    const [showAddMenuIngredientsForm ,setShowAddMenuIngredientsForm] = useState(false);
 
     const categories = [
         {text: 'Limited Offer'},
@@ -22,19 +22,19 @@ const AdminMenu = () => {
     return (
         <div>
             {showCategoriesForm && <AdminCategoriesForm setShowCategoriesForm={setShowCategoriesForm} />}
-            {showAddMenuForm && <AdminNewMenuForm setShowAddMenuForm={setShowAddMenuForm} setShowFoodIngredientsForm={setShowFoodIngredientsForm} />}
-            {showFoodIngredientsForm && <AdminFoodIngredientsForm setShowFoodIngredientsForm={setShowFoodIngredientsForm} />}
+            {showAddMenuForm && <AdminAddMenuForm setShowAddMenuForm={setShowAddMenuForm} setShowAddMenuIngredientsForm={setShowAddMenuIngredientsForm} />}
+            {showAddMenuIngredientsForm && <AdminAddMenuIngredientsForm setShowAddMenuIngredientsForm={setShowAddMenuIngredientsForm} />}
 
             <div className="p-3 flex justify-between items-center bg-[#43745B] shadow-xl">
                 <h1 className='text-white tracking-wide'>Menu</h1>
                 <div className="flex">
+                    <Link to="#" onClick={() => setShowAddMenuForm(true)} className='px-3 py-2 flex ms-5 flex-row shadow-2xl rounded-xl bg-white'>
+                        <i className="flex items-center fas fa-square-plus fa-lg text-[#43745B]"></i>
+                        <p className='ms-2 text-[#43745B]'>New Menu</p>
+                    </Link>
                     <Link to="#" onClick={() => setShowCategoriesForm(true)} className='px-3 py-2 flex ms-5 flex-row shadow-2xl rounded-xl bg-white'>
                         <i className="flex items-center fas fa-table fa-lg text-[#43745B]"></i>
                         <p className='ms-2 text-[#43745B]'>Categories</p>
-                    </Link>
-                    <Link to="#" onClick={() => setShowAddMenuForm(true)} className='px-3 py-2 flex ms-5 flex-row shadow-2xl rounded-xl bg-white'>
-                        <i className="flex items-center fas fa-square-plus fa-lg text-[#43745B]"></i>
-                        <p className='ms-2 text-[#43745B]'>Add New Menu</p>
                     </Link>
                 </div>
             </div>

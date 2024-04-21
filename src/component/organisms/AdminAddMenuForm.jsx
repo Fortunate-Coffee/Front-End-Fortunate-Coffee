@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const AdminNewMenuForm = ({ setShowAddMenuForm, setShowFoodIngredientsForm }) => {
+const AdminAddMenuForm = ({ setShowAddMenuForm, setShowAddMenuIngredientsForm }) => {
 
     const categories = [
         {text: 'Limited Offer'},
@@ -31,7 +31,7 @@ const AdminNewMenuForm = ({ setShowAddMenuForm, setShowFoodIngredientsForm }) =>
             image: null
         });
         setShowAddMenuForm(false);
-        setShowFoodIngredientsForm(true, previousFormData);
+        setShowAddMenuIngredientsForm(true, previousFormData);
     };
 
     const handleChange = (e) => {
@@ -85,4 +85,4 @@ const AdminNewMenuForm = ({ setShowAddMenuForm, setShowFoodIngredientsForm }) =>
     );
 }
 
-export default AdminNewMenuForm;
+export default AdminAddMenuForm;

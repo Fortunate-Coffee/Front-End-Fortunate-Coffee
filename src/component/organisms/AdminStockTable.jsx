@@ -1,111 +1,82 @@
 // AdminStockTable.js
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import AdminOrderDetail from "./AdminOrderDetail"; // Menggunakan path relatif
+import AdminEditFoodIngredientsForm from "../organisms/AdminEditFoodIngredientsForm";
+import AdminDeleteConfirm from "./AdminDeleteConfirm";
 
 export const adminStockData = [
-  { 
-    tableNo: 1, 
-    orderNo: '101293', 
+  {
+    foodIngredientsNo: 'Egg',
+    qty: 10,
     date: '2024-04-18', 
-    time: '10:00', 
-    paymentStatus: 1,
-    items: [
-        { name: "Joyful Rice", quantity: 1, notes: "Extra spicy" },
-        { name: "Cripsy Bun", quantity: 3, notes: null }, // Contoh tanpa catatan
-        { name: "Green Tea", quantity: 2, notes: "No sugar" },
-    ],
-    total: "Rp. 75.000" // Total pembelian
+    time: '10:00'
   },
-  { 
-    tableNo: 3, 
-    orderNo: '112892', 
+  {
+    foodIngredientsNo: 'Rice',
+    qty: 10,
     date: '2024-04-18', 
-    time: '10:00', 
-    paymentStatus: 0,
-    items: [
-        { name: "Joyful Rice", quantity: 1, notes: "Extra spicy" },
-        { name: "Cripsy Bun", quantity: 3, notes: null }, // Contoh tanpa catatan
-        { name: "Green Tea", quantity: 2, notes: "No sugar" },
-    ],
-    total: "Rp. 75.000" // Total pembelian
+    time: '10:00'
   },
-  { 
-    tableNo: 2, 
-    orderNo: '129023', 
+  {
+    foodIngredientsNo: 'Mushroom',
+    qty: 10,
     date: '2024-04-18', 
-    time: '10:00', 
-    paymentStatus: 1,
-    total: "Rp. 75.000" // Total pembelian
+    time: '10:00'
   },
-  { 
-    tableNo: 4, 
-    orderNo: '201983', 
+  {
+    foodIngredientsNo: 'Chocolate',
+    qty: 10,
     date: '2024-04-18', 
-    time: '10:00', 
-    paymentStatus: 0,
-    items: [
-        { name: "Joyful Rice", quantity: 1, notes: "Extra spicy" },
-        { name: "Cripsy Bun", quantity: 3, notes: null }, // Contoh tanpa catatan
-        { name: "Green Tea", quantity: 2, notes: "No sugar" },
-    ],
-    total: "Rp. 75.000" // Total pembelian
+    time: '10:00'
   },
-  { 
-    tableNo: 8, 
-    orderNo: '298202', 
+  {
+    foodIngredientsNo: 'Seaweed',
+    qty: 10,
     date: '2024-04-18', 
-    time: '10:00', 
-    paymentStatus: 1,
-    total: "Rp. 75.000" // Total pembelian
+    time: '10:00'
   },
-  { 
-    tableNo: 9, 
-    orderNo: '173245', 
+  {
+    foodIngredientsNo: 'Tomato',
+    qty: 10,
     date: '2024-04-18', 
-    time: '10:00', 
-    paymentStatus: 0,
-    items: [
-        { name: "Joyful Rice", quantity: 1, notes: "Extra spicy" },
-        { name: "Cripsy Bun", quantity: 3, notes: null }, // Contoh tanpa catatan
-        { name: "Green Tea", quantity: 2, notes: "No sugar" },
-    ],
-    total: "Rp. 75.000" // Total pembelian
-  },
+    time: '10:00'
+  }
 ];
 
 const AdminStockTable = () => {
-    const [showOrderDetail, setShowOrderDetail] = useState(false);
-    const [selectedOrderNo, setSelectedOrderNo] = useState(null);
+    const [showEditFoodIngredientsForm, setShowEditFoodIngredientsForm] = useState(false);
+    const [showAdminDeleteConfirm, setShowAdminDeleteConfirm] = useState(false);
+    const [editFormData, setEditFormData] = useState({});
 
-    // Fungsi untuk menampilkan detail pesanan saat tombol ditekan
-    const handleShowOrderDetail = (orderNo) => {
-        setShowOrderDetail(true);
-        setSelectedOrderNo(orderNo);
+    // Fungsi untuk menangani penekanan tombol edit
+    const handleEdit = (data) => {
+        setEditFormData(data);
+        setShowEditFoodIngredientsForm(true);
     };
 
     return (
         <div className="">
-            {showOrderDetail && <AdminOrderDetail setShowOrderDetail={setShowOrderDetail} orderNo={selectedOrderNo} />}
+            {showEditFoodIngredientsForm && <AdminEditFoodIngredientsForm setShowEditFoodIngredientsForm={setShowEditFoodIngredientsForm} editFormData={editFormData}/>}
+            {showAdminDeleteConfirm && <AdminDeleteConfirm setShowAdminDeleteConfirm={setShowAdminDeleteConfirm}/>}
 
             <div className="w-full my-10">
                 <table className="border border-gray-300 shadow-xl min-w-full divide-y divide-gray-300">
                     <thead className="bg-[#43745B] text-white">
                         <tr>
                             <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
-                                Order Number
+                                name
                             </th>
                             <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
-                                Table Number
+                                qty
                             </th>
                             <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
-                                Date
+                                last updated date
                             </th>
                             <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
-                                Time
+                                last updated time
                             </th>
                             <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
-                                Payment Status
+                                action
                             </th>
                         </tr>
                     </thead>
@@ -113,10 +84,10 @@ const AdminStockTable = () => {
                         {adminStockData.map((item, index) => (
                             <tr key={index} className={index % 2 === 0 ? 'bg-white text-black' : 'bg-green-50 text-black'}>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-center font-medium">
-                                    {item.orderNo}
+                                    {item.foodIngredientsNo}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                                    {item.tableNo}
+                                    {item.qty}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
                                     {item.date}
@@ -124,16 +95,13 @@ const AdminStockTable = () => {
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
                                     {item.time}
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                                    {item.paymentStatus === 1 ? (
-                                        <Link to="#" onClick={() => handleShowOrderDetail(item.orderNo)}>
-                                            <i className="fa-solid fa-check text-green-800"></i>
-                                        </Link>
-                                    ) : (
-                                        <Link to="#" onClick={() => handleShowOrderDetail(item.orderNo)}>
-                                            <i className="fa-regular fa-clock text-yellow-500"></i>
-                                        </Link>
-                                    )}
+                                <td colSpan={2} className="flex justify-around px-6 py-4 whitespace-nowrap text-sm text-center">
+                                    <Link to="#" onClick={() => handleEdit(item)}>
+                                        <i className="fa-solid fa-pen-to-square text-lg text-green-800"></i>
+                                    </Link>
+                                    <Link to="#" onClick={() => setShowAdminDeleteConfirm(true)}>
+                                        <i className="fa-solid fa-trash-can text-lg text-red-500"></i>
+                                    </Link>
                                 </td>
                             </tr>
                         ))}
