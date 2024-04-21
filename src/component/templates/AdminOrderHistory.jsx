@@ -1,8 +1,7 @@
-import { useState } from "react";
 import ExportButton from "../atoms/ExportButton";
 import GetDataButton from "../atoms/GetDataButton";
 import DateSelect from "../atoms/DateSelect";
-import AdminStockTable from "../organisms/AdminStockTable";
+import AdminOrderHistoryTable from "../organisms/AdminOrderHistoryTable";
 
 const AdminOrderHistory = () => {
     const tableNo = [
@@ -36,7 +35,7 @@ const AdminOrderHistory = () => {
                         </div>
                         <GetDataButton />
                 </div>
-                <AdminStockTable />
+                <AdminOrderHistoryTable />
             </div>
         </div>
     );

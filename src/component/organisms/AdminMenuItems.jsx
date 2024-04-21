@@ -1,4 +1,8 @@
+import { useState } from "react";
 import { formatPrice } from "../../menu";
+import AdminEditMenuForm from "./AdminEditMenuForm";
+import AdminEditMenuIngredientsForm from "./AdminEditMenuIngredientsForm";
+import AdminDeleteConfirm from "./AdminDeleteConfirm";
 
 const products = [
     { image: 'https://i.ibb.co/KbnCkG7/Miscellaneous.jpg', title: 'Roasted Nori', category: 'Miscellaneous', description: 'Indonesian Food, we serve the best of combined rice and beancurd w/ blackpepper spices sauce and no MSG potato spices soup.', price: '34000'},
@@ -13,8 +17,16 @@ const products = [
 ]
 
 const MenuItems = () => {
+    const [showAdminDeleteConfirm, setShowAdminDeleteConfirm] = useState(false);
+    const [showEditMenuForm, setShowEditMenuForm] = useState(false);
+    const [showEditMenuIngredientsForm ,setShowEditMenuIngredientsForm] = useState(false);
+
     return(
         <div className="flex flex-wrap gap-3 mt-6 mb-16">
+            {showAdminDeleteConfirm && <AdminDeleteConfirm setShowAdminDeleteConfirm={setShowAdminDeleteConfirm}/>}
+            {showEditMenuForm && <AdminEditMenuForm setShowEditMenuForm={setShowEditMenuForm} setShowEditMenuIngredientsForm={setShowEditMenuIngredientsForm} />}
+            {showEditMenuIngredientsForm && <AdminEditMenuIngredientsForm setShowEditMenuIngredientsForm={setShowEditMenuIngredientsForm} />}
+
             {
             products.map((product, index) => (
                 <div
@@ -39,10 +51,10 @@ const MenuItems = () => {
                         <p className="font-semibold my-4">
                             Rp. {formatPrice(product.price)}
                         </p>
-                        <button type="submit" className="bg-[#43745B] hover:bg-green-800 text-white font-bold w-2/5 mx-2 py-2 px-4 shadow-xl rounded-xl">
+                        <button type="submit" onClick={() => setShowEditMenuForm(true)} className="bg-[#43745B] hover:bg-green-800 text-white font-bold w-2/5 mx-2 py-2 px-4 shadow-xl rounded-xl">
                                 Edit
                         </button>
-                        <button type="submit" className="border border-[#43745B] bg-white hover:bg-gray-100 text-[#43745B] mx-2 font-bold w-2/5 py-2 px-4 shadow-xl rounded-xl">
+                        <button type="submit" onClick={() => setShowAdminDeleteConfirm(true)}  className="border border-[#43745B] bg-white hover:bg-gray-100 text-[#43745B] mx-2 font-bold w-2/5 py-2 px-4 shadow-xl rounded-xl">
                                 Delete
                         </button>
                     </div>

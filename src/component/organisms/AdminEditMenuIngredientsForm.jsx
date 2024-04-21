@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const AdminFoodIngredientsForm = ({ setShowFoodIngredientsForm }) => {
+const AdminEditMenuIngredientsForm = ({ setShowEditMenuIngredientsForm }) => {
     const foodIngredientsList = [
         { text: 'Egg' },
         { text: 'Rice' },
@@ -38,13 +38,13 @@ const AdminFoodIngredientsForm = ({ setShowFoodIngredientsForm }) => {
         // Lakukan sesuatu dengan formDataList, misalnya kirim ke backend
         // Kemudian kosongkan form atau lakukan tindakan lainnya
         setFormDataList([{ foodIngredients: '', qty: '' }]);
-        setShowFoodIngredientsForm(false); // Close the current form
+        setShowEditMenuIngredientsForm(false); // Close the current form
     };
 
     return (
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-50 z-40">
             <div className="bg-white p-4 rounded-xl shadow-xl relative">
-                <button className="absolute top-4 right-5 fa-beat-fade text-lg text-gray-500 hover:text-gray-700" onClick={() => setShowFoodIngredientsForm(false)}>
+                <button className="absolute top-4 right-5 fa-beat-fade text-lg text-gray-500 hover:text-gray-700" onClick={() => setShowEditMenuIngredientsForm(false)}>
                     <i className="fas fa-times"></i>
                 </button>
                 <h2 className="mb-5 text-center text-lg font-semibold">Menu Ingredients</h2>
@@ -82,4 +82,4 @@ const AdminFoodIngredientsForm = ({ setShowFoodIngredientsForm }) => {
     );
 }
 
-export default AdminFoodIngredientsForm;
+export default AdminEditMenuIngredientsForm;
