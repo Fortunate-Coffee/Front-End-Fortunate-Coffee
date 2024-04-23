@@ -64,7 +64,7 @@ const AdminStockTable = () => {
                     <thead className="bg-[#43745B] text-white">
                         <tr>
                             <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
-                                name
+                                namez
                             </th>
                             <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
                                 qty

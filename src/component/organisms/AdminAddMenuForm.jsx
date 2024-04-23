@@ -69,11 +69,11 @@ const AdminAddMenuForm = ({ setShowAddMenuForm, setShowAddMenuIngredientsForm })
                         </div>
                         <div className="flex items-center mb-4">
                             <label htmlFor="price" className="w-4/12 block text-sm font-medium text-gray-700">Price (Rp)</label>
-                            <input type="number" id="price" name="price" min={1000} value={formData.price} onChange={handleChange} className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg" />
+                            <input type="number" id="price" required name="price" min={1000} value={formData.price} onChange={handleChange} className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg" />
                         </div>
                         <div className="flex items-center mb-6">
                             <label htmlFor="image" className="w-4/12 block text-sm font-medium text-gray-700">Image</label>
-                            <input type="file" id="image" name="image" onChange={handleChange} accept="image/*" className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg" />
+                            <input type="file" id="image" required name="image" onChange={handleChange} accept="image/*" className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg" />
                         </div>
                         <div>
                             <button type="submit" className="flex my-3 mx-auto bg-[#43745B] hover:bg-green-800 text-white font-bold py-2 px-4 shadow-xl rounded-xl">Continue</button>
