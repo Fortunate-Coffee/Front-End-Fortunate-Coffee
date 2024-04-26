@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Logo from "../atoms/Logo";
+import { Link } from "react-router-dom";
 
 const Login = ({ onLogin }) => {
     const [username, setUsername] = useState('');
@@ -71,7 +72,9 @@ const Login = ({ onLogin }) => {
                         </button>
                     </div>
                     </div>
-                    <button type="submit" className="mx-auto w-48 bg-[#00864B] text-white text-center mt-5 py-2 rounded-xl hover:bg-[#00864B] focus:outline-none focus:bg-[#00864B]">Login</button>
+                    <Link to={'/admin'} className="flex">
+                        <button type="submit" className="mx-auto w-48 bg-[#00864B] text-white text-center mt-5 py-2 rounded-xl hover:bg-[#00864B] focus:outline-none focus:bg-[#00864B]">Login</button>
+                    </Link>
                 </form>
             </div>
         </div>
