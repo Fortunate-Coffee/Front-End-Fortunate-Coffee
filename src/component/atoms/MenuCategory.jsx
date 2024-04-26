@@ -10,7 +10,7 @@ const MenuCategory = () => {
                         <img
                             src={`/images/Menu/${category.image}`}
                             alt="Banner Home"
-                            className="h-auto w-auto px-1"
+                            className="scale-90 hover:scale-100 shadow-lg rounded-lg"
                         />
                         <p className="text-center text-sm mt-2">{category.name}</p>
                     </NavLink>

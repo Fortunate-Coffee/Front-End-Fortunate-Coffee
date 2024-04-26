@@ -65,16 +65,16 @@ const AdminEditMenuIngredientsForm = ({ setShowEditMenuIngredientsForm }) => {
                             </div>
                             <div className="flex items-center justify-between">
                                 {index === formDataList.length - 1 ? (
-                                    <button type="button" onClick={handleAddForm} className="px-3 py-1 ml-2 bg-[#43745B] text-white hover:bg-green-800 font-bold rounded-full shadow-xl">+</button>
+                                    <button type="button" onClick={handleAddForm} className="px-3 py-1 ml-2 bg-[#43745B] text-white hover:bg-green-800 font-bold rounded-full shadow-xl hover:scale-110">+</button>
                                 ) : (
-                                    <button type="button" onClick={() => handleRemoveForm(index)} className="px-3 py-1 ml-2 bg-white text-[#43745B] border hover:bg-gray-100 font-bold rounded-full shadow-xl">-</button>
+                                    <button type="button" onClick={() => handleRemoveForm(index)} className="px-3 py-1 ml-2 bg-white text-[#43745B] border hover:bg-gray-100 font-bold rounded-full shadow-xl hover:scale-110">-</button>
                                 )}
                             </div>
                         </div>
                     ))}
                     <p className="flex mt-3 w-full text-xs text-left text-gray-400 italic">* Qty per serving.</p>
                     <div>
-                        <button type="submit" className="flex my-3 mx-auto bg-[#43745B] hover:bg-green-800 text-white font-bold py-2 px-4 shadow-xl rounded-xl">Save</button>
+                        <button type="submit" className="flex my-3 mx-auto bg-[#43745B] hover:bg-green-800 text-white font-bold py-2 px-4 shadow-xl rounded-xl hover:scale-110">Save</button>
                     </div>
                 </form>
             </div>

@@ -10,8 +10,8 @@ const AdminDeleteConfirm = ({setShowAdminDeleteConfirm}) => {
                     <p className="px-4 font-semibold tracking-wide">Are you sure want to delete this item?</p>
                 </div>
                 <div className="mt-3 flex justify-center">
-                    <button type="submit" onClick={() => setShowAdminDeleteConfirm(false)} className="flex mx-2 my-3 border border-[#43745B] bg-white hover:bg-gray-50 text-[#43745B] font-bold py-2 px-4 shadow-xl rounded-xl">Cancel</button>
-                    <button type="submit" className="flex mx-2 my-3 bg-[#43745B] hover:bg-green-800 text-white font-bold py-2 px-4 shadow-xl rounded-xl">Delete</button>
+                    <button type="submit" onClick={() => setShowAdminDeleteConfirm(false)} className="flex mx-2 my-3 border border-[#43745B] bg-white hover:bg-gray-50 text-[#43745B] font-bold py-2 px-4 shadow-xl rounded-xl hover:scale-110">Cancel</button>
+                    <button type="submit" className="flex mx-2 my-3 bg-[#43745B] hover:bg-green-800 text-white font-bold py-2 px-4 shadow-xl rounded-xl hover:scale-110">Delete</button>
                 </div>
             </div>
         </div>

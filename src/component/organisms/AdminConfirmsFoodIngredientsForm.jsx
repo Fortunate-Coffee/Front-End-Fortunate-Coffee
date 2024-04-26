@@ -23,8 +23,8 @@ const AdminConfirmsFoodIngredientsForm = ({ setShowAddFoodIngredientsForm, setSh
                     <p className="mt-[-1em] px-4 font-semibold tracking-wide">Do you want to add new food ingredients?</p>
                 </div>
                 <div className="mt-3 flex justify-center">
-                    <button type="button" onClick={handleNo} className="flex mx-2 my-3 border border-[#43745B] bg-white hover:bg-gray-50 text-[#43745B] font-bold py-2 px-4 shadow-xl rounded-xl">No</button>
-                    <button type="button" onClick={handleYes} className="flex mx-2 my-3 bg-[#43745B] hover:bg-green-800 text-white font-bold py-2 px-4 shadow-xl rounded-xl">Yes</button>
+                    <button type="button" onClick={handleNo} className="flex mx-2 my-3 border border-[#43745B] bg-white hover:bg-gray-50 text-[#43745B] font-bold py-2 px-4 shadow-xl rounded-xl hover:scale-110">No</button>
+                    <button type="button" onClick={handleYes} className="flex mx-2 my-3 bg-[#43745B] hover:bg-green-800 text-white font-bold py-2 px-4 shadow-xl rounded-xl hover:scale-110">Yes</button>
                 </div>
             </div>
         </div>

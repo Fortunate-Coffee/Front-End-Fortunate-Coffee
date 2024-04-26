@@ -42,7 +42,7 @@ const AdminEditFoodIngredientsForm = ({ setShowEditFoodIngredientsForm, editForm
                     </div>
                     <p className="flex mt-3 w-full text-xs text-left text-gray-400 italic">* Qty per serving.</p>
                     <div>
-                        <button type="submit" className="flex my-3 mx-auto bg-[#43745B] hover:bg-green-800 text-white font-bold py-2 px-4 shadow-xl rounded-xl">Save</button>
+                        <button type="submit" className="flex my-3 mx-auto bg-[#43745B] hover:bg-green-800 text-white font-bold py-2 px-4 shadow-xl rounded-xl hover:scale-110">Save</button>
                     </div>
                 </form>
             </div>

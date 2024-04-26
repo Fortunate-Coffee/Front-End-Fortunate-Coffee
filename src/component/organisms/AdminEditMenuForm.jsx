@@ -43,8 +43,8 @@ const AdminEditMenuForm = ({ setShowEditMenuForm, setShowEditMenuIngredientsForm
     };
 
     return (
-        <div className="fixed">          
-            <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-50 z-50">
+        <div className="fixed z-40">          
+            <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-50">
                 <div className="bg-white p-4 rounded-xl shadow-xl relative">
                     <button className="absolute top-4 right-5 fa-beat-fade text-lg text-gray-500 hover:text-gray-700" onClick={() => setShowEditMenuForm(false)}>
                         <i className="fas fa-times"></i>
@@ -69,14 +69,14 @@ const AdminEditMenuForm = ({ setShowEditMenuForm, setShowEditMenuIngredientsForm
                         </div>
                         <div className="flex items-center mb-4">
                             <label htmlFor="price" className="w-4/12 block text-sm font-medium text-gray-700">Price (Rp)</label>
-                            <input type="number" id="price" name="price" min={1000} value={formData.price} onChange={handleChange} className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg" />
+                            <input type="number" id="price" required name="price" min={1000} value={formData.price} onChange={handleChange} className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg" />
                         </div>
                         <div className="flex items-center mb-6">
                             <label htmlFor="image" className="w-4/12 block text-sm font-medium text-gray-700">Image</label>
-                            <input type="file" id="image" name="image" onChange={handleChange} accept="image/*" className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg" />
+                            <input type="file" id="image" required name="image" onChange={handleChange} accept="image/*" className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg" />
                         </div>
                         <div>
-                            <button type="submit" className="flex my-3 mx-auto bg-[#43745B] hover:bg-green-800 text-white font-bold py-2 px-4 shadow-xl rounded-xl">Continue</button>
+                            <button type="submit" className="flex my-3 mx-auto bg-[#43745B] hover:bg-green-800 text-white font-bold py-2 px-4 shadow-xl rounded-xl hover:scale-110">Continue</button>
                         </div>
                     </form>
                 </div>
