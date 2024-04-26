@@ -4,7 +4,8 @@ const AdminAddFoodIngredientsForm = ({ setShowAddFoodIngredientsForm }) => {
     const [formDataList, setFormDataList] = useState([
         {
             foodIngredients: '',
-            qty: ''
+            qty: '',
+            type: 'In'
         }
     ]);
 
@@ -20,7 +21,7 @@ const AdminAddFoodIngredientsForm = ({ setShowAddFoodIngredientsForm }) => {
         e.preventDefault();
         // Lakukan sesuatu dengan formDataList, misalnya kirim ke backend
         // Kemudian kosongkan form atau lakukan tindakan lainnya
-        setFormDataList([{ foodIngredients: '', qty: '' }]);
+        setFormDataList([{ foodIngredients: '', qty: '', type: 'In' }]);
         setShowAddFoodIngredientsForm(false); // Close the current form
     };
 

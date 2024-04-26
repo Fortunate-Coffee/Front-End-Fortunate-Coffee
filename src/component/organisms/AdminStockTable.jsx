@@ -9,41 +9,47 @@ export const adminStockData = [
     foodIngredientsNo: 'Egg',
     qty: 10,
     date: '2024-04-18', 
-    time: '10:00'
+    time: '10:00',
+    type: 'Remaining Stock'
   },
   {
     foodIngredientsNo: 'Rice',
     qty: 10,
     date: '2024-04-18', 
-    time: '10:00'
+    time: '10:00',
+    type: 'Remaining Stock'
   },
   {
     foodIngredientsNo: 'Mushroom',
     qty: 10,
     date: '2024-04-18', 
-    time: '10:00'
+    time: '10:00',
+    type: 'In'
   },
   {
     foodIngredientsNo: 'Chocolate',
     qty: 10,
     date: '2024-04-18', 
-    time: '10:00'
+    time: '10:00',
+    type: 'Remaining Stock'
   },
   {
     foodIngredientsNo: 'Seaweed',
     qty: 10,
     date: '2024-04-18', 
-    time: '10:00'
+    time: '10:00',
+    type: 'In'
   },
   {
     foodIngredientsNo: 'Tomato',
     qty: 10,
     date: '2024-04-18', 
-    time: '10:00'
+    time: '10:00',
+    type: 'Remaining Stock'
   }
 ];
 
-const AdminStockTable = () => {
+const AdminStockTable = ({ selectedType }) => {
     const [showEditFoodIngredientsForm, setShowEditFoodIngredientsForm] = useState(false);
     const [showAdminDeleteConfirm, setShowAdminDeleteConfirm] = useState(false);
     const [editFormData, setEditFormData] = useState({});
@@ -75,9 +81,11 @@ const AdminStockTable = () => {
                             <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
                                 last updated time
                             </th>
-                            <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
-                                action
-                            </th>
+                            {selectedType !== "Remaining Stock" && (
+                                <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
+                                    action
+                                </th>
+                            )}
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-300">
@@ -95,14 +103,16 @@ const AdminStockTable = () => {
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
                                     {item.time}
                                 </td>
-                                <td colSpan={2} className="flex justify-around px-6 py-4 whitespace-nowrap text-sm text-center">
-                                    <Link to="#" onClick={() => handleEdit(item)}>
-                                        <i className="fa-solid fa-pen-to-square text-lg text-green-800"></i>
-                                    </Link>
-                                    <Link to="#" onClick={() => setShowAdminDeleteConfirm(true)}>
-                                        <i className="fa-solid fa-trash-can text-lg text-red-500"></i>
-                                    </Link>
-                                </td>
+                                {selectedType !== "Remaining Stock" && (
+                                    <td colSpan={2} className="flex justify-around px-6 py-4 whitespace-nowrap text-sm text-center">
+                                        <Link to="#" onClick={() => handleEdit(item)}>
+                                            <i className="fa-solid fa-pen-to-square text-lg text-green-800"></i>
+                                        </Link>
+                                        <Link to="#" onClick={() => setShowAdminDeleteConfirm(true)}>
+                                            <i className="fa-solid fa-trash-can text-lg text-red-500"></i>
+                                        </Link>
+                                    </td>
+                                )}
                             </tr>
                         ))}
                     </tbody>
