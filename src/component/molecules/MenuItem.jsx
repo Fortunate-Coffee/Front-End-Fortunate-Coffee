@@ -17,7 +17,7 @@ const MenuItem = ({ categoryName }) => {
                     <img 
                         src={`/images/Menu/${item.image}`}
                         alt={item.name}
-                        className="w-2/12"
+                        className="w-2/12 rounded-lg shadow-lg hover:scale-105"
                     />
                     <div className="flex flex-col w-6/12">
                         <p className="text-left">{item.name}</p>

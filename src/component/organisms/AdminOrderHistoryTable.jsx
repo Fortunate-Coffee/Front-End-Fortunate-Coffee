@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import AdminOrderDetail from "./AdminOrderDetail"; // Menggunakan path relatif
 
-export const adminStockData = [
+export const adminOrderHistory = [
   { 
     tableNo: 1, 
     orderNo: '101293', 
@@ -74,7 +74,7 @@ export const adminStockData = [
   },
 ];
 
-const AdminStockTable = () => {
+const AdminOrderHistoryTable = () => {
     const [showOrderDetail, setShowOrderDetail] = useState(false);
     const [selectedOrderNo, setSelectedOrderNo] = useState(null);
 
@@ -92,25 +92,25 @@ const AdminStockTable = () => {
                 <table className="border border-gray-300 shadow-xl min-w-full divide-y divide-gray-300">
                     <thead className="bg-[#43745B] text-white">
                         <tr>
-                            <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider hover:scale-110">
                                 Order Number
                             </th>
-                            <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider hover:scale-110">
                                 Table Number
                             </th>
-                            <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider hover:scale-110">
                                 Date
                             </th>
-                            <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider hover:scale-110">
                                 Time
                             </th>
-                            <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider hover:scale-110">
                                 Payment Status
                             </th>
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-300">
-                        {adminStockData.map((item, index) => (
+                        {adminOrderHistory.map((item, index) => (
                             <tr key={index} className={index % 2 === 0 ? 'bg-white text-black' : 'bg-green-50 text-black'}>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-center font-medium">
                                     {item.orderNo}
@@ -127,11 +127,11 @@ const AdminStockTable = () => {
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
                                     {item.paymentStatus === 1 ? (
                                         <Link to="#" onClick={() => handleShowOrderDetail(item.orderNo)}>
-                                            <i className="fa-solid fa-check text-green-800"></i>
+                                            <i className="fa-solid fa-check text-green-800 hover:scale-110"></i>
                                         </Link>
                                     ) : (
                                         <Link to="#" onClick={() => handleShowOrderDetail(item.orderNo)}>
-                                            <i className="fa-regular fa-clock text-yellow-500"></i>
+                                            <i className="fa-regular fa-clock text-yellow-500 hover:scale-110"></i>
                                         </Link>
                                     )}
                                 </td>
@@ -144,4 +144,4 @@ const AdminStockTable = () => {
     );
 };
 
-export default AdminStockTable;
+export default AdminOrderHistoryTable;

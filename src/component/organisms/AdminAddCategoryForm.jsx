@@ -36,7 +36,7 @@ const AdminAddCategoryForm = ({ setShowCategoryForm }) => {
                 <button className="absolute top-4 right-5 fa-beat-fade text-lg text-gray-500 hover:text-gray-700" onClick={handleCloseForm}>
                     <i className="fas fa-times"></i>
                 </button>
-                <h2 className="mb-5 text-center text-lg font-semibold">Add New Categories</h2>
+                <h2 className="mb-5 text-center text-lg font-semibold">Add New Category</h2>
                 <form onSubmit={handleSubmit} className="px-5">
                     <div className="flex items-center mb-4">
                         <label htmlFor="name" className="w-4/12 block text-sm font-medium text-gray-700">Name</label>
@@ -47,7 +47,7 @@ const AdminAddCategoryForm = ({ setShowCategoryForm }) => {
                         <input type="file" id="image" required name="image" onChange={handleChange} accept="image/*" className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg" />
                     </div>
                     <div>
-                        <button type="submit" className="flex my-3 mx-auto bg-[#43745B] hover:bg-green-800 text-white font-bold py-2 px-4 shadow-xl rounded-xl">Save</button>
+                        <button type="submit" className="flex my-3 mx-auto bg-[#43745B] hover:bg-green-800 text-white font-bold py-2 px-4 shadow-xl rounded-xl hover:scale-110">Save</button>
                     </div>
                 </form>
             </div>

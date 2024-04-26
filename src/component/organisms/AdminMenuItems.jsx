@@ -31,7 +31,7 @@ const MenuItems = () => {
             products.map((product, index) => (
                 <div
                     key={index}
-                    className="w-[calc(30%_-_4.5rem)] pb-5 rounded-lg shadow-[3px_8px_12px_rgba(0,0,0,0.25)] text-center"
+                    className="w-[calc(30%_-_4.5rem)] pb-5 rounded-lg shadow-[3px_8px_12px_rgba(0,0,0,0.25)] scale-95 hover:scale-100 text-center"
                     >
                     <img
                         src={product.image}

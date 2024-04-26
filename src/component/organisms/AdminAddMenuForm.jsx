@@ -76,7 +76,7 @@ const AdminAddMenuForm = ({ setShowAddMenuForm, setShowAddMenuIngredientsForm })
                             <input type="file" id="image" required name="image" onChange={handleChange} accept="image/*" className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg" />
                         </div>
                         <div>
-                            <button type="submit" className="flex my-3 mx-auto bg-[#43745B] hover:bg-green-800 text-white font-bold py-2 px-4 shadow-xl rounded-xl">Continue</button>
+                            <button type="submit" className="flex my-3 mx-auto bg-[#43745B] hover:bg-green-800 text-white font-bold py-2 px-4 shadow-xl rounded-xl hover:scale-110">Continue</button>
                         </div>
                     </form>
                 </div>

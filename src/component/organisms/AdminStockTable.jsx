@@ -69,20 +69,20 @@ const AdminStockTable = ({ selectedType }) => {
                 <table className="border border-gray-300 shadow-xl min-w-full divide-y divide-gray-300">
                     <thead className="bg-[#43745B] text-white">
                         <tr>
-                            <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
-                                namez
+                            <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider hover:scale-110">
+                                name
                             </th>
-                            <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider hover:scale-110">
                                 qty
                             </th>
-                            <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider hover:scale-110">
                                 last updated date
                             </th>
-                            <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider hover:scale-110">
                                 last updated time
                             </th>
                             {selectedType !== "Remaining Stock" && (
-                                <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
+                                <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider hover:scale-110">
                                     action
                                 </th>
                             )}
@@ -106,10 +106,10 @@ const AdminStockTable = ({ selectedType }) => {
                                 {selectedType !== "Remaining Stock" && (
                                     <td colSpan={2} className="flex justify-around px-6 py-4 whitespace-nowrap text-sm text-center">
                                         <Link to="#" onClick={() => handleEdit(item)}>
-                                            <i className="fa-solid fa-pen-to-square text-lg text-green-800"></i>
+                                            <i className="fa-solid fa-pen-to-square text-lg text-green-800 hover:scale-110"></i>
                                         </Link>
                                         <Link to="#" onClick={() => setShowAdminDeleteConfirm(true)}>
-                                            <i className="fa-solid fa-trash-can text-lg text-red-500"></i>
+                                            <i className="fa-solid fa-trash-can text-lg text-red-500 hover:scale-110"></i>
                                         </Link>
                                     </td>
                                 )}

@@ -73,7 +73,7 @@ const Login = ({ onLogin }) => {
                     </div>
                     </div>
                     <Link to={'/admin'} className="flex">
-                        <button type="submit" className="mx-auto w-48 bg-[#00864B] text-white text-center mt-5 py-2 rounded-xl hover:bg-[#00864B] focus:outline-none focus:bg-[#00864B]">Login</button>
+                        <button type="submit" className="mx-auto w-48 bg-[#00864B] text-white text-center mt-5 py-2 rounded-xl shadow-xl hover:bg-[#00864B] focus:outline-none focus:bg-[#00864B]">Login</button>
                     </Link>
                 </form>
             </div>

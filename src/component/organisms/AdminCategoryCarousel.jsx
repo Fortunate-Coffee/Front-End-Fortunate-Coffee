@@ -82,13 +82,13 @@ const AdminCategoryCarousel = () => {
 
 const PrevArrow = ({ onClick }) => (
   <button className="absolute fixed z-10 top-1/2 left-2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full" onClick={onClick}>
-    <i className="fas fa-chevron-left"></i>
+    <i className="fas fa-chevron-left hover:scale-110"></i>
   </button>
 );
 
 const NextArrow = ({ onClick }) => (
   <button className="absolute fixed z-10 top-1/2 right-0 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full" onClick={onClick}>
-    <i className="fas fa-chevron-right"></i>
+    <i className="fas fa-chevron-right hover:scale-110"></i>
   </button>
 );
 

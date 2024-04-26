@@ -1,9 +1,9 @@
 // AdminOrderDetail.js
-import { adminStockData } from "./AdminStockTable";
+import { adminOrderHistory } from "./AdminOrderHistoryTable";
 
 const AdminOrderDetail = ({ setShowOrderDetail, orderNo }) => {
     // Cari objek dalam adminStockData yang memiliki orderNo sesuai
-    const orderData = adminStockData.find(item => item.orderNo === orderNo);
+    const orderData = adminOrderHistory.find(item => item.orderNo === orderNo);
 
     // Tentukan status berdasarkan nilai paymentStatus
     const status = orderData.paymentStatus === 1 ? "Done" : "Pending";
