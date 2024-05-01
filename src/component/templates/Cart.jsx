@@ -19,7 +19,6 @@ const Cart = () => {
             <div className='fixed top-0 z-0 w-full h-auto bg-white shadow-lg flex px-7 py-4'>
                 <BackButton />
                 <h1 className="grow font-medium">Your Cart</h1>
-                <ShoppingCartButton />
             </div>
             <div className="mx-7 my-4">
                 {/* Cek apakah ada item yang ditampilkan dalam CartItem */}

@@ -26,7 +26,7 @@ const Login = ({ onLogin }) => {
             <div className="w-11/12 mt-32 mb-12">
                 <Logo sizeImg={48} sizeText={`xl`}/>
             </div>
-            <div className="mx-auto w-4/12">
+            <div className="mx-auto lg:w-4/12 xl:w-4/12 md:w-4/12 w-10/12">
                 <form onSubmit={handleSubmit} className="flex flex-col justify-center">
                     <div className="mb-4">
                     <label htmlFor="username" className="text-[#00864B] font-semibold block mb-1">Username</label>
@@ -73,7 +73,7 @@ const Login = ({ onLogin }) => {
                     </div>
                     </div>
                     <Link to={'/admin'} className="flex">
-                        <button type="submit" className="mx-auto w-48 bg-[#00864B] text-white text-center mt-5 py-2 rounded-xl shadow-xl hover:bg-[#00864B] focus:outline-none focus:bg-[#00864B]">Login</button>
+                        <button type="submit" className="mx-auto w-48 bg-[#00864B] text-white text-center mt-5 py-2 rounded-xl shadow-xl hover:bg-green-800 hover:scale-105 focus:outline-none focus:bg-[#00864B]">Login</button>
                     </Link>
                 </form>
             </div>

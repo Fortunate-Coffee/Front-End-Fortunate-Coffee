@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 import { categoryFiles } from "../../menu";
 import BackButton from "../atoms/BackButton";
 import { formatPrice } from "../../menu";
-import ReqOrder from "../atoms/ReqOrder";
 import TextArea from "../atoms/TextArea";
 import QtyPicker from "../atoms/QtyPicker";
 import ShoppingCartButton from "../atoms/ShoppingCartButton";
@@ -44,8 +43,6 @@ const DetailMenu = () => {
                 <div className=" py-2 font-extralight text-justify">
                     <p>{selectedItem.detail}</p>
                 </div>
-                <p className="mt-5">Permintaan Khusus</p>
-                <ReqOrder />
                 <TextArea />
                 <QtyPicker className="flex items-center justify-center mt-1"/>
                 <AddToCartButton />
