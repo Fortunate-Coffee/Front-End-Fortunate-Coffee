@@ -1,3 +1,8 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import AdminEditFoodIngredientsForm from "../organisms/AdminEditFoodIngredientsForm";
+import AdminDeleteConfirm from "./AdminDeleteConfirm";
+
 export const adminStockData = [
   {
     foodIngredientsNo: 'Egg',
@@ -43,9 +48,22 @@ export const adminStockData = [
   }
 ];
 
-const AdminStockTable = () => {
+const AdminStockTable = ({ selectedType }) => {
+    const [showEditFoodIngredientsForm, setShowEditFoodIngredientsForm] = useState(false);
+    const [showAdminDeleteConfirm, setShowAdminDeleteConfirm] = useState(false);
+    const [editFormData, setEditFormData] = useState({});
+
+    // Fungsi untuk menangani penekanan tombol edit
+    const handleEdit = (data) => {
+        setEditFormData(data);
+        setShowEditFoodIngredientsForm(true);
+    };
+
     return (
         <div className="">
+            {showEditFoodIngredientsForm && <AdminEditFoodIngredientsForm setShowEditFoodIngredientsForm={setShowEditFoodIngredientsForm} editFormData={editFormData}/>}
+            {showAdminDeleteConfirm && <AdminDeleteConfirm setShowAdminDeleteConfirm={setShowAdminDeleteConfirm}/>}
+
             <div className="w-full my-10">
                 <table className="border border-gray-300 shadow-xl min-w-full divide-y divide-gray-300">
                     <thead className="bg-[#43745B] text-white">
@@ -62,6 +80,11 @@ const AdminStockTable = () => {
                             <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider hover:scale-110">
                                 last updated time
                             </th>
+                            {selectedType !== "In" && selectedType !== "Out" && (
+                                <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider hover:scale-110">
+                                    action
+                                </th>
+                            )}
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-300">
@@ -79,6 +102,16 @@ const AdminStockTable = () => {
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
                                     {item.time}
                                 </td>
+                                {selectedType !== "In" && selectedType !== "Out" && (
+                                    <td colSpan={2} className="flex justify-around px-6 py-4 whitespace-nowrap text-sm text-center">
+                                        <Link to="#" onClick={() => handleEdit(item)}>
+                                            <i className="fa-solid fa-pen-to-square text-lg text-green-800 hover:scale-110"></i>
+                                        </Link>
+                                        <Link to="#" onClick={() => setShowAdminDeleteConfirm(true)}>
+                                            <i className="fa-solid fa-trash-can text-lg text-red-500 hover:scale-110"></i>
+                                        </Link>
+                                    </td>
+                                )}
                             </tr>
                         ))}
                     </tbody>

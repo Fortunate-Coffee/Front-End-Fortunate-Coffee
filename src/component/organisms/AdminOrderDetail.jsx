@@ -16,7 +16,13 @@ const AdminOrderDetail = ({ setShowOrderDetail, orderNo }) => {
         } else {
             // Aksi ketika status order pending
             console.log("Complete order");
-        }
+            // Temukan pesanan yang sesuai
+            const orderIndex = adminOrderHistory.findIndex(item => item.orderNo === orderNo);
+            // Perbarui status pesanan menjadi "Done"
+            adminOrderHistory[orderIndex].paymentStatus = 1;
+            // Tutup tampilan detail pesanan
+            setShowOrderDetail(false);
+            }
     };
 
     // Jika orderData tidak ditemukan, tampilkan pesan bahwa pesanan tidak ditemukan
