@@ -4,14 +4,14 @@ import AdminEditCategoryForm from './AdminEditCategoryForm';
 import AdminDeleteConfirm from './AdminDeleteConfirm';
 
 export const images = [
-  { id: 1, src: 'https://i.ibb.co/8bQpM7q/Asian-Cuisine.webp', title: 'Asian Cuisine' },
-  { id: 2, src: 'https://i.ibb.co/Tqzvt6J/Fast-Food.png', title: 'Fast Food' },
-  { id: 3, src: 'https://i.ibb.co/SPc9FDY/Fortunate-Bread.jpg', title: 'Fortunate Bread' },
-  { id: 4, src: 'https://i.ibb.co/YNzPsC6/Fortunate-Coffee.jpg', title: 'Fortunate Coffee' },
-  { id: 5, src: 'https://i.ibb.co/3s7056t/Fortunate-Dessert.jpg', title: 'Fortunate Dessert' },
-  { id: 6, src: 'https://i.ibb.co/dBSKC5k/Fortunate-Rice.jpg', title: 'Fortunate Rice' },
-  { id: 7, src: 'https://i.ibb.co/bNrsMzy/Fortunate-Tea.jpg', title: 'Fortunate Tea' },
-  { id: 8, src: 'https://i.ibb.co/xLL3fqC/Fresh-Mocktail.jpg', title: 'Fresh Mocktail' },
+  { id: 1, src: 'https://ik.imagekit.io/fndsjy/Fortunate_Coffee/Category/Asian%20Cuisine.jpeg?updatedAt=1716675783618', title: 'Asian Cuisine' },
+  { id: 2, src: 'https://ik.imagekit.io/fndsjy/Fortunate_Coffee/Category/Fast%20Food.png?updatedAt=1716675784293', title: 'Fast Food' },
+  { id: 3, src: 'https://ik.imagekit.io/fndsjy/Fortunate_Coffee/Category/Fortunate%20Bread.jpeg?updatedAt=1716675783368', title: 'Fortunate Bread' },
+  { id: 4, src: 'https://ik.imagekit.io/fndsjy/Fortunate_Coffee/Category/Fortunate%20Coffee.jpeg?updatedAt=1716675783816', title: 'Fortunate Coffee' },
+  { id: 5, src: 'https://ik.imagekit.io/fndsjy/Fortunate_Coffee/Category/Fortunate%20Dessert.jpg?updatedAt=1716675783436', title: 'Fortunate Dessert' },
+  { id: 6, src: 'https://ik.imagekit.io/fndsjy/Fortunate_Coffee/Category/Fortunate%20Rice.jpg?updatedAt=1716675782922', title: 'Fortunate Rice' },
+  { id: 7, src: 'https://ik.imagekit.io/fndsjy/Fortunate_Coffee/Category/Fortunate%20Tea.jpg?updatedAt=1716675783012', title: 'Fortunate Tea' },
+  { id: 8, src: 'https://ik.imagekit.io/fndsjy/Fortunate_Coffee/Category/Fresh%20Mocktail.jpeg?updatedAt=1716675783686', title: 'Fresh Mocktail' },
   // Tambahkan data gambar sesuai kebutuhan Anda
 ];
 

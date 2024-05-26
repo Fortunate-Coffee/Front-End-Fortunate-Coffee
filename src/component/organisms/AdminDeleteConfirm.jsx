@@ -6,7 +6,7 @@ const AdminDeleteConfirm = ({setShowAdminDeleteConfirm}) => {
                     <i className="fas fa-times"></i>
                 </button>
                 <div className="flex flex-col items-center">
-                    <img src="https://i.ibb.co/hK1sz87/Delete.png" alt="Delete Confirmation" className="w-48 h-auto my-4" />
+                    <img src="https://ik.imagekit.io/fndsjy/Fortunate_Coffee/Delete%20Confirmation.png?updatedAt=1716709944023" alt="Delete Confirmation" className="w-48 h-auto my-4" />
                     <p className="px-4 font-semibold tracking-wide">Are you sure want to delete this item?</p>
                 </div>
                 <div className="mt-3 flex justify-center">

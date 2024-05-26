@@ -19,7 +19,7 @@ const AdminConfirmsFoodIngredientsForm = ({ setShowAddFoodIngredientsForm, setSh
                     <i className="fas fa-times"></i>
                 </button>
                 <div className="flex flex-col items-center">
-                    <img src="https://i.ibb.co/RHFK0wZ/Stock.png" alt="Delete Confirmation" className="w-48 h-auto" />
+                    <img src="https://ik.imagekit.io/fndsjy/Fortunate_Coffee/Stock%20Confirmation.png?updatedAt=1716710183418" alt="Delete Confirmation" className="w-48 h-auto" />
                     <p className="mt-[-1em] px-4 font-semibold tracking-wide">Do you want to add new food ingredients?</p>
                 </div>
                 <div className="mt-3 flex justify-center">
