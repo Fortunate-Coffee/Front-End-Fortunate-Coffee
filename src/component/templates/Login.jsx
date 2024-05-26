@@ -1,24 +1,45 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import Logo from "../atoms/Logo";
-import { Link } from "react-router-dom";
 
-const Login = ({ onLogin }) => {
+const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
 
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Lakukan sesuatu dengan username dan password
-        console.log('Username:', username);
-        console.log('Password:', password);
-        // Lakukan proses login dan simpan token di sini
-        // Setelah login berhasil, panggil fungsi onLogin
-        onLogin();
+        console.log("Submitting login with:", { username, password });
+        try {
+            const response = await axios.post("https://backend-fortunate-coffee.up.railway.app/v1/auth/login", {
+                username: username,
+                password: password
+            });
+
+            const data = response.data;
+            console.log("Response data:", data);
+            // Simpan token yang diterima di sini
+            localStorage.setItem("accessToken", data.accessToken);
+
+            // Set success message and redirect
+            setSuccess("Login successful! Redirecting to admin...");
+            setError(''); // Clear any previous error
+            setTimeout(() => {
+                navigate('/admin');
+            }, 2000);
+        } catch (error) {
+            console.error("Login error:", error);
+            setError(error.response?.data?.error?.message || "Failed to login");
+            setSuccess('');
+        }
     };
 
     return(
@@ -72,9 +93,9 @@ const Login = ({ onLogin }) => {
                         </button>
                     </div>
                     </div>
-                    <Link to={'/admin'} className="flex">
-                        <button type="submit" className="mx-auto w-48 bg-[#00864B] text-white text-center mt-5 py-2 rounded-xl shadow-xl hover:bg-green-800 hover:scale-105 focus:outline-none focus:bg-[#00864B]">Login</button>
-                    </Link>
+                    {error && <p className="text-red-500">{error}</p>} {/* Tampilkan pesan kesalahan jika ada */}
+                    {success && <p className="text-green-500">{success}</p>}
+                    <button type="submit" className="mx-auto w-48 bg-[#00864B] text-white text-center mt-5 py-2 rounded-xl shadow-xl hover:bg-green-800 hover:scale-105 focus:outline-none focus:bg-[#00864B]">Login</button>
                 </form>
             </div>
         </div>

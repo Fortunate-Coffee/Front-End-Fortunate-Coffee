@@ -1,7 +1,7 @@
 const SplashPage = () => {
     return(
         <div className="fa-bounce h-screen flex items-center justify-center">
-            <img src={"https://i.ibb.co/6PqZqwL/FC-Logo.png"} alt="Logo Fortunate Coffee"></img>
+            <img src={"https://ik.imagekit.io/fndsjy/Fortunate_Coffee/FC%20Logo.png?updatedAt=1716675738839"} alt="Logo Fortunate Coffee"></img>
         </div>
     );
 }
