@@ -34,7 +34,7 @@ const MenuCategory = () => {
         <div className="flex flex-wrap">
             {category.map((category, index) => (
                 <div key={index} className="w-1/3 sm:w-1/4 md:w-1/9 lg:w-1/6 mb-3">
-                    <NavLink as={Link} to={`/category/${category.category_name}`}>
+                    <NavLink as={Link} to={`/category/${encodeURIComponent(category.category_name)}`}>
                         <img
                             src={category.category_image}
                             alt="Banner Home"
