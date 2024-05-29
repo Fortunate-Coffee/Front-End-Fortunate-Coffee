@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import RoleBasedRoute from './component/molecules/RoleBasedRoute';
 
 // pages
-import PrivateRoute from './component/atoms/PrivateRoute';
 import HomePage from './pages/HomePage';
 import NotFoundPage from './pages/NotFoundPage';
 import MenuPage from './pages/MenuPage';
@@ -16,6 +16,7 @@ import AdminMenuPage from './pages/AdminMenuPage';
 import LoginPage from './pages/LoginPage';
 import AdminStockPage from './pages/AdminStockPage';
 import AdminOrderHistoryPage from './pages/AdminOrderHistoryPage';
+import NotAuthorizedPage from './pages/NotAuthorizedPage';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -34,16 +35,13 @@ const App = () => {
         <Route path='/cart' element = {<CartPage />} />
         <Route path= '/payment' element = {<PaymentPage />} />
         <Route path='/*' element = {<NotFoundPage />} />
+        <Route path='/login' element={<LoginPage onLogin={() => window.location.reload()} />} />
+        <Route path='/not-authorized' element={<NotAuthorizedPage />} />
 
-        <Route
-          path='/login'
-          element={<LoginPage onLogin={() => window.location.reload()} />} 
-        />
-        <Route path="/admin" element={<PrivateRoute><AdminHomePage /></PrivateRoute>}>
-          <Route index element={<PrivateRoute><AdminMenuPage /></PrivateRoute>} />
-          <Route path="/admin/menu" element={<PrivateRoute><AdminMenuPage /></PrivateRoute>} />
-          <Route path="/admin/stock" element={<PrivateRoute><AdminStockPage /></PrivateRoute>} />
-          <Route path="/admin/order-history" element={<PrivateRoute><AdminOrderHistoryPage /></PrivateRoute>} />
+        <Route path="/admin" element={<RoleBasedRoute allowedRoles={['owner', 'admin', 'cashier']}><AdminHomePage /></RoleBasedRoute>} >
+          <Route path="menu" element={<RoleBasedRoute allowedRoles={['owner', 'admin']}><AdminMenuPage /></RoleBasedRoute>} />
+          <Route path="stock" element={<RoleBasedRoute allowedRoles={['owner', 'admin']}><AdminStockPage /></RoleBasedRoute>} />
+          <Route path="order-history" element={<RoleBasedRoute allowedRoles={['owner', 'cashier']}><AdminOrderHistoryPage /></RoleBasedRoute>} />
         </Route>
       </Routes>
     </BrowserRouter>

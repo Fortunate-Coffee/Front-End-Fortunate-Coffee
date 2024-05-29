@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import Logo from "../atoms/Logo";
 
@@ -9,7 +9,18 @@ const Login = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        if (params.get('showAlert') === 'true') {
+            setShowAlert(true);
+            const timer = setTimeout(() => setShowAlert(false), 9000);
+            return () => clearTimeout(timer);
+        }
+    }, [location]);
 
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -17,7 +28,6 @@ const Login = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log("Submitting login with:", { username, password });
         try {
             const response = await axios.post("https://backend-fortunate-coffee.up.railway.app/v1/auth/login", {
                 username: username,
@@ -28,9 +38,10 @@ const Login = () => {
             console.log("Response data:", data);
             // Simpan token yang diterima di sini
             localStorage.setItem("accessToken", data.accessToken);
+            localStorage.setItem("userRole", data.user); 
 
             // Set success message and redirect
-            setSuccess("Login successful! Redirecting to admin...");
+            setSuccess("Login successful!");
             setError(''); // Clear any previous error
             setTimeout(() => {
                 navigate('/admin');
@@ -48,6 +59,14 @@ const Login = () => {
                 <Logo sizeImg={48} sizeText={`xl`}/>
             </div>
             <div className="mx-auto lg:w-4/12 xl:w-4/12 md:w-4/12 w-10/12">
+                {showAlert && (
+                    <div className="flex justify-center w-full">
+                        <div className="fixed z-40 top-5 bg-yellow-500 text-white px-4 py-2 rounded-md shadow-xl flex items-center">
+                            <i className="fa-solid fa-triangle-exclamation mr-2"></i>
+                            <p>Login First to Access the Administrator Page.</p>
+                        </div>
+                    </div>
+                )}
                 <form onSubmit={handleSubmit} className="flex flex-col justify-center">
                     <div className="mb-4">
                     <label htmlFor="username" className="text-[#00864B] font-semibold block mb-1">Username</label>
