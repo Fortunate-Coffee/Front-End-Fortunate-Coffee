@@ -3,79 +3,104 @@ import Slider from 'react-slick';
 import AdminEditCategoryForm from './AdminEditCategoryForm';
 import AdminDeleteConfirm from './AdminDeleteConfirm';
 
-export const images = [
-  { id: 1, src: 'https://ik.imagekit.io/fndsjy/Fortunate_Coffee/Category/Asian%20Cuisine.jpeg?updatedAt=1716675783618', title: 'Asian Cuisine' },
-  { id: 2, src: 'https://ik.imagekit.io/fndsjy/Fortunate_Coffee/Category/Fast%20Food.png?updatedAt=1716675784293', title: 'Fast Food' },
-  { id: 3, src: 'https://ik.imagekit.io/fndsjy/Fortunate_Coffee/Category/Fortunate%20Bread.jpeg?updatedAt=1716675783368', title: 'Fortunate Bread' },
-  { id: 4, src: 'https://ik.imagekit.io/fndsjy/Fortunate_Coffee/Category/Fortunate%20Coffee.jpeg?updatedAt=1716675783816', title: 'Fortunate Coffee' },
-  { id: 5, src: 'https://ik.imagekit.io/fndsjy/Fortunate_Coffee/Category/Fortunate%20Dessert.jpg?updatedAt=1716675783436', title: 'Fortunate Dessert' },
-  { id: 6, src: 'https://ik.imagekit.io/fndsjy/Fortunate_Coffee/Category/Fortunate%20Rice.jpg?updatedAt=1716675782922', title: 'Fortunate Rice' },
-  { id: 7, src: 'https://ik.imagekit.io/fndsjy/Fortunate_Coffee/Category/Fortunate%20Tea.jpg?updatedAt=1716675783012', title: 'Fortunate Tea' },
-  { id: 8, src: 'https://ik.imagekit.io/fndsjy/Fortunate_Coffee/Category/Fresh%20Mocktail.jpeg?updatedAt=1716675783686', title: 'Fresh Mocktail' },
-  // Tambahkan data gambar sesuai kebutuhan Anda
-];
-
 const AdminCategoryCarousel = () => {
+  const [category, setCategory] = useState([]);
   const [showAdminEditCategoryForm, setShowAdminEditCategoryForm] = useState(false);
   const [showAdminDeleteConfirm, setShowAdminDeleteConfirm] = useState(false);
-    const [editFormData, setEditFormData] = useState({});
+  const [editFormData, setEditFormData] = useState({});
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const [currentIndex, setCurrentIndex] = useState(Math.floor(images.length / 2)); // Mulai dari indeks tengah
+  const fetchCategory = async () => {
+    try {
+      const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/category');
+      const data = await response.json();
+      setCategory(data);
+      setCurrentIndex(Math.floor(data.length / 2)); // Mulai dari indeks tengah
+    } catch (error) {
+      console.error('Error fetching category:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategory();
+  }, []);
 
   const settings = {
-    infinite: true, // Mengatur slider agar kembali ke awal setelah mencapai akhir
+    infinite: true,
     speed: 500,
-    slidesToShow: 7, // Menyesuaikan jumlah gambar yang ditampilkan
+    slidesToShow: 7,
     slidesToScroll: 1,
-    autoplay: true, // Mengaktifkan auto geser
-    autoplaySpeed: 1500, // Interval auto geser (dalam milidetik)
+    autoplay: true,
+    autoplaySpeed: 1500,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
   };
 
   const handleEdit = (id) => {
-    // Temukan data gambar yang sesuai berdasarkan id
-    const imageData = images.find(image => image.id === id);
-    // Kirim data gambar yang sesuai ke form edit
-    setEditFormData(imageData);
+    const categoryData = category.find(category => category.category_id === id);
+    setEditFormData(categoryData);
     setShowAdminEditCategoryForm(true);
   };
 
-  const handleDelete = (id) => {
-    // Logika untuk hapus gambar dengan id tertentu
-    console.log(`Delete image with id: ${id}`);
+  const handleDelete = async (id) => {
+    try {
+      // Ambil token dari local storage
+      const token = localStorage.getItem('accessToken');
+  
+      const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/category/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to delete category');
+      }
+  
+      setCategory(prevCategory => prevCategory.filter(item => item.category_id !== id));
+      console.log(`Category with ID ${id} deleted successfully`);
+    } catch (error) {
+      console.error('Error deleting category:', error);
+    }
   };
+  
 
   useEffect(() => {
-    // Perbarui index setiap kali slider berubah
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
+      setCurrentIndex((prevIndex) => (prevIndex === category.length - 1 ? 0 : prevIndex + 1));
     }, settings.autoplaySpeed);
 
     return () => clearInterval(interval);
-  }, [currentIndex, images.length, settings.autoplaySpeed]);
+  }, [currentIndex, category.length, settings.autoplaySpeed]);
 
   return (
     <div className="">
-      {showAdminEditCategoryForm && <AdminEditCategoryForm setShowEditCategoryForm={setShowAdminEditCategoryForm} editFormData={editFormData}/>}
-      {showAdminDeleteConfirm && <AdminDeleteConfirm setShowAdminDeleteConfirm={setShowAdminDeleteConfirm}/>}
+      {showAdminEditCategoryForm && (
+        <AdminEditCategoryForm
+          setShowEditCategoryForm={setShowAdminEditCategoryForm}
+          editFormData={editFormData}
+          fetchCategory={fetchCategory} // Tambahkan fetchCategory sebagai prop untuk refresh data setelah edit
+        />
+      )}
+      {showAdminDeleteConfirm && <AdminDeleteConfirm setShowAdminDeleteConfirm={setShowAdminDeleteConfirm} handleDelete={handleDelete} />}
 
       <Slider {...settings} afterChange={(index) => setCurrentIndex(index)}>
-      {images.map((image, index) => (
-        <div key={image.id}>
-          <div className={`relative mx-1 hover:scale-105 scale-95`}>
-            <img src={image.src} alt={image.title} className="w-full h-auto rounded-xl shadow-md" />
-            <div className="absolute bottom-0 left-0 right-0 p-3 bg-black bg-opacity-50 text-white opacity-0 hover:opacity-100">
-              <h2 className="text-center text-lg font-bold">{image.title}</h2>
-              <div className="flex justify-around text-sm">
-                <button onClick={() => handleEdit(image.id)} className='text-green-200 font-light'>Edit</button>
-                <button onClick={() => setShowAdminDeleteConfirm(true)}className='text-red-200 font-light'>Delete</button>
+        {category.map((category) => (
+          <div key={category.category_id}>
+            <div className="relative mx-1 hover:scale-105 scale-95">
+              <img src={category.category_image} alt={category.category_name} className="w-full h-40 object-cover rounded-xl shadow-md" />
+              <div className="absolute bottom-0 left-0 right-0 p-3 bg-black bg-opacity-50 text-white opacity-0 hover:opacity-100">
+                <h2 className="text-center text-lg font-bold">{category.category_name}</h2>
+                <div className="flex justify-around text-sm">
+                  <button onClick={() => handleEdit(category.category_id)} className="text-green-200 font-light">Edit</button>
+                  <button onClick={handleDelete} className="text-red-200 font-light">Delete</button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      ))}
-    </Slider>
+        ))}
+      </Slider>
     </div>
   );
 };
