@@ -7,9 +7,9 @@ const NotAuthorizedPage = () => {
         <h1 className="text-4xl font-bold text-gray-800 mb-4">Access Denied</h1>
         <p className="text-lg text-gray-600">You do not have permission to access this page.</p>
         <div className="">
-            <Link to="/login" >
+            <Link to="/admin" >
             <button className="bg-[#4caf50] hover:bg-[#39753b] text-white p-4 rounded-2xl shadow-xl w-full my-8">
-                Back to Login
+                Back to Menu
             </button>
             </Link> 
         </div>
