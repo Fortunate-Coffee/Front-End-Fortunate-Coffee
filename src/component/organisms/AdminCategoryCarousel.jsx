@@ -6,9 +6,10 @@ import AdminDeleteConfirm from './AdminDeleteConfirm';
 const AdminCategoryCarousel = () => {
   const [category, setCategory] = useState([]);
   const [showAdminEditCategoryForm, setShowAdminEditCategoryForm] = useState(false);
-  const [showAdminDeleteConfirm, setShowAdminDeleteConfirm] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [editFormData, setEditFormData] = useState({});
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [deleteItemId, setDeleteItemId] = useState(null);
 
   const fetchCategory = async () => {
     try {
@@ -64,7 +65,11 @@ const AdminCategoryCarousel = () => {
       console.error('Error deleting category:', error);
     }
   };
-  
+
+  const openDeleteConfirm = (id) => {
+    setDeleteItemId(id);
+    setShowDeleteConfirm(true);
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -83,7 +88,14 @@ const AdminCategoryCarousel = () => {
           fetchCategory={fetchCategory} // Tambahkan fetchCategory sebagai prop untuk refresh data setelah edit
         />
       )}
-      {showAdminDeleteConfirm && <AdminDeleteConfirm setShowAdminDeleteConfirm={setShowAdminDeleteConfirm} handleDelete={handleDelete} />}
+      {showDeleteConfirm && (
+        <AdminDeleteConfirm
+          setShowDeleteConfirm={setShowDeleteConfirm}
+          entityName="category"
+          itemId={deleteItemId}
+          onConfirmDelete={handleDelete}
+        />
+      )}
 
       <Slider {...settings} afterChange={(index) => setCurrentIndex(index)}>
         {category.map((category) => (
@@ -94,7 +106,7 @@ const AdminCategoryCarousel = () => {
                 <h2 className="text-center text-lg font-bold">{category.category_name}</h2>
                 <div className="flex justify-around text-sm">
                   <button onClick={() => handleEdit(category.category_id)} className="text-green-200 font-light">Edit</button>
-                  <button onClick={handleDelete} className="text-red-200 font-light">Delete</button>
+                  <button onClick={() => openDeleteConfirm(category.category_id)} className="text-red-200 font-light">Delete</button>
                 </div>
               </div>
             </div>

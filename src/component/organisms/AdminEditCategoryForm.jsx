@@ -7,7 +7,8 @@ const AdminEditCategoryForm = ({ setShowEditCategoryForm, editFormData, fetchCat
 
     const [formData, setFormData] = useState({
         category_name: editFormData.category_name,
-        category_image: editFormData.category_image
+        category_image: editFormData.category_image,
+        imageKitId: editFormData.imageKitId
     });
 
     const handleSubmit = async (e) => {
