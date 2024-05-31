@@ -9,7 +9,7 @@ const NotAuthorizedPage = () => {
         <div className="">
             <Link to="/admin" >
             <button className="bg-[#4caf50] hover:bg-[#39753b] text-white p-4 rounded-2xl shadow-xl w-full my-8">
-                Back to Menu
+                Back
             </button>
             </Link> 
         </div>
