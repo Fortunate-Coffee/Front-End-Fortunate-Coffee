@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AdminAddCategoryForm from '../organisms/AdminAddCategoryForm';
 import AdminAddMenuForm from '../organisms/AdminAddMenuForm';
@@ -11,14 +11,75 @@ const AdminMenu = () => {
     const [showAddCategoryForm, setShowAddCategoryForm] = useState(false);
     const [showAddMenuForm, setShowAddMenuForm] = useState(false);
     const [showAddMenuIngredientsForm ,setShowAddMenuIngredientsForm] = useState(false);
+    const [category, setCategory] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('');
+    const [menu, setMenu] = useState([]);
 
-    const categories = [
-        {text: 'Limited Offer'},
-        {text: 'Fortunate Bread'},
-        {text: 'Asian Cuisine'},
-        {text: 'Spaghetti'},
-        {text: 'Fortunate Rice'},
-    ];
+    useEffect(() => {
+        const token = localStorage.getItem('accessToken');
+
+        const fetchCategory = async () => {
+            try {
+                const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/category', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const data = await response.json();
+                setCategory(data);
+            } catch (error) {
+                console.error('Error fetching category:', error);
+            }
+        };
+
+        const fetchMenu = async () => {
+            try {
+                const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/menu', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const data = await response.json();
+                setMenu(data);
+            } catch (error) {
+                console.error('Error fetching menu:', error);
+            }
+        };
+        
+        fetchCategory();
+        fetchMenu();
+    }, []);
+
+    const getCategoryIdByName = (categoryName) => {
+        const selectedCategory = category.find(cat => cat.category_name === categoryName);
+        return selectedCategory ? selectedCategory.category_id : null;
+    };
+
+    const fetchMenuByCategory = async () => {
+        const token = localStorage.getItem('accessToken');
+        const categoryId = getCategoryIdByName(selectedCategory);
+        if (!categoryId) {
+            setMenu([]);
+            return;
+        }
+
+        try {
+            const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/menu/category/${categoryId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const data = await response.json();
+            if (response.status === 404) {
+                setMenu([]);
+            } else {
+                setMenu(data);
+            }
+        } catch (error) {
+            console.error('Error fetching menu by category:', error);
+            setMenu([]);
+        }
+    };
 
     return (
         <div>
@@ -43,16 +104,16 @@ const AdminMenu = () => {
                 <AdminCategoryCarousel />
                 <div className="flex items-center mt-12">
                     <label htmlFor="selectOption" className="font-medium me-4 text-[#43745B]">Categories</label>
-                    <select id="selectOption" name="selectOption" className="border border-[#43745B] rounded-xl shadow-xl p-2 px-3 me-2">
-                        {categories.map((category, index) => (
-                            <option key={index} value={category.text}>{category.text}</option>
+                    <select id="selectOption" name="selectOption" className="border border-[#43745B] rounded-xl shadow-xl p-2 px-3 me-2" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+                        {category.map((category, index) => (
+                            <option key={index} value={category.category_name}>{category.category_name}</option>
                         ))}
                     </select>
-                    <GetDataButton />
+                    <GetDataButton onClick={fetchMenuByCategory}/>
                 </div>
-                <AdminMenuItems />
+                <AdminMenuItems menu={menu} />
             </div>
-        </div>
+        </div>  
     );
 }
 
