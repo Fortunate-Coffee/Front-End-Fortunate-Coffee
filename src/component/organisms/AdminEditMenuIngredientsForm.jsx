@@ -1,44 +1,122 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 
-const AdminEditMenuIngredientsForm = ({ setShowEditMenuIngredientsForm }) => {
-    const foodIngredientsList = [
-        { text: 'Egg' },
-        { text: 'Rice' },
-        { text: 'Corn' },
-        { text: 'Mushroom' },
-        { text: 'Tempe' },
-    ];
+const AdminEditMenuIngredientsForm = ({ setShowEditMenuIngredientsForm, menuId }) => {
+    const [ingredients, setIngredients] = useState([]);
+    const [originalData, setOriginalData] = useState([]);
+    const [formDataList, setFormDataList] = useState([]);
+    const [warning, setWarning] = useState("");
+    const [success, setSuccess] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    const [formDataList, setFormDataList] = useState([
-        {
-            foodIngredients: '',
-            qty: ''
+    useEffect(() => {
+        const fetchMenuIngredients = async () => {
+            const token = localStorage.getItem('accessToken');
+            try {
+                const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/menu-ingredients/${menuId}/ingredients`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    }
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    setFormDataList(data);
+                    setOriginalData([...data]); // store
+                } else {
+                    console.error('Error fetching menu ingredients:', data);
+                }
+            } catch (error) {
+                console.error('Error fetching menu ingredients:', error);
+            }
+        };
+
+        const fetchIngredients = async () => {
+            const token = localStorage.getItem('accessToken');
+            try {
+                const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/food-ingredients', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    }
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    setIngredients(data);
+                } else {
+                    console.error('Error fetching ingredients:', data);
+                }
+            } catch (error) {
+                console.error('Error fetching ingredients:', error);
+            }
+        };
+
+        fetchMenuIngredients();
+        fetchIngredients();
+    }, [menuId]);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true); // Set loading state to true before making the request
+
+        const token = localStorage.getItem('accessToken');
+
+        try {
+            const requestData = {
+                ingredients: formDataList.map(item => ({
+                    food_ingredients_id: item.food_ingredients_id,
+                    menu_ingredients_qty: item.menu_ingredients_qty
+                }))
+            };
+
+            const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/menu-ingredients/${menuId}/ingredients`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify(requestData)
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                console.log('Menu ingredients updated successfully:', data);
+                setSuccess('Menu ingredients updated successfully!');
+                setShowEditMenuIngredientsForm(false);
+            } else {
+                console.error('Error updating menu ingredients:', data);
+            }
+        } catch (error) {
+            console.error('Error updating menu ingredients:', error);
+        } finally {
+            setLoading(false); // Set loading state to false after the request is complete
         }
-    ]);
+    };
 
     const handleChange = (e, index) => {
         const { name, value } = e.target;
-        const newList = [...formDataList];
-        newList[index][name] = value;
-        setFormDataList(newList);
+        const list = [...formDataList];
+        list[index][name] = value;
+        setFormDataList(list);
+
+        if (name === "food_ingredients_id") {
+            const filteredList = list.filter((_, idx) => idx !== index);
+            const isDuplicate = filteredList.some(item => item.food_ingredients_id === value) ||
+                originalData.some(item => item.food_ingredients_id === value);
+            if (isDuplicate) {
+                setWarning("Duplicate ingredients selected!");
+            } else {
+                setWarning("");
+            }
+        }       
     };
 
     const handleAddForm = () => {
-        setFormDataList([...formDataList, { foodIngredients: '', qty: '' }]);
+        setFormDataList([...formDataList, { food_ingredients_id: '', menu_ingredients_qty: '' }]);
     };
 
     const handleRemoveForm = (index) => {
-        const newList = [...formDataList];
-        newList.splice(index, 1);
-        setFormDataList(newList);
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Lakukan sesuatu dengan formDataList, misalnya kirim ke backend
-        // Kemudian kosongkan form atau lakukan tindakan lainnya
-        setFormDataList([{ foodIngredients: '', qty: '' }]);
-        setShowEditMenuIngredientsForm(false); // Close the current form
+        const list = [...formDataList];
+        list.splice(index, 1);
+        setFormDataList(list);
+        setWarning(""); // Reset warning when an item is removed
     };
 
     return (
@@ -53,15 +131,16 @@ const AdminEditMenuIngredientsForm = ({ setShowEditMenuIngredientsForm }) => {
                         <div key={index} className="flex flex-row justify-between my-1">
                             <div className="flex items-center">
                                 <label htmlFor={`ingredient-${index}`} className="me-5 block text-sm font-medium text-gray-700">Ingredients</label>
-                                <select id={`ingredient-${index}`} name="foodIngredients" value={formData.foodIngredients} onChange={(e) => handleChange(e, index)} required className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-xl">
-                                    {foodIngredientsList.map((foodIngredient, i) => (
-                                        <option key={i} value={foodIngredient.text}>{foodIngredient.text}</option>
+                                <select id={`ingredient-${index}`} name="food_ingredients_id" value={formData.food_ingredients_id} onChange={(e) => handleChange(e, index)} required className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-xl">
+                                    <option value="" disabled>Select an ingredient</option>
+                                    {ingredients && ingredients.map((foodIngredient, i) => (
+                                        <option key={i} value={foodIngredient.food_ingredients_id}>{foodIngredient.food_ingredients_name}</option>
                                     ))}
                                 </select>
                             </div>
                             <div className="flex items-center justify-center">
                                 <label htmlFor={`qty-${index}`} className="me-5 block text-sm font-medium text-gray-700">Qty</label>
-                                <input type="number" id={`qty-${index}`} name="qty" min={1} value={formData.qty} onChange={(e) => handleChange(e, index)} required className="mt-1 p-2 border border-gray-300 rounded-md w-1/4 shadow-lg" />
+                                <input type="number" id={`qty-${index}`} name="menu_ingredients_qty" min={1} value={formData.menu_ingredients_qty} onChange={(e) => handleChange(e, index)} required className="mt-1 p-2 border border-gray-300 rounded-md w-1/4 shadow-lg" />
                             </div>
                             <div className="flex items-center justify-between">
                                 {index === formDataList.length - 1 ? (
@@ -72,9 +151,20 @@ const AdminEditMenuIngredientsForm = ({ setShowEditMenuIngredientsForm }) => {
                             </div>
                         </div>
                     ))}
+                    {warning && <p className="flex text-red-500 text-sm w-full mt-3">{warning}</p>}
+                    {success && <p className="flex text-green-500 text-sm w-full mt-3">{success}</p>}
                     <p className="flex mt-3 w-full text-xs text-left text-gray-400 italic">* Qty per serving.</p>
                     <div>
-                        <button type="submit" className="flex my-3 mx-auto bg-[#43745B] hover:bg-green-800 text-white font-bold py-2 px-4 shadow-xl rounded-xl hover:scale-110">Save</button>
+                        <button type="submit" disabled={loading} className="flex my-3 mx-auto bg-[#43745B] hover:bg-green-800 text-white font-bold py-2 px-4 shadow-xl rounded-xl hover:scale-110">
+                            {loading ? (
+                                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C6.477 0 0 6.477 0 12h4zm2 5.291l-2.162-.88A8.015 8.015 0 014 12H0c0 2.021.388 3.936 1.081 5.627L6 17.29z"></path>
+                                </svg>
+                            ) : (
+                                'Save'
+                            )}
+                        </button>
                     </div>
                 </form>
             </div>
