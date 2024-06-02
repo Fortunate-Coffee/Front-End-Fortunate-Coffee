@@ -1,37 +1,112 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const AdminAddMenuForm = ({ setShowAddMenuForm, setShowAddMenuIngredientsForm }) => {
-
-    const categories = [
-        {text: 'Limited Offer'},
-        {text: 'Fortunate Bread'},
-        {text: 'Asian Cuisine'},
-        {text: 'Spaghetti'},
-        {text: 'Fortunate Rice'},
-    ];
-
+    const [category, setCategory] = useState([]);
+    const [menuNames, setMenuNames] = useState([]);
     const [formData, setFormData] = useState({
-        name: '',
-        category: '',
-        description: '',
-        price: '',
-        image: null
+        category_id: '',
+        menu_name: '',
+        menu_price: '',
+        menu_image: null,
+        menu_desc: '',
     });
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e) => {
+    useEffect(() => {
+        const fetchCategory = async () => {
+            const token = localStorage.getItem('accessToken');
+            try {
+                const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/category', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    }
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    setCategory(data);
+                } else {
+                    console.error('Error fetching category:', data);
+                }
+            } catch (error) {
+                console.error('Error fetching category:', error);
+            }
+        };
+
+        const fetchMenuNames = async () => {
+            const token = localStorage.getItem('accessToken');
+            try {
+                const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/menu', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    }
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    setMenuNames(data.map(menu => menu.menu_name.toLowerCase()));
+                } else {
+                    console.error('Error fetching menus:', data);
+                }
+            } catch (error) {
+                console.error('Error fetching menus:', error);
+            }
+        };
+
+        fetchCategory();
+        fetchMenuNames();
+    }, []);
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Lakukan sesuatu dengan formData, misalnya kirim ke backend
-        // Kemudian kosongkan form atau lakukan tindakan lainnya
-        const previousFormData = [{ ...formData }];
-        setFormData({
-            name: '',
-            category: '',
-            description: '',
-            price: '',
-            image: null
-        });
-        setShowAddMenuForm(false);
-        setShowAddMenuIngredientsForm(true, previousFormData);
+
+        if (menuNames.includes(formData.menu_name.toLowerCase())) {
+            setError('Menu name already exists.');
+            setSuccess('');
+            return;
+        }
+
+        if (formData.menu_price < 1000) {
+            setError('Price must be at least 1000.');
+            setSuccess('');
+            return;
+        }
+
+        const token = localStorage.getItem('accessToken');
+        setLoading(true); // Set loading state to true before making the request
+
+        const formDataToSend = new FormData();
+        formDataToSend.append('category_id', formData.category_id);
+        formDataToSend.append('menu_name', formData.menu_name);
+        formDataToSend.append('menu_price', formData.menu_price);
+        formDataToSend.append('menu_image', formData.menu_image);
+        formDataToSend.append('menu_desc', formData.menu_desc);
+
+        try {
+            const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/menu', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: formDataToSend
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                const menuId = data.data.menu_id;
+                setShowAddMenuForm(false);
+                setShowAddMenuIngredientsForm(true, menuId); // Pass the new menu ID to the ingredients form
+                setSuccess('Added new menu successfully!');
+                setError('');
+                console.log('menu ID: ', data);
+            } else {
+                console.error('Error creating menu:', data);
+            }
+        } catch (error) {
+            console.error('Error creating menu:', error);
+        } finally {
+            setLoading(false); // Set loading state to false after the request is complete
+        }
     };
 
     const handleChange = (e) => {
@@ -39,6 +114,19 @@ const AdminAddMenuForm = ({ setShowAddMenuForm, setShowAddMenuIngredientsForm })
         setFormData({
             ...formData,
             [name]: value
+        });
+
+        if (name === 'menu_price' && value < 1000) {
+            setError('Price must be at least 1000.');
+        } else {
+            setError('');
+        }
+    };
+
+    const handleImageChange = (e) => {
+        setFormData({
+            ...formData,
+            menu_image: e.target.files[0]
         });
     };
 
@@ -53,30 +141,42 @@ const AdminAddMenuForm = ({ setShowAddMenuForm, setShowAddMenuIngredientsForm })
                     <form onSubmit={handleSubmit} className="px-5">
                         <div className="flex items-center mb-4">
                             <label htmlFor="name" className="w-4/12 block text-sm font-medium text-gray-700">Name</label>
-                            <input type="text" id="name" required name="name" value={formData.name} onChange={handleChange} className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg" />
+                            <input type="text" id="menu_name" required name="menu_name" value={formData.menu_name} onChange={handleChange} className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg" />
                         </div>
                         <div className="flex items-center mb-4">
                             <label htmlFor="category" className="w-4/12 block text-sm font-medium text-gray-700">Category</label>
-                            <select id="category" required name="category" value={formData.category} onChange={handleChange} className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg">
-                                {categories.map((category, index) => (
-                                    <option key={index} value={category.text}>{category.text}</option>
+                            <select id="category_id" required name="category_id" value={formData.category_id} onChange={handleChange} className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg">
+                                <option value="" disabled>Select a category</option>
+                                {category.map((category, index) => (
+                                    <option key={index} value={category.category_id}>{category.category_name}</option>
                                 ))}
                             </select>
                         </div>
                         <div className="flex items-center mb-4">
                             <label htmlFor="description" className="w-4/12 block text-sm font-medium text-gray-700">Description</label>
-                            <textarea id="description" required name="description" value={formData.description} onChange={handleChange} rows="4" className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg"></textarea>
+                            <textarea id="menu_desc" required name="menu_desc" value={formData.menu_desc} onChange={handleChange} rows="4" className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg"></textarea>
                         </div>
                         <div className="flex items-center mb-4">
                             <label htmlFor="price" className="w-4/12 block text-sm font-medium text-gray-700">Price (Rp)</label>
-                            <input type="number" id="price" required name="price" min={1000} value={formData.price} onChange={handleChange} className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg" />
+                            <input type="number" id="menu_price" required name="menu_price" min={1000} value={formData.menu_price} onChange={handleChange} className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg" />
                         </div>
                         <div className="flex items-center mb-6">
                             <label htmlFor="image" className="w-4/12 block text-sm font-medium text-gray-700">Image</label>
-                            <input type="file" id="image" required name="image" onChange={handleChange} accept="image/*" className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg" />
+                            <input type="file" id="menu_image" required name="menu_image" onChange={handleImageChange} accept="image/*" className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg" />
                         </div>
+                        {error && <p className="italic text-red-500">{error}</p>}
+                        {success && <p className="italic text-green-500">{success}</p>}
                         <div>
-                            <button type="submit" className="flex my-3 mx-auto bg-[#43745B] hover:bg-green-800 text-white font-bold py-2 px-4 shadow-xl rounded-xl hover:scale-110">Continue</button>
+                        <button type="submit" disabled={loading} className="flex my-3 mx-auto bg-[#43745B] hover:bg-green-800 text-white font-bold py-2 px-4 shadow-xl rounded-xl hover:scale-110">
+                                {loading ? (
+                                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C6.477 0 0 6.477 0 12h4zm2 5.291l-2.162-.88A8.015 8.015 0 014 12H0c0 2.021.388 3.936 1.081 5.627L6 17.29z"></path>
+                                    </svg>
+                                ) : (
+                                    'Continue'
+                                )}
+                            </button>
                         </div>
                     </form>
                 </div>

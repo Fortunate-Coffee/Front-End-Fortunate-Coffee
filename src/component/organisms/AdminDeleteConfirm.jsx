@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 const AdminDeleteConfirm = ({ setShowDeleteConfirm, entityName, itemId, onConfirmDelete }) => {
     const handleDelete = async () => {
         try {

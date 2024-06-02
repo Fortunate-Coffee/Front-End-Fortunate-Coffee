@@ -14,6 +14,12 @@ const AdminMenu = () => {
     const [category, setCategory] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
     const [menu, setMenu] = useState([]);
+    const [menuId, setMenuId] = useState(null);
+
+    const handleShowAddMenuIngredientsForm = (show, menuId) => {
+        setShowAddMenuIngredientsForm(show);
+        setMenuId(menuId);
+    };
 
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
@@ -84,8 +90,8 @@ const AdminMenu = () => {
     return (
         <div>
             {showAddCategoryForm && <AdminAddCategoryForm setShowCategoryForm={setShowAddCategoryForm} />}
-            {showAddMenuForm && <AdminAddMenuForm setShowAddMenuForm={setShowAddMenuForm} setShowAddMenuIngredientsForm={setShowAddMenuIngredientsForm} />}
-            {showAddMenuIngredientsForm && <AdminAddMenuIngredientsForm setShowAddMenuIngredientsForm={setShowAddMenuIngredientsForm} />}
+            {showAddMenuForm && <AdminAddMenuForm setShowAddMenuForm={setShowAddMenuForm} setShowAddMenuIngredientsForm={handleShowAddMenuIngredientsForm} />}
+            {showAddMenuIngredientsForm && <AdminAddMenuIngredientsForm menuId={menuId} setShowAddMenuIngredientsForm={setShowAddMenuIngredientsForm} />}
 
             <div className="p-3 flex justify-between items-center bg-[#43745B] shadow-xl">
                 <h1 className='text-white tracking-wide'>Menu</h1>
