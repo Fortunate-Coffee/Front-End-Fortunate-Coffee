@@ -56,6 +56,16 @@ const AdminEditMenuIngredientsForm = ({ setShowEditMenuIngredientsForm, menuId }
         e.preventDefault();
         setLoading(true); // Set loading state to true before making the request
 
+        // Cek duplikasi nama bahan
+        const ingredientNames = formDataList.map(item => item.food_ingredients_id);
+        const isDuplicateName = (new Set(ingredientNames)).size !== ingredientNames.length;
+
+        if (isDuplicateName) {
+            setWarning("Duplicate ingredients selected!");
+            setLoading(false);
+            return;
+        }
+
         const token = localStorage.getItem('accessToken');
 
         try {
