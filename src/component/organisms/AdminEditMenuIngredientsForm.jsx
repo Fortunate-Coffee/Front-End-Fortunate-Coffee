@@ -89,7 +89,9 @@ const AdminEditMenuIngredientsForm = ({ setShowEditMenuIngredientsForm, menuId }
             if (response.ok) {
                 console.log('Menu ingredients updated successfully:', data);
                 setSuccess('Menu ingredients updated successfully!');
-                setShowEditMenuIngredientsForm(false);
+                setTimeout(() => {
+                    setShowEditMenuIngredientsForm(false);
+                }, 2000); 
             } else {
                 console.error('Error updating menu ingredients:', data);
             }

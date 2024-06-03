@@ -115,10 +115,12 @@ const AdminEditMenuForm = ({ setShowEditMenuForm, setShowEditMenuIngredientsForm
 
             const data = await response.json();
             if (response.ok) {
-                setShowEditMenuForm(false);
                 setShowEditMenuIngredientsForm(true, menuId);
                 setSuccess('Menu updated successfully!');
                 setError('');
+                setTimeout(() => {
+                    setShowEditMenuForm(false);
+                }, 2000); 
                 console.log(data);
             } else {
                 setError(data.message || 'Error updating menu');
