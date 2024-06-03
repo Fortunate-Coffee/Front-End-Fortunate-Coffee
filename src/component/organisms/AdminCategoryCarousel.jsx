@@ -85,6 +85,7 @@ const AdminCategoryCarousel = () => {
         <AdminEditCategoryForm
           setShowEditCategoryForm={setShowAdminEditCategoryForm}
           editFormData={editFormData}
+          category={category}
           fetchCategory={fetchCategory} // Tambahkan fetchCategory sebagai prop untuk refresh data setelah edit
         />
       )}

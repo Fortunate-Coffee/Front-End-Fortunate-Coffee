@@ -55,7 +55,9 @@ const AdminAddMenuIngredientsForm = ({ menuId, setShowAddMenuIngredientsForm }) 
             if (response.ok) {
                 console.log('Menu ingredients added successfully:', data);
                 setSuccess('Menu ingredients added successfully!');
-                setShowAddMenuIngredientsForm(false);
+                setTimeout(() => {
+                    setShowAddMenuIngredientsForm(false);
+                }, 2000); 
             } else {
                 console.error('Error adding menu ingredients:', data);
             }
@@ -103,9 +105,6 @@ const AdminAddMenuIngredientsForm = ({ menuId, setShowAddMenuIngredientsForm }) 
     return (
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-50 z-40">
             <div className="bg-white p-4 rounded-xl shadow-xl relative">
-                <button className="absolute top-4 right-5 fa-beat-fade text-lg text-gray-500 hover:text-gray-700" onClick={() => setShowAddMenuIngredientsForm(false)}>
-                    <i className="fas fa-times"></i>
-                </button>
                 <h2 className="mb-5 text-center text-lg font-semibold">Menu Ingredients</h2>
                 <form onSubmit={handleSubmit} className="flex flex-col justify-between items-center">
                     {formDataList.map((formData, index) => (

@@ -15,6 +15,7 @@ const AdminMenu = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [menu, setMenu] = useState([]);
     const [menuId, setMenuId] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const handleShowAddMenuIngredientsForm = (show, menuId) => {
         setShowAddMenuIngredientsForm(show);
@@ -63,9 +64,11 @@ const AdminMenu = () => {
 
     const fetchMenuByCategory = async () => {
         const token = localStorage.getItem('accessToken');
+        setLoading(true);
         const categoryId = getCategoryIdByName(selectedCategory);
         if (!categoryId) {
             setMenu([]);
+            setLoading(false);
             return;
         }
 
@@ -84,12 +87,14 @@ const AdminMenu = () => {
         } catch (error) {
             console.error('Error fetching menu by category:', error);
             setMenu([]);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <div>
-            {showAddCategoryForm && <AdminAddCategoryForm setShowCategoryForm={setShowAddCategoryForm} />}
+            {showAddCategoryForm && <AdminAddCategoryForm setShowCategoryForm={setShowAddCategoryForm} category={category} />}
             {showAddMenuForm && <AdminAddMenuForm setShowAddMenuForm={setShowAddMenuForm} setShowAddMenuIngredientsForm={handleShowAddMenuIngredientsForm} />}
             {showAddMenuIngredientsForm && <AdminAddMenuIngredientsForm menuId={menuId} setShowAddMenuIngredientsForm={setShowAddMenuIngredientsForm} />}
 
@@ -111,11 +116,12 @@ const AdminMenu = () => {
                 <div className="flex items-center mt-12">
                     <label htmlFor="selectOption" className="font-medium me-4 text-[#43745B]">Categories</label>
                     <select id="selectOption" name="selectOption" className="border border-[#43745B] rounded-xl shadow-xl p-2 px-3 me-2" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+                        <option value="" disabled>Select a category</option>
                         {category.map((category, index) => (
                             <option key={index} value={category.category_name}>{category.category_name}</option>
                         ))}
                     </select>
-                    <GetDataButton onClick={fetchMenuByCategory}/>
+                    <GetDataButton onClick={fetchMenuByCategory} loading={loading}/>
                 </div>
                 <AdminMenuItems menu={menu} />
             </div>

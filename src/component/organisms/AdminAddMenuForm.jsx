@@ -94,10 +94,12 @@ const AdminAddMenuForm = ({ setShowAddMenuForm, setShowAddMenuIngredientsForm })
             const data = await response.json();
             if (response.ok) {
                 const menuId = data.data.menu_id;
-                setShowAddMenuForm(false);
                 setShowAddMenuIngredientsForm(true, menuId); // Pass the new menu ID to the ingredients form
                 setSuccess('Added new menu successfully!');
                 setError('');
+                setTimeout(() => {
+                    setShowAddMenuForm(false);
+                }, 2000); 
                 console.log('menu ID: ', data);
             } else {
                 console.error('Error creating menu:', data);
@@ -167,7 +169,7 @@ const AdminAddMenuForm = ({ setShowAddMenuForm, setShowAddMenuIngredientsForm })
                         {error && <p className="italic text-red-500">{error}</p>}
                         {success && <p className="italic text-green-500">{success}</p>}
                         <div>
-                        <button type="submit" disabled={loading} className="flex my-3 mx-auto bg-[#43745B] hover:bg-green-800 text-white font-bold py-2 px-4 shadow-xl rounded-xl hover:scale-110">
+                            <button type="submit" disabled={loading} className="flex my-3 mx-auto bg-[#43745B] hover:bg-green-800 text-white font-bold py-2 px-4 shadow-xl rounded-xl hover:scale-110">
                                 {loading ? (
                                     <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
