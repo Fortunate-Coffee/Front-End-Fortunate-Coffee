@@ -10,7 +10,6 @@ const MenuItems = ({menu}) => {
     const [showEditMenuIngredientsForm ,setShowEditMenuIngredientsForm] = useState(false);
     const [currentMenuId, setCurrentMenuId] = useState(null);
     const [deleteMenuId, setDeleteMenuId] = useState(null);
-    const [deleteSuccess, setDeleteSuccess] = useState(false);
 
     const handleDeleteMenu = (id) => {
         setDeleteMenuId(id);
@@ -36,14 +35,9 @@ const MenuItems = ({menu}) => {
                 throw new Error('Failed to delete menu');
             }
     
-            // Menampilkan peringatan penghapusan berhasil
-            setDeleteSuccess(true);
-    
             // Menutup konfirmasi hapus
             setShowAdminDeleteConfirm(false);
     
-            // Refresh data menu setelah penghapusan
-            // Implementasikan sesuai dengan bagaimana Anda mendapatkan data menu
         } catch (error) {
             console.error('Error deleting menu:', error);
         }
@@ -54,10 +48,6 @@ const MenuItems = ({menu}) => {
             {showAdminDeleteConfirm && <AdminDeleteConfirm setShowDeleteConfirm={setShowAdminDeleteConfirm} entityName="menu" itemId={deleteMenuId} onConfirmDelete={handleDeleteConfirmation}/>}
             {showEditMenuForm && <AdminEditMenuForm setShowEditMenuForm={setShowEditMenuForm} setShowEditMenuIngredientsForm={setShowEditMenuIngredientsForm} menuId={currentMenuId}/>}
             {showEditMenuIngredientsForm && <AdminEditMenuIngredientsForm setShowEditMenuIngredientsForm={setShowEditMenuIngredientsForm} menuId={currentMenuId} />}
-
-            {deleteSuccess && (
-                <p className="text-green-500 text-center tracking-wide w-full">Menu deleted successfully.</p>
-            )}
 
             {menu.length === 0 ? (
                 <p className="my-24 text-gray-500 text-center tracking-wide w-full">Menu not found.</p>
