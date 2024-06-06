@@ -39,11 +39,11 @@ const AdminStock = () => {
         };
 
         fetchFoodIngredients();
-    }, []);
+    }, [selectedType]);
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [selectedType]);
 
     const fetchData = async () => {
         setLoading(true);
@@ -144,7 +144,7 @@ const AdminStock = () => {
                     </div>
                     <GetDataButton onClick={handleGetData} loading={loading} />
                 </div>
-                <AdminStockTable data={data} foodIngredients={foodIngredients} />
+                <AdminStockTable data={data} selectedType={selectedType} foodIngredients={foodIngredients} />
             </div>
         </div>
     );

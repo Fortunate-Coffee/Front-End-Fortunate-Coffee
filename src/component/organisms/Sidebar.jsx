@@ -10,6 +10,12 @@ const Sidebar = () => {
         { route: '/admin/order-history', icon: 'fa-clock-rotate-left fa-beat fa-lg', text: 'Order History' }
     ];
 
+    const handleLogout = () => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('userRole');
+        window.location.href = '/login';
+    };
+
     return(
         <div className="fixed z-0 w-2/12 h-screen shadow-xl border py-5 px-6">
             <Logo sizeImg={20}/>
@@ -33,7 +39,7 @@ const Sidebar = () => {
                 </ul>
                 <div className="">
                     <Link
-                        to="/login"
+                        onClick={handleLogout}
                         className={`block rounded-2xl text-[#43745B] transition-colors duration-300 hover:bg-[#43745B] hover:text-white hover:border-[#43745B]`}
                     >
                         <div className="flex my-2 px-3 py-2 border border-[#43745B] rounded-2xl">
