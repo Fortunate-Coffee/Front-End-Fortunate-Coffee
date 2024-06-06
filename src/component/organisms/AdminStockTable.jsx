@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AdminEditFoodIngredientsForm from "../organisms/AdminEditFoodIngredientsForm";
 import AdminDeleteConfirm from "./AdminDeleteConfirm";
@@ -8,6 +8,36 @@ const AdminStockTable = ({ data, selectedType, foodIngredients }) => {
     const [showAdminDeleteConfirm, setShowAdminDeleteConfirm] = useState(false);
     const [editFormData, setEditFormData] = useState({});
     const [deleteItemId, setDeleteItemId] = useState(null);
+    const [historyData, setHistoryData] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const token = localStorage.getItem('accessToken');
+            let url = 'https://backend-fortunate-coffee.up.railway.app/api/v1/food-ingredients';
+
+            if (selectedType === "In" || selectedType === "Out") {
+                url = `https://backend-fortunate-coffee.up.railway.app/api/v1/type-food-ingredients?type=${selectedType}`;
+            }
+
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    }
+                });
+                const historyData = await response.json();
+                if (response.ok) {
+                    setHistoryData(historyData);
+                } else {
+                    console.error('Error fetching data:', historyData);
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, [selectedType]);
 
     const handleEdit = (data) => {
         setEditFormData(data);
@@ -46,6 +76,11 @@ const AdminStockTable = ({ data, selectedType, foodIngredients }) => {
             console.error('Error deleting item:', error);
             // Tambahkan penanganan kesalahan jika diperlukan
         }
+    };
+
+    const getIngredientNameById = (id) => {
+        const ingredient = foodIngredients.find(ingredient => ingredient.food_ingredients_id === id);
+        return ingredient ? ingredient.food_ingredients_name : 'Unknown';
     };
 
     return (
@@ -88,11 +123,11 @@ const AdminStockTable = ({ data, selectedType, foodIngredients }) => {
                                 const { date, time } = formatDateTime(item.updatedAt);
                                 return (
                                     <tr key={index} className={index % 2 === 0 ? 'bg-white text-black' : 'bg-green-50 text-black'}>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-center font-medium">
-                                            {item.food_ingredients_name}
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
+                                            {selectedType === "In" || selectedType === "Out" ? getIngredientNameById(item.food_ingredients_id) : item.food_ingredients_name}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                                            {item.food_ingredients_stock}
+                                            {selectedType === "In" || selectedType === "Out" ? item.detail_food_ingredients_qty : item.food_ingredients_stock}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
                                             {date}
