@@ -1,10 +1,33 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { formatPrice } from "../../menu";
 import QtyPicker from "../atoms/QtyPicker";
 import NoteButton from "../atoms/NoteButton";
 
 const MenuItem = ({ items }) => {
     const [menuItems, setMenuItems] = useState(items);
+
+    useEffect(() => {
+        const fetchCartItems = async () => {
+            try {
+                const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/cart');
+                const result = await response.json();
+                if (response.ok) {
+                    const cartItems = result.data;
+                    const updatedMenuItems = menuItems.map(menuItem => {
+                        const cartItem = cartItems.find(item => item.menu_id === menuItem.menu_id);
+                        return cartItem ? { ...menuItem, cart_qty: cartItem.quantity } : menuItem;
+                    });
+                    setMenuItems(updatedMenuItems);
+                } else {
+                    console.error(result.error.message);
+                }
+            } catch (error) {
+                console.error('Error fetching cart items:', error);
+            }
+        };
+
+        fetchCartItems();
+    }, []);
 
     const handleQtyChange = (menuId, newQty) => {
         const updatedItems = menuItems.map(item => {

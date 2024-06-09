@@ -9,6 +9,7 @@ const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isEmpty, setIsEmpty] = useState(true);
 
     useEffect(() => {
         const fetchCartItems = async () => {
@@ -32,6 +33,18 @@ const Cart = () => {
         fetchCartItems();
     }, []);
 
+    useEffect(() => {
+        if(cartItems.length === 0) {
+            <div className="flex justify-center items-center h-screen">
+                <p className="">Your cart is empty.</p>
+            </div>
+        };
+    }, [cartItems]);
+
+    useEffect(() => {
+        setIsEmpty(cartItems.length === 0);
+    }, [cartItems]);
+
     if (loading) {
         return <div className="flex justify-center items-center h-screen">Loading...</div>;
     }
@@ -47,9 +60,13 @@ const Cart = () => {
                 <h1 className="grow font-medium">Your Cart</h1>
             </div>
             <div className="mx-7 my-4">
-                {cartItems.length > 0 ? (
-                    <>
-                        <CartItem items={cartItems} setPrices={setPrices} />
+                {isEmpty ? (
+                    <div className="flex justify-center items-center h-screen">
+                        <p className="">Your cart is empty.</p>
+                    </div>
+                ) : (
+                    <div>
+                        <CartItem items={cartItems} setPrices={setPrices} setGlobalCartItems={setCartItems}/>
                         <div className="flex mt-10">
                             <p className='flex items-center w-6/12 font-semibold'>Name</p>
                             <input type="text" className="w-6/12 truncate bg-[#E8E8E8] font-semibold p-2 placeholder:font-medium block hover:border-none focus:outline-none rounded-xl text-center" placeholder="Your Name" />
@@ -60,10 +77,6 @@ const Cart = () => {
                         </div>
                         <TotalPayment prices={prices} />
                         <OrderButton />
-                    </>
-                ) : (
-                    <div className="flex justify-center items-center h-screen">
-                        <p className="">Your cart is empty.</p>
                     </div>
                 )}
             </div>

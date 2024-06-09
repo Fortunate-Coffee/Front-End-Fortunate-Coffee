@@ -3,7 +3,7 @@ import QtyPicker from "../atoms/QtyPicker";
 import { formatPrice } from "../../menu";
 import DeleteButton from "../atoms/DeleteButton";
 
-const CartItem = ({ items, setPrices }) => {
+const CartItem = ({ items, setPrices, setGlobalCartItems }) => {
     const [cartItems, setCartItems] = useState(items);
 
     const handleDelete = async (index) => {
@@ -18,6 +18,7 @@ const CartItem = ({ items, setPrices }) => {
                 const updatedItems = [...cartItems];
                 updatedItems.splice(index, 1);
                 setCartItems(updatedItems);
+                setGlobalCartItems(updatedItems); // Update the parent state
                 // Update prices after deleting item
                 const allPrices = updatedItems.map(item => item.total);
                 setPrices(allPrices);
@@ -38,6 +39,7 @@ const CartItem = ({ items, setPrices }) => {
             return item;
         });
         setCartItems(updatedItems);
+        setGlobalCartItems(updatedItems);
         const allPrices = updatedItems.map(item => item.total);
         setPrices(allPrices);
     };

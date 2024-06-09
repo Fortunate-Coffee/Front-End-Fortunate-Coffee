@@ -11,6 +11,7 @@ const DetailMenu = () => {
     const [selectedItem, setSelectedItem] = useState(null);
     const [loading, setLoading] = useState(true);
     const [qty, setQty] = useState(0);
+    const [itemCount, setItemCount] = useState(0);
     const [notes, setNotes] = useState("");
 
     useEffect(() => {
@@ -38,8 +39,51 @@ const DetailMenu = () => {
             }
         };
 
+        const fetchCartItemCount = async () => {
+            try {
+                const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/cart');
+                const result = await response.json();
+                if (response.ok) {
+                    // Hitung jumlah item di keranjang belanja
+                    const count = result.data.reduce((acc, item) => acc + item.quantity, 0);
+                    setItemCount(count);
+                } else {
+                    console.error(result.error.message);
+                }
+            } catch (error) {
+                console.error('Error fetching cart items:', error);
+            }
+        };
+
         fetchMenuItems();
+        fetchCartItemCount();
     }, [menuName]);
+
+    useEffect(() => {
+        if (selectedItem) {
+            fetchCartItems();
+        }
+    }, [selectedItem]);
+
+    const fetchCartItems = async () => {
+        try {
+            const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/cart`);
+            const result = await response.json();
+            if (response.ok) {
+                // Cari item yang sesuai dengan menu yang sedang dilihat
+                const cartItem = result.data.find(item => item.menu_id === selectedItem?.menu_id);
+                if (cartItem) {
+                    setQty(cartItem.quantity);
+                } else {
+                    setQty(0);
+                }
+            } else {
+                console.error(result.error.message);
+            }
+        } catch (error) {
+            console.error('Error fetching cart items:', error);
+        }
+    };
 
     const incrementQty = async () => {
         const newQty = qty + 1;
@@ -89,7 +133,7 @@ const DetailMenu = () => {
             <div className='fixed top-0 z-40 w-full h-auto bg-white shadow-lg flex px-7 py-4'>
                 <BackButton />
                 <h1 className="grow font-medium">Details</h1>
-                <ShoppingCartButton />
+                <ShoppingCartButton itemCount={itemCount} />
             </div>
             <img 
                 src={selectedItem.menu_image}
