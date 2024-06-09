@@ -153,8 +153,3 @@ export const categoryFiles = categories.map(category => ({
 export const formatPrice = (price) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 };
-
-export const reqSauce = [
-    {id: "no-sauce", name: "sauce", value: "No Sauce"},
-    {id: "extra-sauce", name: "sauce", value: "Extra Sauce"}
-];

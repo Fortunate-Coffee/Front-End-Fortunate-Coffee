@@ -1,15 +1,67 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const QtyPicker = ({ className }) => {
-    const [qty, setQty] = useState(0);
+const QtyPicker = ({ className, menuId, initialQty, onQtyChange }) => {
+    const [qty, setQty] = useState(initialQty || 0);
 
-    const incrementQty = () => {
-        setQty(qty + 1);
+    useEffect(() => {
+        setQty(initialQty || 0);
+    }, [initialQty]);
+
+    const incrementQty = async () => {
+        const newQty = qty + 1;
+        setQty(newQty);
+        onQtyChange(menuId, newQty);
+        // Fungsi untuk menambahkan item ke keranjang ketika tombol "+" ditekan
+        await addToCart();
     };
 
-    const decrementQty = () => {
-        if (qty > 0) {
-            setQty(qty - 1);
+    const decrementQty = async () => {
+        if (qty > 1) {
+            const newQty = qty - 1;
+            setQty(newQty);
+            onQtyChange(menuId, newQty);
+            await removeFromCart(); // Kurangi item dari backend
+        }
+    };
+    
+
+    const addToCart = async () => {
+        try {
+            const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    menu_id: menuId,
+                    cart_qty: 1, // Tambah 1 item ke keranjang setiap kali tombol "+" ditekan
+                    notes: "" // Catatan tambahan (jika diperlukan)
+                })
+            });
+            const result = await response.json();
+            console.log(result);
+        } catch (error) {
+            console.error('Error adding item to cart:', error);
+        }
+    };
+
+    const removeFromCart = async () => {
+        try {
+            const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    menu_id: menuId,
+                    cart_qty: -1,
+                    notes: ""
+                })
+            });
+            const result = await response.json();
+            console.log(result);
+        } catch (error) {
+            console.error('Error removing item from cart:', error);
         }
     };
 
