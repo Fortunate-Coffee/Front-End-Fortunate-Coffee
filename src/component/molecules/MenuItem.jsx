@@ -46,7 +46,7 @@ const MenuItem = ({ items }) => {
                     <img 
                         src={item.menu_image}
                         alt={item.menu_name}
-                        className="w-2/12 rounded-lg shadow-lg hover:scale-105"
+                        className="w-2/12 rounded-lg shadow-lg h-14 lg:w-32 lg:h-32 hover:scale-105"
                     />
                     <div className="flex flex-col w-6/12">
                         <p className="text-left">{item.menu_name}</p>

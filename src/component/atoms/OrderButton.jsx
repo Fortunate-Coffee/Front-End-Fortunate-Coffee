@@ -31,16 +31,17 @@ const OrderButton = () => {
     };
 
     return (
-        <div className="flex flex-col items-center">
-            <button 
-                onClick={handleOrder}
-                className="bg-green-500 text-white p-2 rounded"
-                disabled={loading}
-            >
-                {loading ? 'Ordering...' : 'Place Order'}
-            </button>
+        <div className="fixed bottom-0 left-0 w-full bg-white shadow-xl p-4">
             {success && <p className="text-green-500 mt-2">{success}</p>}
             {error && <p className="text-red-500 mt-2">{error}</p>}
+
+            <button 
+                onClick={handleOrder}
+                className="bg-[#4caf50] hover:bg-[#39753b] text-white p-4 rounded-3xl shadow-lg w-full"
+                disabled={loading}
+            >
+                {loading ? 'Ordering...' : 'Order'}
+            </button>
         </div>
     );
 };

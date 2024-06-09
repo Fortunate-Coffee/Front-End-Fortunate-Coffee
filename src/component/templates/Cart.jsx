@@ -55,7 +55,7 @@ const Cart = () => {
 
     return (
         <div className="">
-            <div className='fixed top-0 z-0 w-full h-auto bg-white shadow-lg flex px-7 py-4'>
+            <div className='fixed top-0 z-10 w-full h-auto bg-white shadow-lg flex px-7 py-4'>
                 <BackButton />
                 <h1 className="grow font-medium">Your Cart</h1>
             </div>
@@ -65,7 +65,7 @@ const Cart = () => {
                         <p className="">Your cart is empty.</p>
                     </div>
                 ) : (
-                    <div>
+                    <div className="h-screen">
                         <CartItem items={cartItems} setPrices={setPrices} setGlobalCartItems={setCartItems}/>
                         <div className="flex mt-10">
                             <p className='flex items-center w-6/12 font-semibold'>Name</p>
