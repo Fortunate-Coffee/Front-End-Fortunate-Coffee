@@ -8,7 +8,8 @@ const AdminEditCategoryForm = ({ setShowEditCategoryForm, editFormData, fetchCat
     const [formData, setFormData] = useState({
         category_name: editFormData.category_name,
         category_image: editFormData.category_image,
-        imageKitId: editFormData.imageKitId
+        imageKitId: editFormData.imageKitId,
+        original_category_name: editFormData.category_name // Store the original category name
     });
 
     const [successMessage, setSuccessMessage] = useState('');
@@ -25,7 +26,10 @@ const AdminEditCategoryForm = ({ setShowEditCategoryForm, editFormData, fetchCat
         }
 
         // Check if the category name already exists
-        const isDuplicate = category && category.some(category => category.category_name.toLowerCase() === formData.category_name.toLowerCase());
+        const isDuplicate = category && category.some(category =>
+            category.category_name.toLowerCase() === formData.category_name.toLowerCase() &&
+            formData.category_name.toLowerCase() !== formData.original_category_name.toLowerCase()
+        );
         if (isDuplicate) {
             setWarningMessage('Category name already exists.');
             setSuccessMessage('');
