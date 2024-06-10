@@ -1,21 +1,33 @@
 import { useState, useEffect } from 'react';
-import { menuData } from '../../menu';
 import { formatPrice } from '../../menu';
 import HomeButton from '../atoms/HomeButton';
 import PaymentInfo from '../atoms/PaymentInfo';
 import TotalPayment from '../molecules/TotalPayment';
 
-const Payment = () => {
-    const [limitedOfferItems, setLimitedOfferItems]= useState(menuData["Limited Offer"].items);
-
-    // State untuk menyimpan semua harga
+const Payment = ({ setCartItems }) => {
+    const [tableNumber, setTableNumber] = useState('');
+    const [orderData, setOrderData] = useState(null)
     const [prices, setPrices] = useState([]);
 
-    // Memperbarui state harga saat komponen dirender
     useEffect(() => {
-        const allPrices = limitedOfferItems.map(item => item.price);
-        setPrices(allPrices);
-    }, [limitedOfferItems, setPrices]);
+        const savedTableNumber = localStorage.getItem('tableNumber');
+        if (savedTableNumber) {
+            setTableNumber(savedTableNumber);
+        }
+
+        // Mengambil data pesanan dari storage lokal saat komponen dimuat
+        const storedData = localStorage.getItem('orderData');
+        if (storedData) {
+            const { orderNumber, items, totalPrice } = JSON.parse(storedData);
+            const orderData = { orderNumber, items, totalPrice };
+            setOrderData(orderData); // Menyimpan data pesanan di state
+            console.log(orderData);
+
+            // Mengambil harga dari orderData
+            const allPrices = items.map(item => item.price);
+            setPrices(allPrices); // Memperbarui state harga
+        }
+    }, [setCartItems, setPrices]);
 
     return(
         <div className="">
@@ -26,15 +38,15 @@ const Payment = () => {
             <div className="mx-7 my-4">
                 <PaymentInfo />
                 <div className="text-center my-10">
-                    <p className='font-semibold text-9xl'>24</p>
-                    <p className='font-semibold mt-3 text-[#8B8989]'>Order No. 123</p>
+                    <p className='font-semibold text-9xl'>{tableNumber} </p>
+                    <p className='font-semibold mt-3 text-[#8B8989]'>{orderData ? `Order No. ${orderData.orderNumber}` : ''}</p>
                 </div>
                 <div className="flex flex-col font-semibold mb-3">
-                    {limitedOfferItems.map((item, index) => (
+                    {orderData && orderData.items.map((item, index) => (
                         <div key={index} className="flex flex-row justify-between my-1 truncate">
                             <p>{item.name}</p>
                             <div className="flex flex-row w-3/12 justify-end">
-                                <p className='mx-6'>1x</p>
+                                <p className='mx-6'>{item.quantity}x</p>
                                 <p>Rp. {formatPrice(item.price)}</p>
                             </div>
                         </div>
