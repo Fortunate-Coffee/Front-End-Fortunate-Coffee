@@ -10,6 +10,15 @@ const Cart = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isEmpty, setIsEmpty] = useState(true);
+    const [tableNumber, setTableNumber] = useState(null);
+
+    useEffect(() => {
+        // Retrieve table number from local storage
+        const savedTable = localStorage.getItem('tableNumber');
+        if (savedTable) {
+            setTableNumber(savedTable);
+        }
+    }, []);
 
     useEffect(() => {
         const fetchCartItems = async () => {
@@ -73,7 +82,7 @@ const Cart = () => {
                         </div>
                         <div className="flex mt-3">
                             <p className='flex items-center w-10/12 font-semibold'>Table Number</p>
-                            <p className="w-2/12 truncate font-semibold text-right">1</p>
+                            <p className="w-2/12 truncate font-semibold text-right">{tableNumber}</p>
                         </div>
                         <TotalPayment prices={prices} />
                         <OrderButton />
