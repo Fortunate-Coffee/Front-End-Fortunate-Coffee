@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const OrderButton = ({ cartItems, customerName, tableNumber }) => {
+const OrderButton = ({ cartItems, customerName, tableNumber, total }) => {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(null);
     const [error, setError] = useState(null);
@@ -18,6 +18,7 @@ const OrderButton = ({ cartItems, customerName, tableNumber }) => {
                     cust_name: customerName,
                     table_number: tableNumber,
                     order_status: 0,
+                    price_total: total,
                     user_acc_id: 3
                 })
             });
