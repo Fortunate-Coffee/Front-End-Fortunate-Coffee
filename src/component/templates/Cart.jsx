@@ -12,6 +12,7 @@ const Cart = () => {
     const [isEmpty, setIsEmpty] = useState(true);
     const [tableNumber, setTableNumber] = useState(null);
     const [customerName, setCustomerName] = useState('');
+    const [total, setTotal] = useState(0);
 
     useEffect(() => {
         // Retrieve table number from local storage
@@ -55,6 +56,14 @@ const Cart = () => {
         setIsEmpty(cartItems.length === 0);
     }, [cartItems]);
 
+    useEffect(() => {
+        // Hitung total dari prices
+        const subtotal = prices.reduce((acc, curr) => acc + curr, 0);
+        const tax = subtotal * 0.11;
+        const calculatedTotal = subtotal + tax;
+        setTotal(calculatedTotal); // Atur nilai total ke dalam state
+    }, [prices]);
+
     if (loading) {
         return <div className="flex justify-center items-center h-screen">Loading...</div>;
     }
@@ -86,7 +95,7 @@ const Cart = () => {
                             <p className="w-2/12 truncate font-semibold text-right">{tableNumber}</p>
                         </div>
                         <TotalPayment prices={prices} />
-                        <OrderButton cartItems={cartItems} setCartItems={setCartItems} customerName={customerName} tableNumber={tableNumber} />
+                        <OrderButton cartItems={cartItems} setCartItems={setCartItems} customerName={customerName} tableNumber={tableNumber} total={total}/>
                     </div>
                 )}
             </div>
