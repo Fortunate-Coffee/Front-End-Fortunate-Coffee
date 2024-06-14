@@ -44,7 +44,7 @@ const Payment = ({ setCartItems }) => {
                 <div className="flex flex-col font-semibold mb-3">
                     {orderData && orderData.items.map((item, index) => (
                         <div key={index} className="flex flex-row justify-between my-1 truncate">
-                            <p>{item.name}</p>
+                            <p className='truncate w-6/12'>{item.name}</p>
                             <div className="flex flex-row w-3/12 justify-end">
                                 <p className='mx-6'>{item.quantity}x</p>
                                 <p>Rp. {formatPrice(item.price)}</p>

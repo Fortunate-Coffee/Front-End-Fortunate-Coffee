@@ -1,82 +1,16 @@
 // AdminStockTable.js
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import AdminOrderDetail from "./AdminOrderDetail"; // Menggunakan path relatif
+import AdminOrderDetail from "./AdminOrderDetail";
 
-export const adminOrderHistory = [
-  { 
-    tableNo: 1, 
-    orderNo: '101293', 
-    date: '2024-04-18', 
-    time: '10:00', 
-    paymentStatus: 1,
-    items: [
-        { name: "Joyful Rice", quantity: 1, notes: "Extra spicy" },
-        { name: "Cripsy Bun", quantity: 3, notes: null }, // Contoh tanpa catatan
-        { name: "Green Tea", quantity: 2, notes: "No sugar" },
-    ],
-    total: "Rp. 75.000" // Total pembelian
-  },
-  { 
-    tableNo: 3, 
-    orderNo: '112892', 
-    date: '2024-04-18', 
-    time: '10:00', 
-    paymentStatus: 0,
-    items: [
-        { name: "Joyful Rice", quantity: 1, notes: "Extra spicy" },
-        { name: "Cripsy Bun", quantity: 3, notes: null }, // Contoh tanpa catatan
-        { name: "Green Tea", quantity: 2, notes: "No sugar" },
-    ],
-    total: "Rp. 75.000" // Total pembelian
-  },
-  { 
-    tableNo: 2, 
-    orderNo: '129023', 
-    date: '2024-04-18', 
-    time: '10:00', 
-    paymentStatus: 1,
-    total: "Rp. 75.000" // Total pembelian
-  },
-  { 
-    tableNo: 4, 
-    orderNo: '201983', 
-    date: '2024-04-18', 
-    time: '10:00', 
-    paymentStatus: 0,
-    items: [
-        { name: "Joyful Rice", quantity: 1, notes: "Extra spicy" },
-        { name: "Cripsy Bun", quantity: 3, notes: null }, // Contoh tanpa catatan
-        { name: "Green Tea", quantity: 2, notes: "No sugar" },
-    ],
-    total: "Rp. 75.000" // Total pembelian
-  },
-  { 
-    tableNo: 8, 
-    orderNo: '298202', 
-    date: '2024-04-18', 
-    time: '10:00', 
-    paymentStatus: 1,
-    total: "Rp. 75.000" // Total pembelian
-  },
-  { 
-    tableNo: 9, 
-    orderNo: '173245', 
-    date: '2024-04-18', 
-    time: '10:00', 
-    paymentStatus: 0,
-    items: [
-        { name: "Joyful Rice", quantity: 1, notes: "Extra spicy" },
-        { name: "Cripsy Bun", quantity: 3, notes: null }, // Contoh tanpa catatan
-        { name: "Green Tea", quantity: 2, notes: "No sugar" },
-    ],
-    total: "Rp. 75.000" // Total pembelian
-  },
-];
-
-const AdminOrderHistoryTable = () => {
+const AdminOrderHistoryTable = ({ orders = [] }) => {
     const [showOrderDetail, setShowOrderDetail] = useState(false);
     const [selectedOrderNo, setSelectedOrderNo] = useState(null);
+    const [orderList, setOrderList] = useState(orders); // Local state for orders
+
+    useEffect(() => {
+        setOrderList(orders); // Update local state when props.orders changes
+    }, [orders]);
 
     // Fungsi untuk menampilkan detail pesanan saat tombol ditekan
     const handleShowOrderDetail = (orderNo) => {
@@ -84,9 +18,28 @@ const AdminOrderHistoryTable = () => {
         setSelectedOrderNo(orderNo);
     };
 
+    // Function to update the order status
+    const updateOrderStatus = (orderNo, status) => {
+        setOrderList(prevOrders =>
+            prevOrders.map(order =>
+                order.order_id === orderNo ? { ...order, order_status: status } : order
+            )
+        );
+    };
+
+    const formatDateTime = (dateTimeString) => {
+        const dateTime = new Date(dateTimeString);
+        const date = dateTime.toLocaleDateString();
+        const time = dateTime.toLocaleTimeString();
+        return { date, time };
+    };
+
+    // Sort orders by descending createdAt
+    const sortedOrders = [...orders].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
     return (
         <div className="">
-            {showOrderDetail && <AdminOrderDetail setShowOrderDetail={setShowOrderDetail} orderNo={selectedOrderNo} />}
+            {showOrderDetail && <AdminOrderDetail setShowOrderDetail={setShowOrderDetail} orderNo={selectedOrderNo} updateOrderStatus={updateOrderStatus}/>}
 
             <div className="w-full my-10">
                 <table className="border border-gray-300 shadow-xl min-w-full divide-y divide-gray-300">
@@ -110,33 +63,44 @@ const AdminOrderHistoryTable = () => {
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-300">
-                        {adminOrderHistory.map((item, index) => (
-                            <tr key={index} className={index % 2 === 0 ? 'bg-white text-black' : 'bg-green-50 text-black'}>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-center font-medium">
-                                    {item.orderNo}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                                    {item.tableNo}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                                    {item.date}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                                    {item.time}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                                    {item.paymentStatus === 1 ? (
-                                        <Link to="#" onClick={() => handleShowOrderDetail(item.orderNo)}>
-                                            <i className="fa-solid fa-check text-green-800 hover:scale-110"></i>
-                                        </Link>
-                                    ) : (
-                                        <Link to="#" onClick={() => handleShowOrderDetail(item.orderNo)}>
-                                            <i className="fa-regular fa-clock text-yellow-500 hover:scale-110"></i>
-                                        </Link>
-                                    )}
+                        {sortedOrders.length === 0 ? (
+                            <tr>
+                                <td colSpan="5" className="text-center p-4">
+                                    No Data Available
                                 </td>
                             </tr>
-                        ))}
+                        ) : (
+                            sortedOrders.map((item, index) => {
+                                const { date, time } = formatDateTime(item.updatedAt);
+                                return (
+                                    <tr key={index} className={index % 2 === 0 ? 'bg-white text-black' : 'bg-green-50 text-black'}>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-center font-medium">
+                                            {item.order_id}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
+                                            {item.table_number}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
+                                            {date}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
+                                            {time}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
+                                            {item.order_status === true ? (
+                                                <Link to="#" onClick={() => handleShowOrderDetail(item.order_id)}>
+                                                    <i className="fa-solid fa-check text-green-800 hover:scale-110"></i>
+                                                </Link>
+                                            ) : (
+                                                <Link to="#" onClick={() => handleShowOrderDetail(item.order_id)}>
+                                                    <i className="fa-regular fa-clock text-yellow-500 hover:scale-110"></i>
+                                                </Link>
+                                            )}
+                                        </td>
+                                    </tr>
+                                );
+                            })
+                        )}
                     </tbody>
                 </table>
             </div>

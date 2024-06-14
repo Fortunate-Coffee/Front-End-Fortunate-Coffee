@@ -83,6 +83,9 @@ const AdminStockTable = ({ data, selectedType, foodIngredients }) => {
         return ingredient ? ingredient.food_ingredients_name : 'Unknown';
     };
 
+    // Sort data based on updatedAt in descending order
+    const sortedData = [...data].sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+
     return (
         <div>
             {showEditFoodIngredientsForm && <AdminEditFoodIngredientsForm setShowEditFoodIngredientsForm={setShowEditFoodIngredientsForm} editFormData={editFormData} foodIngredients={foodIngredients}/>}
@@ -112,14 +115,14 @@ const AdminStockTable = ({ data, selectedType, foodIngredients }) => {
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-300">
-                        {data.length === 0 ? (
+                        {sortedData.length === 0 ? (
                             <tr>
                                 <td colSpan="5" className="text-center p-4">
                                     No Data Available
                                 </td>
                             </tr>
                         ) : (
-                            data.map((item, index) => {
+                            sortedData.map((item, index) => {
                                 const { date, time } = formatDateTime(item.updatedAt);
                                 return (
                                     <tr key={index} className={index % 2 === 0 ? 'bg-white text-black' : 'bg-green-50 text-black'}>

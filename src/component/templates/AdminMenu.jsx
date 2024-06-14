@@ -117,9 +117,13 @@ const AdminMenu = () => {
                     <label htmlFor="selectOption" className="font-medium me-4 text-[#43745B]">Categories</label>
                     <select id="selectOption" name="selectOption" className="border border-[#43745B] rounded-xl shadow-xl p-2 px-3 me-2" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
                         <option value="" disabled>Select a category</option>
-                        {category.map((category, index) => (
-                            <option key={index} value={category.category_name}>{category.category_name}</option>
-                        ))}
+                        {category
+                            .slice() // Membuat salinan array untuk memastikan tidak mengubah array asli
+                            .sort((a, b) => a.category_name.localeCompare(b.category_name)) // Urutkan kategori berdasarkan nama
+                            .map((category, index) => (
+                                <option key={index} value={category.category_name}>{category.category_name}</option>
+                            ))
+                        }
                     </select>
                     <GetDataButton onClick={fetchMenuByCategory} loading={loading}/>
                 </div>
