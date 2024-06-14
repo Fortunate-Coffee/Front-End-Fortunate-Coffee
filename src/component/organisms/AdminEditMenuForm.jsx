@@ -161,7 +161,7 @@ const AdminEditMenuForm = ({ setShowEditMenuForm, setShowEditMenuIngredientsForm
                     <button className="absolute top-4 right-5 fa-beat-fade text-lg text-gray-500 hover:text-gray-700" onClick={() => setShowEditMenuForm(false)}>
                         <i className="fas fa-times"></i>
                     </button>
-                    <h2 className="mb-5 text-center text-lg font-semibold">Edit New Menu</h2>
+                    <h2 className="mb-5 text-center text-lg font-semibold">Edit Menu</h2>
                     <form onSubmit={handleSubmit} className="px-5">
                         <div className="flex items-center mb-4">
                             <label htmlFor="menu_name" className="w-4/12 block text-sm font-medium text-gray-700">Name</label>

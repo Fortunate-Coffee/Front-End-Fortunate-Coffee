@@ -128,8 +128,10 @@ const AdminStock = () => {
                         <label htmlFor="selectOptionType" className="font-medium me-6 text-[#43745B]">Ingredients</label>
                         <select value={selectedIngredient} onChange={(e) => setSelectedIngredient(e.target.value)} id="selectOptionType" name="selectOptionType" className="border border-[#43745B] rounded-xl shadow-xl p-2 px-3 me-2">
                             <option value="" disabled>Select an ingredient</option>
-                            {foodIngredients.map((ingredients, index) => (
-                                <option key={index} value={ingredients.food_ingredients_id}>{ingredients.food_ingredients_name}</option>
+                            {foodIngredients
+                                .sort((a, b) => a.food_ingredients_name.localeCompare(b.food_ingredients_name)) // Urutkan berdasarkan nama
+                                .map((ingredient, index) => (
+                                    <option key={index} value={ingredient.food_ingredients_id}>{ingredient.food_ingredients_name}</option>
                             ))}
                         </select>
                     </div>
