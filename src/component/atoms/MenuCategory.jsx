@@ -13,7 +13,9 @@ const MenuCategory = () => {
                     throw new Error("Network response was not okay.");
                 }
                 const data = await response.json();
-                setCategory(data);
+                // Sort the categories by updated_at in descending order (most recent first)
+                const sortedData = data.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+                setCategory(sortedData);
                 setLoading(false);
             } catch (error) {
                 console.error("Fetch error: ", error);

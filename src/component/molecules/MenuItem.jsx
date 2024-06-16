@@ -17,7 +17,9 @@ const MenuItem = ({ items }) => {
                         const cartItem = cartItems.find(item => item.menu_id === menuItem.menu_id);
                         return cartItem ? { ...menuItem, cart_qty: cartItem.quantity } : menuItem;
                     });
-                    setMenuItems(updatedMenuItems);
+                    // Sort updatedMenuItems alphabetically by menu_name
+                    const sortedMenuItems = updatedMenuItems.sort((a, b) => a.menu_name.localeCompare(b.menu_name));
+                    setMenuItems(sortedMenuItems);
                 } else {
                     console.error(result.error.message);
                 }

@@ -25,7 +25,10 @@ const AdminAddMenuForm = ({ setShowAddMenuForm, setShowAddMenuIngredientsForm })
                 });
                 const data = await response.json();
                 if (response.ok) {
-                    setCategory(data);
+                    // Sort the categories alphabetically by category_name
+                    const sortedCategories = data.sort((a, b) => a.category_name.localeCompare(b.category_name));
+                    setCategory(sortedCategories);
+
                 } else {
                     console.error('Error fetching category:', data);
                 }
@@ -94,11 +97,11 @@ const AdminAddMenuForm = ({ setShowAddMenuForm, setShowAddMenuIngredientsForm })
             const data = await response.json();
             if (response.ok) {
                 const menuId = data.data.menu_id;
-                setShowAddMenuIngredientsForm(true, menuId); // Pass the new menu ID to the ingredients form
                 setSuccess('Added new menu successfully!');
                 setError('');
                 setTimeout(() => {
                     setShowAddMenuForm(false);
+                    setShowAddMenuIngredientsForm(true, menuId);// Pass the new menu ID to the ingredients form
                 }, 2000); 
                 console.log('menu ID: ', data);
             } else {

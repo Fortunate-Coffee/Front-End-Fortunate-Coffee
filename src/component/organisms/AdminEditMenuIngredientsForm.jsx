@@ -39,7 +39,9 @@ const AdminEditMenuIngredientsForm = ({ setShowEditMenuIngredientsForm, menuId }
                 });
                 const data = await response.json();
                 if (response.ok) {
-                    setIngredients(data);
+                    // Sort ingredients by food_ingredients_name in ascending order
+                    const sortedData = data.sort((a, b) => a.food_ingredients_name.localeCompare(b.food_ingredients_name));
+                    setIngredients(sortedData);
                 } else {
                     console.error('Error fetching ingredients:', data);
                 }
@@ -55,17 +57,7 @@ const AdminEditMenuIngredientsForm = ({ setShowEditMenuIngredientsForm, menuId }
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true); // Set loading state to true before making the request
-
-        // Cek duplikasi nama bahan
-        const ingredientNames = formDataList.map(item => item.food_ingredients_id);
-        const isDuplicateName = (new Set(ingredientNames)).size !== ingredientNames.length;
-
-        if (isDuplicateName) {
-            setWarning("Duplicate ingredients selected!");
-            setLoading(false);
-            return;
-        }
-
+        
         const token = localStorage.getItem('accessToken');
 
         try {
@@ -109,15 +101,14 @@ const AdminEditMenuIngredientsForm = ({ setShowEditMenuIngredientsForm, menuId }
         setFormDataList(list);
 
         if (name === "food_ingredients_id") {
-            const filteredList = list.filter((_, idx) => idx !== index);
-            const isDuplicate = filteredList.some(item => item.food_ingredients_id === value) ||
-                originalData.some(item => item.food_ingredients_id === value);
+            const isDuplicate = list.some((item, idx) => item.food_ingredients_id === value && idx !== index);
             if (isDuplicate) {
                 setWarning("Duplicate ingredients selected!");
             } else {
                 setWarning("");
             }
-        }       
+        }   
+        setFormDataList(list);
     };
 
     const handleAddForm = () => {
@@ -129,6 +120,11 @@ const AdminEditMenuIngredientsForm = ({ setShowEditMenuIngredientsForm, menuId }
         list.splice(index, 1);
         setFormDataList(list);
         setWarning(""); // Reset warning when an item is removed
+    };
+
+    const getAvailableIngredients = (currentIndex) => {
+        const selectedIds = formDataList.map((item, index) => index !== currentIndex ? item.food_ingredients_id : null).filter(Boolean);
+        return ingredients.filter(ingredient => !selectedIds.includes(ingredient.food_ingredients_id));
     };
 
     return (
@@ -145,7 +141,7 @@ const AdminEditMenuIngredientsForm = ({ setShowEditMenuIngredientsForm, menuId }
                                 <label htmlFor={`ingredient-${index}`} className="me-5 block text-sm font-medium text-gray-700">Ingredients</label>
                                 <select id={`ingredient-${index}`} name="food_ingredients_id" value={formData.food_ingredients_id} onChange={(e) => handleChange(e, index)} required className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-xl">
                                     <option value="" disabled>Select an ingredient</option>
-                                    {ingredients && ingredients.map((foodIngredient, i) => (
+                                    {getAvailableIngredients(index).map((foodIngredient, i) => (
                                         <option key={i} value={foodIngredient.food_ingredients_id}>{foodIngredient.food_ingredients_name}</option>
                                     ))}
                                 </select>

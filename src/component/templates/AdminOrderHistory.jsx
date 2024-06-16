@@ -7,7 +7,7 @@ import AdminOrderHistoryTable from "../organisms/AdminOrderHistoryTable";
 const AdminOrderHistory = () => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [selectedDate, setSelectedDate] = useState('Today');
+    const [selectedDate, setSelectedDate] = useState('');
     const [selectedTableNumber, setSelectedTableNumber] = useState('');
     const [orderNumber, setOrderNumber] = useState('');
 
@@ -37,7 +37,11 @@ const AdminOrderHistory = () => {
         };
 
         fetchOrders();
-    }, [token]);
+    }, [selectedDate]);
+
+    useEffect(() => {
+        fetchData();
+    }, [selectedDate]);
 
     const fetchData = async () => {
         setLoading(true);
