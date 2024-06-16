@@ -9,7 +9,9 @@ const AdminEditMenuForm = ({ setShowEditMenuForm, setShowEditMenuIngredientsForm
         menu_price: '',
         menu_image: null,
         menu_desc: '',
+        original_menu_name: '', // Include original_menu_name in initial state
     });
+    const [previewUrl, setPreviewUrl] = useState(null);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [loading, setLoading] = useState(false);
@@ -42,6 +44,7 @@ const AdminEditMenuForm = ({ setShowEditMenuForm, setShowEditMenuIngredientsForm
                 });
                 const data = await response.json();
                 if (response.ok) {
+                    const imageUrl = data.menu_image ? data.menu_image : null;
                     setFormData({
                         category_id: data.category_id,
                         menu_name: data.menu_name,
@@ -50,6 +53,7 @@ const AdminEditMenuForm = ({ setShowEditMenuForm, setShowEditMenuIngredientsForm
                         menu_desc: data.menu_desc,
                         original_menu_name: data.menu_name,  // Store the original menu name
                     });
+                    setPreviewUrl(imageUrl); // Set the initial preview URL
                 } else {
                     console.error('Error fetching menu details:', data);
                 }
@@ -81,6 +85,18 @@ const AdminEditMenuForm = ({ setShowEditMenuForm, setShowEditMenuIngredientsForm
         fetchMenuName();
     }, [menuId]);
 
+    useEffect(() => {
+        // Handle image preview URL creation and cleanup
+        if (formData.menu_image instanceof File) {
+            const objectUrl = URL.createObjectURL(formData.menu_image);
+            setPreviewUrl(objectUrl);
+            return () => URL.revokeObjectURL(objectUrl);
+        } else if (typeof formData.menu_image === 'string' && formData.category_image.startsWith('http')) {
+            // Handle case where formData.menu_image is a URL (string)
+            setPreviewUrl(formData.menu_image); // Directly set the preview URL
+        }
+    }, [formData.menu_image]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         
@@ -103,8 +119,17 @@ const AdminEditMenuForm = ({ setShowEditMenuForm, setShowEditMenuIngredientsForm
         formDataToSend.append('category_id', formData.category_id);
         formDataToSend.append('menu_name', formData.menu_name);
         formDataToSend.append('menu_price', formData.menu_price);
-        formDataToSend.append('menu_image', formData.menu_image);
         formDataToSend.append('menu_desc', formData.menu_desc);
+
+        // Check if formData.menu_image is a File (meaning user has selected a new image)
+        if (formData.menu_image instanceof File) {
+            formDataToSend.append('menu_image', formData.menu_image);
+        } else {
+            // If menu_image is not a File, append the current previewUrl to maintain the existing image
+            if (previewUrl) {
+                formDataToSend.append('menu_image', previewUrl);
+            }
+        }
 
         try {
             const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/menu/${menuId}`, {
@@ -128,7 +153,7 @@ const AdminEditMenuForm = ({ setShowEditMenuForm, setShowEditMenuIngredientsForm
                 setError(data.message || 'Error updating menu');
             }
         } catch (error) {
-            setError('Error updating menu');
+            setError('Error updating menu', error.message);
             console.error('Error updating menu:', error);
         } finally {
             setLoading(false);
@@ -150,10 +175,15 @@ const AdminEditMenuForm = ({ setShowEditMenuForm, setShowEditMenuIngredientsForm
     };
 
     const handleImageChange = (e) => {
-        setFormData({
-            ...formData,
-            menu_image: e.target.files[0]
-        });
+        if (e.target.files.length > 0) {
+            setFormData({
+                ...formData,
+                menu_image: e.target.files[0]
+            });
+    
+            const objectUrl = URL.createObjectURL(e.target.files[0]);
+            setPreviewUrl(objectUrl);
+        }
     };
 
     return (
@@ -166,11 +196,11 @@ const AdminEditMenuForm = ({ setShowEditMenuForm, setShowEditMenuIngredientsForm
                     <h2 className="mb-5 text-center text-lg font-semibold">Edit Menu</h2>
                     <form onSubmit={handleSubmit} className="px-5">
                         <div className="flex items-center mb-4">
-                            <label htmlFor="menu_name" className="w-4/12 block text-sm font-medium text-gray-700">Name</label>
+                            <label htmlFor="menu_name" className="w-5/12 me-2 block text-sm font-medium text-gray-700">Name</label>
                             <input type="text" id="menu_name" required name="menu_name" value={formData.menu_name} onChange={handleChange} className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg" />
                         </div>
                         <div className="flex items-center mb-4">
-                            <label htmlFor="category_id" className="w-4/12 block text-sm font-medium text-gray-700">Category</label>
+                            <label htmlFor="category_id" className="w-5/12 me-2 block text-sm font-medium text-gray-700">Category</label>
                             <select id="category_id" required name="category_id" value={formData.category_id} onChange={handleChange} className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg">
                                 <option value="" disabled>Select a category</option>
                                 {category.map((category, index) => (
@@ -179,16 +209,30 @@ const AdminEditMenuForm = ({ setShowEditMenuForm, setShowEditMenuIngredientsForm
                             </select>
                         </div>
                         <div className="flex items-center mb-4">
-                            <label htmlFor="menu_desc" className="w-4/12 block text-sm font-medium text-gray-700">Description</label>
+                            <label htmlFor="menu_desc" className="w-5/12 me-2 block text-sm font-medium text-gray-700">Description</label>
                             <textarea id="menu_desc" required name="menu_desc" value={formData.menu_desc} onChange={handleChange} rows="4" className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg"></textarea>
                         </div>
                         <div className="flex items-center mb-4">
-                            <label htmlFor="menu_price" className="w-4/12 block text-sm font-medium text-gray-700">Price (Rp)</label>
+                            <label htmlFor="menu_price" className="w-5/12 me-2 block text-sm font-medium text-gray-700">Price (Rp)</label>
                             <input type="number" id="menu_price" required name="menu_price" min={1000} value={formData.menu_price} onChange={handleChange} className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg" />
                         </div>
                         <div className="flex items-center mb-6">
-                            <label htmlFor="menu_image" className="w-4/12 block text-sm font-medium text-gray-700">Image</label>
-                            <input type="file" id="menu_image" required name="menu_image" onChange={handleImageChange} accept="image/*" className="mt-1 p-2 border border-gray-300 rounded-md w-full shadow-lg" />
+                            <label htmlFor="menu_image" className="w-5/12 me-2 block text-sm font-medium text-gray-700">Image</label>
+                            <div className="relative w-full">
+                                {previewUrl && (
+                                    <div className="relative w-full h-40">
+                                        <img src={previewUrl} alt="Preview" className="w-full h-full object-cover rounded-md shadow-md" />
+                                        <button 
+                                            type="button" 
+                                            className="absolute inset-0 w-full h-full bg-black bg-opacity-50 text-white font-bold py-2 px-4 opacity-0 hover:opacity-100 transition-opacity rounded-md flex justify-center items-center"
+                                            onClick={() => document.getElementById('menu_image').click()}
+                                        >
+                                            {formData.menu_image ? 'Change Image' : 'Upload Image'}
+                                        </button>
+                                    </div>
+                                )}
+                                <input type="file" id="menu_image" accept="image/*" onChange={handleImageChange} className="hidden" />
+                            </div>
                         </div>
                         {error && <p className="flex text-red-500 text-left">{error}</p>}
                         {success && <p className="flex text-green-500 text-left">{success}</p>}
