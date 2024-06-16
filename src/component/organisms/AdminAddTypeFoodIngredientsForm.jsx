@@ -26,6 +26,8 @@ const AdminAddTypeFoodIngredientsForm = ({ setShowAddTypeFoodIngredientsForm }) 
                 });
                 const data = await response.json();
                 if (response.ok) {
+                    // Sort the ingredients alphabetically by name before setting the state
+                    data.sort((a, b) => a.food_ingredients_name.localeCompare(b.food_ingredients_name));
                     setIngredients(data);
                 } else {
                     console.error('Error fetching ingredients:', data);

@@ -15,7 +15,11 @@ const AdminCategoryCarousel = () => {
     try {
       const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/category');
       const data = await response.json();
-      setCategory(data);
+      
+      // Sort data by updatedAt in descending order
+      const sortedData = data.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+      setCategory(sortedData);
+
       setCurrentIndex(Math.floor(data.length / 2)); // Mulai dari indeks tengah
     } catch (error) {
       console.error('Error fetching category:', error);

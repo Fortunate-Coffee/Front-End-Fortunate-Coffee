@@ -20,7 +20,9 @@ const AdminAddMenuIngredientsForm = ({ menuId, setShowAddMenuIngredientsForm }) 
                 });
                 const data = await response.json();
                 if (response.ok) {
-                    setIngredients(data);
+                    // Sort ingredients alphabetically by food_ingredients_name
+                    const sortedIngredients = data.sort((a, b) => a.food_ingredients_name.localeCompare(b.food_ingredients_name));
+                    setIngredients(sortedIngredients);
                 } else {
                     console.error('Error fetching ingredients:', data);
                 }

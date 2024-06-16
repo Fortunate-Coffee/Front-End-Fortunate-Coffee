@@ -53,16 +53,19 @@ const MenuItems = ({menu}) => {
         }
     };
 
+    // Sort menu items by updatedAt in descending order
+    const sortedMenu = [...menu].sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+
     return(
         <div className="flex flex-wrap gap-3 mt-6 mb-16">
             {showAdminDeleteConfirm && <AdminDeleteConfirm setShowDeleteConfirm={setShowAdminDeleteConfirm} entityName="menu" itemId={deleteMenuId} onConfirmDelete={handleDeleteConfirmation}/>}
             {showEditMenuForm && <AdminEditMenuForm setShowEditMenuForm={setShowEditMenuForm} setShowEditMenuIngredientsForm={setShowEditMenuIngredientsForm} menuId={currentMenuId}/>}
             {showEditMenuIngredientsForm && <AdminEditMenuIngredientsForm setShowEditMenuIngredientsForm={setShowEditMenuIngredientsForm} menuId={currentMenuId} />}
 
-            {menu.length === 0 ? (
+            {sortedMenu.length === 0 ? (
                 <p className="my-24 text-gray-500 text-center tracking-wide w-full">Menu not found.</p>
             ) : (
-                menu.map((menu, index) => (
+                sortedMenu.map((menu, index) => (
                     <div
                         key={index}
                         className="w-[calc(30%_-_4.5rem)] pb-5 rounded-lg shadow-[3px_8px_12px_rgba(0,0,0,0.25)] scale-95 hover:scale-100 text-center"
