@@ -9,6 +9,9 @@ const AdminStockTable = ({ data, selectedType, foodIngredients }) => {
     const [editFormData, setEditFormData] = useState({});
     const [deleteItemId, setDeleteItemId] = useState(null);
     const [historyData, setHistoryData] = useState([]);
+    const [deleteSuccess, setDeleteSuccess] = useState('');
+    const [deleteError, setDeleteError] = useState('');
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -68,12 +71,19 @@ const AdminStockTable = ({ data, selectedType, foodIngredients }) => {
             if (!response.ok) {
                 throw new Error('Failed to delete item');
             }
-            // Menutup konfirmasi hapus
-            setShowAdminDeleteConfirm(false);
-            console.log("Deleted Successful")
+            setDeleteSuccess('Deleted food ingredient successfully');
+            setDeleteError('');
+
+            setTimeout(() => {
+                setDeleteSuccess('');
+                setShowAdminDeleteConfirm(false);
+                setLoading(false);
+            }, 2000);
 
         } catch (error) {
             console.error('Error deleting item:', error);
+            setDeleteError(error.message);
+            setLoading(false);
             // Tambahkan penanganan kesalahan jika diperlukan
         }
     };
