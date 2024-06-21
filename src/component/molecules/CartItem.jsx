@@ -56,14 +56,14 @@ const CartItem = ({ items, setPrices, setGlobalCartItems }) => {
                     <img 
                         src={item.menu_image}
                         alt={item.menu_name}
-                        className="w-1/6 h-1/6"
+                        className="w-14 h-14"
                     />
                     <div className="flex flex-col w-[41%] mx-2">
                         <p className="truncate text-left font-semibold">{item.menu_name}</p>
                         <p className="truncate text-left font-light text-sm">{item.notes}</p>
                         <p className="text-left">Rp. {formatPrice(item.menu_price)}</p>
                     </div>
-                    <div className="flex flex-row w-3/12">
+                    <div className="flex flex-row w-4/12">
                         <QtyPicker className="flex justify-start" menuId={item.menu_id} initialQty={item.quantity} onQtyChange={handleQtyChange} />
                     </div>
                     <div className="flex flex-row w-1/12 text-right">

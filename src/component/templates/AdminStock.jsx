@@ -12,11 +12,12 @@ const AdminStock = () => {
     const [showAddFoodIngredientsForm, setShowAddFoodIngredientsForm] = useState(false);
     const [showAddTypeFoodIngredientsForm, setShowAddTypeFoodIngredientsForm] = useState(false);
     const [selectedType, setSelectedType] = useState('Remaining Stock');
-    const [selectedDate, setSelectedDate] = useState('Today');
+    const [selectedDate, setSelectedDate] = useState('All');
     const [foodIngredients, setFoodIngredients] = useState([]);
     const [selectedIngredient, setSelectedIngredient] = useState('');
     const [loading, setLoading] = useState(false); 
     const [data, setData] = useState([]);
+    const [isDateDisabled, setIsDateDisabled] = useState(false);
 
     useEffect(() => {
         const fetchFoodIngredients = async () => {
@@ -44,6 +45,11 @@ const AdminStock = () => {
     }, [selectedType]);
 
     useEffect(() => {
+        if (selectedType === 'Remaining Stock') {
+            setIsDateDisabled(true);
+        } else {
+            setIsDateDisabled(false);
+        }
         fetchData();
     }, [selectedType]);
 
@@ -58,7 +64,7 @@ const AdminStock = () => {
         if (selectedType) {
             queryParams.append('type', selectedType);
         }
-        if (selectedDate) {
+        if (selectedType !== 'Remaining Stock' && selectedDate) {
             queryParams.append('period', selectedDate);
         }
 
@@ -124,11 +130,12 @@ const AdminStock = () => {
             </div>
             <div className="mt-6 p-3">
                 <div className="flex justify-between">
-                    <DateSelect setSelectedDate={setSelectedDate} />
+                    <DateSelect setSelectedDate={setSelectedDate} isDisabled={isDateDisabled}/>
                     <div className="mx-6">
                         <label htmlFor="selectOptionType" className="font-medium me-6 text-[#43745B]">Ingredients</label>
                         <select value={selectedIngredient} onChange={(e) => setSelectedIngredient(e.target.value)} id="selectOptionType" name="selectOptionType" className="border border-[#43745B] rounded-xl shadow-xl p-2 px-3 me-2">
                             <option value="" disabled>Select an ingredient</option>
+                            <option value="All">All</option>
                             {foodIngredients.map((ingredients, index) => (
                                 <option key={index} value={ingredients.food_ingredients_id}>{ingredients.food_ingredients_name}</option>
                             ))}
