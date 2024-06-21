@@ -7,7 +7,7 @@ import AdminOrderHistoryTable from "../organisms/AdminOrderHistoryTable";
 const AdminOrderHistory = () => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [selectedDate, setSelectedDate] = useState('');
+    const [selectedDate, setSelectedDate] = useState('All');
     const [selectedTableNumber, setSelectedTableNumber] = useState('');
     const [orderNumber, setOrderNumber] = useState('');
 
@@ -37,11 +37,7 @@ const AdminOrderHistory = () => {
         };
 
         fetchOrders();
-    }, [selectedDate]);
-
-    useEffect(() => {
-        fetchData();
-    }, [selectedDate]);
+    }, [token]);
 
     const fetchData = async () => {
         setLoading(true);
@@ -58,7 +54,10 @@ const AdminOrderHistory = () => {
             queryParams.append('order_id', orderNumber);
         }
 
-        url += `?${queryParams.toString()}`;
+        const queryString = queryParams.toString();
+        if (queryString) {
+            url += `?${queryString}`;
+        }
 
         try {
             const response = await fetch(url, {
@@ -79,6 +78,10 @@ const AdminOrderHistory = () => {
         fetchData();
     };
 
+    useEffect(() => {
+        handleGetData();
+    }, [selectedDate]);
+
     return(
         <div>
             <div className="p-3 flex justify-between items-center bg-[#43745B] shadow-xl">
@@ -92,6 +95,7 @@ const AdminOrderHistory = () => {
                             <label htmlFor="selectOption" className="font-medium me-6 text-[#43745B]">Table Number</label>
                             <select value={selectedTableNumber} id="selectOption" name="selectOption" className="border border-[#43745B] rounded-xl shadow-xl p-2 px-3 me-2" onChange={(e) => setSelectedTableNumber(e.target.value)}>
                                 <option value='' disabled>Select a table number</option>
+                                <option value="All">All</option>
                                 {tableNo.map((tableNo, index) => (
                                     <option key={index} value={tableNo.id}>{tableNo.text}</option>
                                 ))}

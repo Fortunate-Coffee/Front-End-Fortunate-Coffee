@@ -17,9 +17,7 @@ const MenuItem = ({ items }) => {
                         const cartItem = cartItems.find(item => item.menu_id === menuItem.menu_id);
                         return cartItem ? { ...menuItem, cart_qty: cartItem.quantity } : menuItem;
                     });
-                    // Sort updatedMenuItems alphabetically by menu_name
-                    const sortedMenuItems = updatedMenuItems.sort((a, b) => a.menu_name.localeCompare(b.menu_name));
-                    setMenuItems(sortedMenuItems);
+                    setMenuItems(updatedMenuItems);
                 } else {
                     console.error(result.error.message);
                 }
@@ -29,7 +27,7 @@ const MenuItem = ({ items }) => {
         };
 
         fetchCartItems();
-    }, []);
+    }, [items]);
 
     const handleQtyChange = (menuId, newQty) => {
         const updatedItems = menuItems.map(item => {
@@ -50,11 +48,11 @@ const MenuItem = ({ items }) => {
                         alt={item.menu_name}
                         className="w-2/12 rounded-lg shadow-lg h-14 lg:w-32 lg:h-32 hover:scale-105"
                     />
-                    <div className="flex flex-col w-6/12">
+                    <div className="flex flex-col w-8/12 ms-2">
                         <p className="text-left">{item.menu_name}</p>
                         <QtyPicker className="flex items-center justify-start mt-1" menuId={item.menu_id} initialQty={item.cart_qty || 0} onQtyChange={handleQtyChange} />
                     </div>
-                    <div className="flex flex-col w-3/12">
+                    <div className="flex flex-col w-4/12">
                         <p className="text-right">Rp. {formatPrice(item.menu_price)}</p>
                         <NoteButton categoryName={item.category.category_name} menuName={item.menu_name}/>
                     </div>
