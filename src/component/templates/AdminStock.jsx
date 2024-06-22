@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import ExportButton from "../atoms/ExportButton";
 import DateSelect from "../atoms/DateSelect";
 import GetDataButton from "../atoms/GetDataButton";
@@ -58,17 +58,20 @@ const AdminStock = () => {
         let url = `https://backend-fortunate-coffee.up.railway.app/api/v1/filtered-food-ingredients`;
 
         const queryParams = new URLSearchParams();
-        if (selectedIngredient) {
+        if (selectedIngredient && selectedIngredient !== 'All') {
             queryParams.append('food_ingredients_id', selectedIngredient);
         }
         if (selectedType) {
             queryParams.append('type', selectedType);
         }
-        if (selectedType !== 'Remaining Stock' && selectedDate) {
+        if (selectedType !== 'Remaining Stock') {
             queryParams.append('period', selectedDate);
         }
 
-        url += `?${queryParams.toString()}`;
+        const queryString = queryParams.toString();
+        if (queryString) {
+            url += `?${queryString}`;
+        }
 
         try {
             const token = localStorage.getItem('accessToken');

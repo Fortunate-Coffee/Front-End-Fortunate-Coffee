@@ -16,10 +16,10 @@ const AdminStockTable = ({ data, selectedType, foodIngredients }) => {
     useEffect(() => {
         const fetchData = async () => {
             const token = localStorage.getItem('accessToken');
-            let url = 'localhost:3001/api/v1/food-ingredients';
+            let url = 'https://backend-fortunate-coffee.up.railway.app/api/v1/food-ingredients';
 
             if (selectedType === "In" || selectedType === "Out") {
-                url = `localhost:3001/api/v1/type-food-ingredients?type=${selectedType}`;
+                url = `https://backend-fortunate-coffee.up.railway.app/api/v1/type-food-ingredients?type=${selectedType}`;
             }
 
             try {
@@ -62,7 +62,7 @@ const AdminStockTable = ({ data, selectedType, foodIngredients }) => {
     const handleDelete = async (id) => {
         try {
             const token = localStorage.getItem('accessToken');
-            const response = await fetch(`localhost:3001/api/v1/food-ingredients/${id}`, {
+            const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/food-ingredients/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
