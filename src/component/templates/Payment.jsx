@@ -38,6 +38,7 @@ const Payment = ({ setCartItems }) => {
             <div className="mx-7 my-4">
                 <PaymentInfo />
                 <div className="text-center my-10">
+                    <p className='font-light tracking-widest mt-3 text-[#8B8989]'>Table Number</p>
                     <p className='font-semibold text-9xl'>{tableNumber} </p>
                     <p className='font-semibold mt-3 text-[#8B8989]'>{orderData ? `Order No. ${orderData.orderNumber}` : ''}</p>
                 </div>
