@@ -22,6 +22,7 @@ const MenuItems = ({menu}) => {
     const handleDeleteConfirmation = async () => {
         // Kirim permintaan hapus ke database
         try {
+            setLoading(true);
             // Ambil token dari local storage
             const token = localStorage.getItem('accessToken');
     

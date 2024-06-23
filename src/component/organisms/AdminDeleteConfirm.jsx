@@ -5,6 +5,7 @@ const AdminDeleteConfirm = ({ setShowDeleteConfirm, entityName, itemId, onConfir
     const [warningMessage, setWarningMessage] = useState('');
     const [loading, setLoading] = useState(false);
     const [showInitialWarning, setShowInitialWarning] = useState(true);
+    const [countdown, setCountdown] = useState(5);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -14,6 +15,17 @@ const AdminDeleteConfirm = ({ setShowDeleteConfirm, entityName, itemId, onConfir
         // Cleanup the timer if the component unmounts before the timer completes
         return () => clearTimeout(timer);
     }, []);
+
+    useEffect(() => {
+        if (showInitialWarning) {
+            const countdownTimer = setInterval(() => {
+                setCountdown((prevCount) => prevCount - 1);
+            }, 1000);
+
+            // Cleanup the countdown timer
+            return () => clearInterval(countdownTimer);
+        }
+    }, [showInitialWarning]);
 
     const handleDelete = async () => {
         setLoading(true);
@@ -47,7 +59,7 @@ const AdminDeleteConfirm = ({ setShowDeleteConfirm, entityName, itemId, onConfir
                 {warningMessage && <p className="px-4 mt-2 text-red-600 text-left">{warningMessage}</p>}
                 {showInitialWarning ? (
                     <div className="flex flex-col items-center">
-                        <p className="my-2 font-semibold text-yellow-600 tracking-wide">WARNING! Deleting this parent will also delete all associated children.</p>
+                        <p className="my-2 font-semibold text-yellow-600 tracking-wide">WARNING! Deleting this parent will also delete all associated children. ({countdown}s)</p>
                     </div>
                 ) : (
                     <div className="mt-3 flex justify-center">

@@ -3,7 +3,6 @@ import ExportButton from "../atoms/ExportButton";
 import DateSelect from "../atoms/DateSelect";
 import GetDataButton from "../atoms/GetDataButton";
 import AdminStockTable from "../organisms/AdminStockTable";
-import AdminConfirmsFoodIngredientsForm from "../organisms/AdminConfirmsFoodIngredientsForm";
 import AdminAddFoodIngredientsForm from "../organisms/AdminAddFoodIngredientsForm";
 import AdminAddTypeFoodIngredientsForm from "../organisms/AdminAddTypeFoodIngredientsForm";
 
@@ -93,10 +92,6 @@ const AdminStock = () => {
         fetchData();
     };
 
-    const handleNewIngredients = () => {
-        setShowConfirmation(true);
-    };
-
     const types = [
         { text: 'Remaining Stock'},
         { text: 'In' },
@@ -105,14 +100,6 @@ const AdminStock = () => {
 
     return (
         <div className="">
-            {showConfirmation && (
-                <AdminConfirmsFoodIngredientsForm
-                    setShowAddFoodIngredientsForm={setShowAddFoodIngredientsForm}
-                    setShowAddTypeFoodIngredientsForm={setShowAddTypeFoodIngredientsForm}
-                    setShowConfirmation={setShowConfirmation}
-                />
-            )}
-
             {showAddFoodIngredientsForm && (
                 <AdminAddFoodIngredientsForm setShowAddFoodIngredientsForm={setShowAddFoodIngredientsForm} foodIngredients={foodIngredients} />
             )}
@@ -124,9 +111,13 @@ const AdminStock = () => {
             <div className="p-3 flex justify-between items-center bg-[#43745B] shadow-xl">
                 <h1 className='text-white tracking-wide'>Stock</h1>
                 <div className="flex">
-                    <button onClick={handleNewIngredients} className='px-3 py-2 flex ms-5 items-center flex-row shadow-2xl rounded-xl bg-white'>
+                    <button onClick={setShowAddFoodIngredientsForm} className='px-3 py-2 flex ms-5 items-center flex-row shadow-2xl rounded-xl bg-white'>
                         <i className="flex items-center fas fa-square-plus fa-lg text-[#43745B]"></i>
                         <p className='ms-2 text-[#43745B]'>New Ingredients</p>
+                    </button>
+                    <button onClick={setShowAddTypeFoodIngredientsForm} className='px-3 py-2 flex ms-5 items-center flex-row shadow-2xl rounded-xl bg-white'>
+                        <i className="flex items-center fas fa-square-plus fa-lg text-[#43745B]"></i>
+                        <p className='ms-2 text-[#43745B]'>Add Type Ingredients</p>
                     </button>
                     <ExportButton />
                 </div>

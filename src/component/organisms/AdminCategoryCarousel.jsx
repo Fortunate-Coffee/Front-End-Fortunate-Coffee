@@ -10,6 +10,7 @@ const AdminCategoryCarousel = () => {
   const [editFormData, setEditFormData] = useState({});
   const [currentIndex, setCurrentIndex] = useState(0);
   const [deleteItemId, setDeleteItemId] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const fetchCategory = async () => {
     try {
@@ -19,6 +20,7 @@ const AdminCategoryCarousel = () => {
       // Sort data by updatedAt in descending order
       const sortedData = data.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
       setCategory(sortedData);
+      setLoading(false);
 
       setCurrentIndex(Math.floor(data.length / 2)); // Mulai dari indeks tengah
     } catch (error) {
@@ -103,21 +105,33 @@ const AdminCategoryCarousel = () => {
       )}
 
       <Slider {...settings} afterChange={(index) => setCurrentIndex(index)}>
-        {category.map((category) => (
-          <div key={category.category_id}>
-            <div className="relative mx-1 hover:scale-105 scale-95">
-              <img src={category.category_image} alt={category.category_name} className="w-full h-40 object-cover rounded-xl shadow-md" />
-              <div className="absolute bottom-0 left-0 right-0 p-3 bg-black bg-opacity-50 text-white opacity-0 hover:opacity-100">
-                <h2 className="text-center text-lg font-bold">{category.category_name}</h2>
-                <div className="flex justify-around text-sm">
-                  <button onClick={() => handleEdit(category.category_id)} className="text-green-200 font-light">Edit</button>
-                  <button onClick={() => openDeleteConfirm(category.category_id)} className="text-red-200 font-light">Delete</button>
+        {loading ? (
+            // Tampilkan placeholder dengan animate-pulse saat loading
+            Array.from(Array(7).keys()).map((index) => (
+                <div key={index}>
+                    <div className="relative mx-1 animate-pulse">
+                        <div className="bg-gray-300 h-40 w-full object-cover rounded-xl shadow-md"></div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </Slider>
+            ))
+        ) : (
+            // Tampilkan kategori sebenarnya saat tidak loading
+            category.map((category) => (
+                <div key={category.category_id}>
+                    <div className="relative mx-1 hover:scale-105 scale-95">
+                        <img src={category.category_image} alt={category.category_name} className="w-full h-40 object-cover rounded-xl shadow-md" />
+                        <div className="absolute bottom-0 left-0 right-0 p-3 bg-black bg-opacity-50 text-white opacity-0 hover:opacity-100">
+                            <h2 className="text-center text-lg font-bold">{category.category_name}</h2>
+                            <div className="flex justify-around text-sm">
+                                <button onClick={() => handleEdit(category.category_id)} className="text-green-200 font-light">Edit</button>
+                                <button onClick={() => openDeleteConfirm(category.category_id)} className="text-red-200 font-light">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ))
+        )}
+    </Slider>
     </div>
   );
 };

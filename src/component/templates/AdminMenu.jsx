@@ -27,6 +27,7 @@ const AdminMenu = () => {
 
         const fetchCategory = async () => {
             try {
+                setLoading(true);
                 const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/category', {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -34,6 +35,7 @@ const AdminMenu = () => {
                 });
                 const data = await response.json();
                 setCategory(data);
+                setLoading(false);
             } catch (error) {
                 console.error('Error fetching category:', error);
             }
@@ -48,6 +50,7 @@ const AdminMenu = () => {
                 });
                 const data = await response.json();
                 setMenu(data);
+                setLoading(false);
             } catch (error) {
                 console.error('Error fetching menu:', error);
             }

@@ -10,6 +10,7 @@ const Login = () => {
     const [success, setSuccess] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -39,7 +40,8 @@ const Login = () => {
             // Simpan token yang diterima di sini
             localStorage.setItem("accessToken", data.accessToken);
             localStorage.setItem("userRole", data.user); 
-
+            setLoading(false);
+            
             // Set success message and redirect
             setSuccess("Login successful!");
             setError(''); // Clear any previous error
@@ -50,6 +52,8 @@ const Login = () => {
             console.error("Login error:", error);
             setError(error.response?.data?.error?.message || "Failed to login");
             setSuccess('');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -114,7 +118,16 @@ const Login = () => {
                     </div>
                     {error && <p className="text-red-500">{error}</p>} {/* Tampilkan pesan kesalahan jika ada */}
                     {success && <p className="text-green-500">{success}</p>}
-                    <button type="submit" className="mx-auto w-48 bg-[#00864B] text-white text-center mt-5 py-2 rounded-xl shadow-xl hover:bg-green-800 hover:scale-105 focus:outline-none focus:bg-[#00864B]">Login</button>
+                    <button type="submit" className="mx-auto w-48 bg-[#00864B] text-white text-center mt-5 py-2 rounded-xl shadow-xl hover:bg-green-800 hover:scale-105 focus:outline-none focus:bg-[#00864B]">
+                    {loading ? (
+                        <svg className="animate-spin h-5 w-5 text-white flex mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C6.477 0 0 6.477 0 12h4zm2 5.291l-2.162-.88A8.015 8.015 0 014 12H0c0 2.021.388 3.936 1.081 5.627L6 17.29z"></path>
+                        </svg>
+                        ) : (
+                            'Login'
+                        )}
+                    </button>
                 </form>
             </div>
         </div>
