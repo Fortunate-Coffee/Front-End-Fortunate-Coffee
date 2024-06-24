@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const OrderButton = ({ cartItems, customerName, tableNumber, total }) => {
+const OrderButton = ({ cartItems, customerName, tableNumber, total, editedNotes }) => {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(null);
     const [error, setError] = useState(null);
@@ -41,7 +41,7 @@ const OrderButton = ({ cartItems, customerName, tableNumber, total }) => {
                     menus: cartItems.map(item => ({
                         menu_id: item.menu_id,
                         detail_order_qty: item.quantity,
-                        detail_order_notes: item.notes || ''
+                        detail_order_notes: editedNotes[item.menu_id] || item.notes || ''
                     }))
                 })
             });
@@ -52,6 +52,7 @@ const OrderButton = ({ cartItems, customerName, tableNumber, total }) => {
             if (!detailOrderResponse.ok) {
                 throw new Error(detailOrderResult.error.message);
             }
+            localStorage.removeItem('cartNotes');
             setSuccess('Order placed successfully');
             setError(null);
             setTimeout(() => {

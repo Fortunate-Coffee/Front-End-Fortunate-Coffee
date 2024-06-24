@@ -26,10 +26,19 @@ const MenuCategory = () => {
     }, []);
 
     if (loading) {
-        return(
-        <div>
-            <h1 className="my-12 text-center text-gray-700 fa-beat">Loading...</h1>
-        </div>)
+        // Create placeholders while data is loading
+        const placeholders = new Array(category.length).fill(null);
+
+        return (
+            <div className="flex flex-wrap">
+                {placeholders.map((_, index) => (
+                    <div key={index} className="animate-pulse w-1/3 sm:w-1/4 md:w-1/9 lg:w-1/6 mb-3">
+                        <div className="scale-95 fa-fade bg-gray-300 h-28 lg:h-52 shadow-lg rounded-lg"></div>
+                        <div className="h-4 bg-gray-300 mt-2 mx-auto w-3/4 rounded"></div>
+                    </div>
+                ))}
+            </div>
+        );
     }
 
     return(
