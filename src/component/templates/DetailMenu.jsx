@@ -29,6 +29,10 @@ const DetailMenu = () => {
                     const detailResponse = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/menu/${menuItem.menu_id}`);
                     const detailData = await detailResponse.json();
                     setSelectedItem(detailData);
+                    
+                    // Ambil notes dari local storage
+                    const savedNotes = JSON.parse(localStorage.getItem('cartNotes')) || {};
+                    setNotes(savedNotes[detailData.menu_id] || ''); // Set notes ke state jika ada di local storage
                 } else {
                     setSelectedItem(null);
                 }
@@ -60,30 +64,29 @@ const DetailMenu = () => {
     }, [menuName]);
 
     useEffect(() => {
-        if (selectedItem) {
-            fetchCartItems();
-        }
-    }, [selectedItem]);
-
-    const fetchCartItems = async () => {
-        try {
-            const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/cart`);
-            const result = await response.json();
-            if (response.ok) {
-                // Cari item yang sesuai dengan menu yang sedang dilihat
-                const cartItem = result.data.find(item => item.menu_id === selectedItem?.menu_id);
-                if (cartItem) {
-                    setQty(cartItem.quantity);
-                } else {
-                    setQty(0);
+        const fetchCartItem = async () => {
+            if (selectedItem) {
+                try {
+                    const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/cart`);
+                    const result = await response.json();
+                    if (response.ok) {
+                        const cartItem = result.data.find(item => item.menu_id === selectedItem?.menu_id);
+                        if (cartItem) {
+                            const savedNotes = JSON.parse(localStorage.getItem('cartNotes')) || {};
+                            setNotes(savedNotes[selectedItem.menu_id] || '');
+                            setQty(cartItem.quantity);
+                        }
+                    } else {
+                        console.error(result.error.message);
+                    }
+                } catch (error) {
+                    console.error('Error fetching cart items:', error);
                 }
-            } else {
-                console.error(result.error.message);
             }
-        } catch (error) {
-            console.error('Error fetching cart items:', error);
-        }
-    };
+        };
+
+        fetchCartItem();
+    }, [selectedItem]);
 
     const incrementQty = async () => {
         const newQty = qty + 1;
@@ -114,19 +117,16 @@ const DetailMenu = () => {
                 throw new Error('Failed to add item to cart');
             }
             const result = await response.json();
-            console.log('Category added:', result);
+            console.log('Item added to Cart:', result);
+
+            // Update local storage notes upon successful addition
+            const savedNotes = JSON.parse(localStorage.getItem('cartNotes')) || {};
+            savedNotes[selectedItem.menu_id] = notes;
+            localStorage.setItem('cartNotes', JSON.stringify(savedNotes));
         } catch (error) {
             console.error('Error adding item to cart:', error);
         }
     };
-
-    if (loading) {
-        return <div className="my-72 text-center text-gray-700 fa-beat">Loading...</div>;
-    }
-
-    if (!selectedItem) {
-        return <div className="my-72 text-center text-gray-700 fa-beat">Menu item not found.</div>;
-    }
 
     return (
         <div>
@@ -135,31 +135,59 @@ const DetailMenu = () => {
                 <h1 className="grow font-medium">Details</h1>
                 <ShoppingCartButton itemCount={itemCount} />
             </div>
-            <img 
-                src={selectedItem.menu_image}
-                alt={selectedItem.menu_name}
-                className="mt-16 w-full h-72"
-            />
-            <div className="mx-7 my-6">
-                <div className="flex font-semibold">
-                    <p className="w-8/12">{selectedItem.menu_name}</p>
-                    <p className="w-4/12 text-right">Rp. {formatPrice(selectedItem.menu_price)}</p>
+            {loading ? (
+                <div className="fa-fade mt-16 animate-pulse">
+                    <div className="bg-gray-300 h-72 w-full rounded-lg"></div>
+                    <div className="my-6 mx-7">
+                        <div className="flex font-semibold">
+                            <div className="w-8/12 bg-gray-300 h-6 rounded"></div>
+                            <div className="w-2/12 bg-gray-300 h-6 rounded ml-auto"></div>
+                        </div>
+                        <div className="py-2 my-4 font-extralight text-justify">
+                            <div className="bg-gray-300 h-28 rounded"></div>
+                        </div>
+                        <div className="bg-gray-300 h-20 rounded my-3"></div>
+                        <div className="flex items-center justify-center mt-3">
+                            <div className="bg-gray-300 h-8 w-8 rounded-full"></div>
+                            <div className="bg-gray-300 h-6 w-12 rounded mx-3"></div>
+                            <div className="bg-gray-300 h-8 w-8 rounded-full"></div>
+                        </div>
+                        <div className="bg-gray-300 h-14 rounded mt-8"></div>
+                    </div>
                 </div>
-                <div className="py-2 font-extralight text-justify">
-                    <p>{selectedItem.menu_desc}</p>
-                </div>
-                <TextArea value={notes} onChange={e => setNotes(e.target.value)} />
-                <div className="flex items-center justify-center mt-1">
-                    <button onClick={decrementQty} className="bg-[#4caf50] rounded-full py-1 px-2 text-xs">
-                        <i className="fa-solid fa-minus text-white"></i>
-                    </button>
-                    <p className="px-3">{qty}</p>
-                    <button onClick={incrementQty} className="bg-[#4caf50] rounded-full py-1 px-2 text-xs">
-                        <i className="fa-solid fa-plus text-white"></i>
-                    </button>
-                </div>
-                <AddToCartButton onClick={handleAddToCart} disabled={qty === 0}/>
-            </div>
+            ) : (
+                selectedItem ? (
+                    <div>
+                        <img 
+                            src={selectedItem.menu_image}
+                            alt={selectedItem.menu_name}
+                            className="mt-16 w-full h-72"
+                        />
+                        <div className="mx-7 my-6">
+                            <div className="flex font-semibold">
+                                <p className="w-8/12">{selectedItem.menu_name}</p>
+                                <p className="w-4/12 text-right">Rp. {formatPrice(selectedItem.menu_price)}</p>
+                            </div>
+                            <div className="py-2 font-extralight text-justify">
+                                <p>{selectedItem.menu_desc}</p>
+                            </div>
+                            <TextArea value={notes} onChange={e => setNotes(e.target.value)} />
+                            <div className="flex items-center justify-center mt-1">
+                                <button onClick={decrementQty} className="bg-[#4caf50] rounded-full py-1 px-2 text-xs">
+                                    <i className="fa-solid fa-minus text-white"></i>
+                                </button>
+                                <p className="px-3">{qty}</p>
+                                <button onClick={incrementQty} className="bg-[#4caf50] rounded-full py-1 px-2 text-xs">
+                                    <i className="fa-solid fa-plus text-white"></i>
+                                </button>
+                            </div>
+                            <AddToCartButton onClick={handleAddToCart} disabled={qty === 0}/>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="my-72 text-center text-gray-700 fa-beat">Menu item not found.</div>
+                )
+            )}
         </div>
     );
 }

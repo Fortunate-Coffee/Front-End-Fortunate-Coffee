@@ -13,6 +13,7 @@ const Cart = () => {
     const [tableNumber, setTableNumber] = useState(null);
     const [customerName, setCustomerName] = useState('');
     const [total, setTotal] = useState(0);
+    const [editedNotes, setEditedNotes] = useState({});
 
     useEffect(() => {
         // Retrieve table number from local storage
@@ -64,13 +65,16 @@ const Cart = () => {
         setTotal(calculatedTotal); // Atur nilai total ke dalam state
     }, [prices]);
 
-    if (loading) {
-        return <div className="flex justify-center items-center h-screen">Loading...</div>;
-    }
-
     if (error) {
         return <div className="flex justify-center items-center h-screen">{error}</div>;
     }
+
+    const handleNotesChange = (menuId, newNotes) => {
+        setEditedNotes({ ...editedNotes, [menuId]: newNotes });
+        const savedNotes = JSON.parse(localStorage.getItem('cartNotes')) || {};
+        savedNotes[menuId] = newNotes;
+        localStorage.setItem('cartNotes', JSON.stringify(savedNotes));
+    };
 
     return (
         <div className="">
@@ -78,27 +82,31 @@ const Cart = () => {
                 <BackButton />
                 <h1 className="grow font-medium">Your Cart</h1>
             </div>
-            <div className="mx-7 my-4">
-                {isEmpty ? (
-                    <div className="flex justify-center items-center h-screen">
-                        <p className="">Your cart is empty.</p>
-                    </div>
-                ) : (
-                    <div className="h-screen">
-                        <CartItem items={cartItems} setPrices={setPrices} setGlobalCartItems={setCartItems}/>
-                        <div className="flex mt-10">
-                            <p className='flex items-center w-6/12 font-semibold'>Name</p>
-                            <input type="text" className="w-6/12 truncate bg-[#E8E8E8] font-semibold p-2 placeholder:font-medium block hover:border-none focus:outline-none rounded-xl text-center" placeholder="Your Name" value={customerName} onChange={e => setCustomerName(e.target.value)} />
+            {loading ? (
+                <div className="animate-pulse"></div>
+            ) : (
+                <div className="mx-7 my-4">
+                    {isEmpty ? (
+                        <div className="flex justify-center items-center h-screen">
+                            <p className="">Your cart is empty.</p>
                         </div>
-                        <div className="flex mt-3">
-                            <p className='flex items-center w-10/12 font-semibold'>Table Number</p>
-                            <p className="w-2/12 truncate font-semibold text-right">{tableNumber}</p>
+                    ) : (
+                        <div className="h-screen">
+                            <CartItem items={cartItems} setPrices={setPrices} setGlobalCartItems={setCartItems} editedNotes={editedNotes} onNotesChange={handleNotesChange}/>
+                            <div className="flex mt-10">
+                                <p className='flex items-center w-6/12 font-semibold'>Name</p>
+                                <input type="text" className="w-6/12 truncate bg-[#E8E8E8] font-semibold p-2 placeholder:font-medium block hover:border-none focus:outline-none rounded-xl text-center" placeholder="Your Name" value={customerName} onChange={e => setCustomerName(e.target.value)} />
+                            </div>
+                            <div className="flex mt-3">
+                                <p className='flex items-center w-10/12 font-semibold'>Table Number</p>
+                                <p className="w-2/12 truncate font-semibold text-right">{tableNumber}</p>
+                            </div>
+                            <TotalPayment prices={prices} />
+                            <OrderButton cartItems={cartItems} setCartItems={setCartItems} customerName={customerName} tableNumber={tableNumber} total={total} editedNotes={editedNotes}/>
                         </div>
-                        <TotalPayment prices={prices} />
-                        <OrderButton cartItems={cartItems} setCartItems={setCartItems} customerName={customerName} tableNumber={tableNumber} total={total}/>
-                    </div>
-                )}
-            </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 }

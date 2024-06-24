@@ -5,6 +5,7 @@ import NoteButton from "../atoms/NoteButton";
 
 const MenuItem = ({ items }) => {
     const [menuItems, setMenuItems] = useState(items);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchCartItems = async () => {
@@ -23,6 +24,8 @@ const MenuItem = ({ items }) => {
                 }
             } catch (error) {
                 console.error('Error fetching cart items:', error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -39,6 +42,29 @@ const MenuItem = ({ items }) => {
         setMenuItems(updatedItems);
     };
 
+    if (loading) {
+        // Create placeholders while data is loading
+        const placeholders = new Array(menuItems.length).fill(null);
+
+        return (
+            <div className="fa-fade flex flex-col">
+                {placeholders.map((_, index) => (
+                    <div key={index} className="flex flex-row w-full justify-between my-4 animate-pulse">
+                        <div className="w-2/12 bg-gray-300 rounded-lg shadow-lg h-14 lg:w-32 lg:h-32"></div>
+                        <div className="flex flex-col w-8/12 ms-2">
+                            <div className="bg-gray-300 h-4 w-3/4 rounded mb-2"></div>
+                            <div className="bg-gray-300 h-4 w-1/2 rounded"></div>
+                        </div>
+                        <div className="flex flex-col w-4/12">
+                            <div className="bg-gray-300 h-4 w-full rounded mb-2"></div>
+                            <div className="bg-gray-300 h-4 w-1/2 rounded ml-auto"></div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        );
+    }
+
     return (
         <div className="flex flex-col">
             {menuItems.map((item, index) => (
@@ -48,7 +74,7 @@ const MenuItem = ({ items }) => {
                         alt={item.menu_name}
                         className="w-2/12 rounded-lg shadow-lg h-14 lg:w-32 lg:h-32 hover:scale-105"
                     />
-                    <div className="flex flex-col w-8/12 ms-2">
+                    <div className="flex flex-col w-5/12">
                         <p className="text-left">{item.menu_name}</p>
                         <QtyPicker className="flex items-center justify-start mt-1" menuId={item.menu_id} initialQty={item.cart_qty || 0} onQtyChange={handleQtyChange} />
                     </div>

@@ -55,7 +55,26 @@ const Menu = () => {
     }, [categoryName]);
 
     if (loading) {
-        return <div className='my-72 text-center text-gray-700 fa-beat'>Loading...</div>;
+        // Create placeholders while data is loading
+        const placeholders = new Array(menuItems.length).fill(null);
+
+        return (
+            <div className="fa-fade flex flex-col">
+                {placeholders.map((_, index) => (
+                    <div key={index} className="flex flex-row w-full justify-between my-4 animate-pulse">
+                        <div className="w-2/12 bg-gray-300 rounded-lg shadow-lg h-14 lg:w-32 lg:h-32"></div>
+                        <div className="flex flex-col w-8/12 ms-2">
+                            <div className="bg-gray-300 h-4 w-3/4 rounded mb-2"></div>
+                            <div className="bg-gray-300 h-4 w-1/2 rounded"></div>
+                        </div>
+                        <div className="flex flex-col w-4/12">
+                            <div className="bg-gray-300 h-4 w-full rounded mb-2"></div>
+                            <div className="bg-gray-300 h-4 w-1/2 rounded ml-auto"></div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        );
     }
 
     return(
