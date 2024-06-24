@@ -119,7 +119,7 @@ const AdminStock = () => {
                         <i className="flex items-center fas fa-square-plus fa-lg text-[#43745B]"></i>
                         <p className='ms-2 text-[#43745B]'>Add Type Ingredients</p>
                     </button>
-                    <ExportButton />
+                    <ExportButton data={data} selectedType={selectedType} foodIngredients={foodIngredients} />
                 </div>
             </div>
             <div className="mt-6 p-3">
