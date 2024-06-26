@@ -13,6 +13,8 @@ const AdminOrderHistory = () => {
     const [selectedTableNumber, setSelectedTableNumber] = useState('');
     const [orderNumber, setOrderNumber] = useState('');
 
+    const token = localStorage.getItem('accessToken');
+
     // Function to format date and time
     const formatDateTime = (dateTimeString) => {
         const dateTime = new Date(dateTimeString);
@@ -21,8 +23,24 @@ const AdminOrderHistory = () => {
         return { date, time };
     };
 
-    // Fungsi eksport PDF
-    const exportToPDF = () => {
+    // Function to fetch order details
+    const fetchOrderDetails = async (orderId) => {
+        try {
+            const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/detail-order/${orderId}/order`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching order details:', error);
+            return null;
+        }
+    };
+
+    // Function to export PDF
+    const exportToPDF = async () => {
         const doc = new jsPDF();
 
         // Get current date and time
@@ -36,13 +54,38 @@ const AdminOrderHistory = () => {
         const tableColumn = ["Order Number", "Table Number", "Date", "Time", "Payment Status"];
         const tableRows = [];
 
-        sortedData.forEach(item => {
+        for (const item of sortedData) {
             const { date, time } = formatDateTime(item.updatedAt);
             const paymentStatus = item.order_status ? "Paid" : "Pending";
 
             const dataRow = [item.order_id, item.table_number, date, time, paymentStatus];
             tableRows.push(dataRow);
-        });
+
+            // Fetch order details
+            const orderDetails = await fetchOrderDetails(item.order_id);
+            if (orderDetails) {
+                orderDetails.forEach(detail => {
+                    const detailRow = [
+                        `  - ${detail.detail_order_qty}x ${detail.menu_name}`,
+                        "",
+                        "",
+                        "",
+                        `Notes: ${detail.detail_order_notes || ""}`
+                    ];
+                    tableRows.push(detailRow);
+                });
+            }
+
+            const totalRow = [
+                `  Total: Rp. ${item.price_total}`,
+                "",
+                "",
+                "",
+                ""
+            ];
+            totalRow.bold = true;
+            tableRows.push(totalRow);
+        }
 
         // Add text before starting the table
         doc.setFont('times', 'bold');
@@ -61,22 +104,22 @@ const AdminOrderHistory = () => {
             theme: 'striped',
             styles: {
                 fontStyle: 'normal',
-                valign: 'middle', // Posisi vertikal tengah
+                valign: 'middle', // Vertical middle position
             },
             headStyles: {
                 fillColor: "#43745B",
                 textColor: "#FFFFFF",
-                valign: 'middle', // Posisi vertikal tengah
+                valign: 'middle', // Vertical middle position
             },
             bodyStyles: {
                 fillColor: "#FFFFFF",
                 textColor: "#000000",
             },
             columnStyles: {
-                1: { align: 'center' }, // Kolom 2 (Table Number) rata tengah
-                2: { align: 'center' }, // Kolom 3 (Date) rata tengah
-                3: { align: 'center' }, // Kolom 4 (Time) rata tengah
-                4: { align: 'center' }, // Kolom 5 (Payment Status) rata tengah
+                1: { align: 'center' }, // Center align Table Number column
+                2: { align: 'center' }, // Center align Date column
+                3: { align: 'center' }, // Center align Time column
+                4: { align: 'center' }, // Center align Payment Status column
             }
         });
 
@@ -95,8 +138,6 @@ const AdminOrderHistory = () => {
     for (let i = 1; i <= 20; i++) {
         tableNo.push({id: i,  text: i });
     }
-
-    const token = localStorage.getItem('accessToken');
 
     useEffect(() => {
         // Fetch all orders initially
