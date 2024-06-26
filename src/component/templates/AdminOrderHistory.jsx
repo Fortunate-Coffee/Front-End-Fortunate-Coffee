@@ -46,7 +46,7 @@ const AdminOrderHistory = () => {
 
         // Add text before starting the table
         doc.setFont('times', 'bold');
-        doc.text('Order History - Fortunate Coffee', 14, 15);
+        doc.text('Order History Fortunate Coffee', 14, 15);
 
         // Add export date and time
         doc.setFontSize(10);
@@ -88,7 +88,7 @@ const AdminOrderHistory = () => {
             doc.text(`Page ${i} of ${totalPages}`, doc.internal.pageSize.getWidth() - 25, doc.internal.pageSize.getHeight() - 5);
         }
 
-        doc.save('OrderHistory_FortunateCoffee.pdf');
+        doc.save('Order History Fortunate Coffee.pdf');
     };
 
     const tableNo = [];
