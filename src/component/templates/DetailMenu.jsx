@@ -13,6 +13,7 @@ const DetailMenu = () => {
     const [qty, setQty] = useState(0);
     const [itemCount, setItemCount] = useState(0);
     const [notes, setNotes] = useState("");
+    const [isOutOfStock, setIsOutOfStock] = useState(false);
 
     useEffect(() => {
         const fetchMenuItems = async () => {
@@ -33,6 +34,10 @@ const DetailMenu = () => {
                     // Ambil notes dari local storage
                     const savedNotes = JSON.parse(localStorage.getItem('cartNotes')) || {};
                     setNotes(savedNotes[detailData.menu_id] || ''); // Set notes ke state jika ada di local storage
+
+                    // Check if item is out of stock
+                    setIsOutOfStock(detailData.isOutOfStock);
+
                 } else {
                     setSelectedItem(null);
                 }
@@ -168,20 +173,26 @@ const DetailMenu = () => {
                                 <p className="w-8/12">{selectedItem.menu_name}</p>
                                 <p className="w-4/12 text-right">Rp. {formatPrice(selectedItem.menu_price)}</p>
                             </div>
-                            <div className="py-2 font-extralight text-justify">
-                                <p>{selectedItem.menu_desc}</p>
-                            </div>
-                            <TextArea value={notes} onChange={e => setNotes(e.target.value)} />
-                            <div className="flex items-center justify-center mt-1">
-                                <button onClick={decrementQty} className="bg-[#4caf50] rounded-full py-1 px-2 text-xs">
-                                    <i className="fa-solid fa-minus text-white"></i>
-                                </button>
-                                <p className="px-3">{qty}</p>
-                                <button onClick={incrementQty} className="bg-[#4caf50] rounded-full py-1 px-2 text-xs">
-                                    <i className="fa-solid fa-plus text-white"></i>
-                                </button>
-                            </div>
-                            <AddToCartButton onClick={handleAddToCart} disabled={qty === 0}/>
+                            {isOutOfStock ? (
+                                <p className="text-red-500 mt-2">Out of stock</p>
+                            ) : (
+                                <div>
+                                    <div className="py-2 font-extralight text-justify">
+                                        <p>{selectedItem.menu_desc}</p>
+                                    </div>
+                                    <TextArea value={notes} onChange={e => setNotes(e.target.value)} />
+                                    <div className="flex items-center justify-center mt-1">
+                                        <button onClick={decrementQty} className={`bg-[#4caf50] rounded-full py-1 px-2 text-xs ${isOutOfStock ? 'cursor-not-allowed opacity-50' : ''}`}>
+                                            <i className="fa-solid fa-minus text-white"></i>
+                                        </button>
+                                        <p className="px-3">{qty}</p>
+                                        <button onClick={incrementQty} className={`bg-[#4caf50] rounded-full py-1 px-2 text-xs ${isOutOfStock ? 'cursor-not-allowed opacity-50' : ''}`}>
+                                            <i className="fa-solid fa-plus text-white"></i>
+                                        </button>
+                                    </div>
+                                    <AddToCartButton onClick={handleAddToCart} disabled={qty === 0 || isOutOfStock}/>
+                                </div>
+                            )}
                         </div>
                     </div>
                 ) : (

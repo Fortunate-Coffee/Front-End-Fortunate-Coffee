@@ -76,11 +76,19 @@ const MenuItem = ({ items }) => {
                     />
                     <div className="flex flex-col w-5/12">
                         <p className="text-left">{item.menu_name}</p>
-                        <QtyPicker className="flex items-center justify-start mt-1" menuId={item.menu_id} initialQty={item.cart_qty || 0} onQtyChange={handleQtyChange} />
+                        {item.isOutOfStock ? (
+                            <p className="italic text-red-500">Out of stock</p>
+                        ) : (
+                            <QtyPicker className="flex items-center justify-start mt-1" menuId={item.menu_id} initialQty={item.cart_qty || 0} onQtyChange={handleQtyChange} />
+                        )}
                     </div>
                     <div className="flex flex-col w-4/12">
                         <p className="text-right">Rp. {formatPrice(item.menu_price)}</p>
-                        <NoteButton categoryName={item.category.category_name} menuName={item.menu_name}/>
+                        {item.isOutOfStock ? (
+                            <p></p>
+                        ) : (
+                            <NoteButton categoryName={item.category.category_name} menuName={item.menu_name}/>
+                        )}
                     </div>
                 </div>
             ))}

@@ -92,7 +92,23 @@ const MenuItems = ({menu}) => {
                             <p className="font-semibold my-4">
                                 Rp. {formatPrice(menu.menu_price)}
                             </p>
-                            <button type="submit" onClick={() => { setShowEditMenuForm(true); setCurrentMenuId(menu.menu_id); }} className="bg-[#43745B] hover:bg-green-800 text-white font-bold w-2/5 mx-2 py-2 px-4 shadow-xl rounded-xl">
+                            <div className="min-h-12 overflow-y-auto max-h-12">
+                                {menu.OutOfStock && menu.OutOfStock.length > 0 && (
+                                    <div>
+                                        {menu.OutOfStock.map((item, index) => (
+                                            <p key={index} className="flex font-semibold italic text-red-600">{item}</p>
+                                        ))}
+                                    </div>
+                                )}
+                                {menu.stockWarnings && menu.stockWarnings.length > 0 && (
+                                    <div>
+                                        {menu.stockWarnings.map((warning, index) => (
+                                            <p key={index} className="flex font-semibold italic text-orange-500">{warning}</p>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                            <button type="submit" onClick={() => { setShowEditMenuForm(true); setCurrentMenuId(menu.menu_id); }} className="bg-[#43745B] hover:bg-green-800 text-white font-bold w-2/5 mx-2 mt-4 py-2 px-4 shadow-xl rounded-xl">
                                 {loading ? (
                                     <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
