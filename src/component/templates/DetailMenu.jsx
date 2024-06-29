@@ -14,6 +14,7 @@ const DetailMenu = () => {
     const [itemCount, setItemCount] = useState(0);
     const [notes, setNotes] = useState("");
     const [isOutOfStock, setIsOutOfStock] = useState(false);
+    const [maxStock, setMaxStock] = useState(0);
 
     useEffect(() => {
         const fetchMenuItems = async () => {
@@ -37,6 +38,9 @@ const DetailMenu = () => {
 
                     // Check if item is out of stock
                     setIsOutOfStock(detailData.isOutOfStock);
+
+                    // Set max stock
+                    setMaxStock(detailData.maxStockCanBeMade);
 
                 } else {
                     setSelectedItem(null);
@@ -94,8 +98,10 @@ const DetailMenu = () => {
     }, [selectedItem]);
 
     const incrementQty = async () => {
-        const newQty = qty + 1;
-        setQty(newQty);
+        if (qty < maxStock) {
+            const newQty = qty + 1;
+            setQty(newQty);
+        }
     };
 
     const decrementQty = async () => {
@@ -186,9 +192,13 @@ const DetailMenu = () => {
                                             <i className="fa-solid fa-minus text-white"></i>
                                         </button>
                                         <p className="px-3">{qty}</p>
-                                        <button onClick={incrementQty} className={`bg-[#4caf50] rounded-full py-1 px-2 text-xs ${isOutOfStock ? 'cursor-not-allowed opacity-50' : ''}`}>
-                                            <i className="fa-solid fa-plus text-white"></i>
-                                        </button>
+                                        {qty < maxStock ? (
+                                            <button onClick={incrementQty} className={`bg-[#4caf50] rounded-full py-1 px-2 text-xs ${isOutOfStock ? 'cursor-not-allowed opacity-50' : ''}`}>
+                                                <i className="fa-solid fa-plus text-white"></i>
+                                            </button>
+                                        ) : (
+                                            <p></p>
+                                        )}
                                     </div>
                                     <AddToCartButton onClick={handleAddToCart} disabled={qty === 0 || isOutOfStock}/>
                                 </div>

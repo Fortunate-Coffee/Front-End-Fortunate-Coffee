@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const QtyPicker = ({ className, menuId, initialQty, onQtyChange }) => {
+const QtyPicker = ({ className, menuId, initialQty, onQtyChange, maxStockCanBeMade }) => {
     const [qty, setQty] = useState(initialQty || 0);
 
     useEffect(() => {
@@ -8,11 +8,12 @@ const QtyPicker = ({ className, menuId, initialQty, onQtyChange }) => {
     }, [initialQty]);
 
     const incrementQty = async () => {
-        const newQty = qty + 1;
-        setQty(newQty);
-        onQtyChange(menuId, newQty);
-        // Fungsi untuk menambahkan item ke keranjang ketika tombol "+" ditekan
-        await addToCart();
+        if (qty < maxStockCanBeMade) {
+            const newQty = qty + 1;
+            setQty(newQty);
+            onQtyChange(menuId, newQty);
+            await addToCart();
+        }
     };
 
     const decrementQty = async () => {
@@ -71,9 +72,13 @@ const QtyPicker = ({ className, menuId, initialQty, onQtyChange }) => {
                 <i className="fa-solid fa-minus text-white"></i>
             </button>
             <p className="px-3">{qty}</p>
-            <button onClick={incrementQty} className="bg-[#4caf50] rounded-full py-1 px-2 text-xs">
-                <i className="fa-solid fa-plus text-white"></i>
-            </button>
+            {qty < maxStockCanBeMade ? (
+                <button onClick={incrementQty} className="bg-[#4caf50] rounded-full py-1 px-2 text-xs">
+                    <i className="fa-solid fa-plus text-white"></i>
+                </button>
+            ) : (
+                <p></p>
+            )}
         </div>
     )
 }

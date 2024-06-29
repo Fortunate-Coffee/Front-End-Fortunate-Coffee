@@ -9,13 +9,31 @@ const CartItem = ({ items, setPrices, setGlobalCartItems, editedNotes, onNotesCh
     const [focusedItemId, setFocusedItemId] = useState(null);
 
     useEffect(() => {
-        const savedNotes = JSON.parse(localStorage.getItem('cartNotes')) || {};
-        const updatedItems = items.map(item => ({
-            ...item,
-            notes: savedNotes[item.menu_id] || item.notes
-        }));
-        setCartItems(updatedItems);
-        setLoading(false);
+        const fetchMaxStock = async (item) => {
+            try {
+                const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/menu/${item.menu_id}`);
+                const data = await response.json();
+                return { ...item, maxStockCanBeMade: data.maxStockCanBeMade };
+            } catch (error) {
+                console.error('Error fetching max stock:', error);
+                return item; // Return item without modification if fetch fails
+            }
+        };
+
+        const fetchAllMaxStock = async () => {
+            const savedNotes = JSON.parse(localStorage.getItem('cartNotes')) || {};
+            const updatedItems = await Promise.all(items.map(async (item) => {
+                const itemWithMaxStock = await fetchMaxStock(item);
+                return {
+                    ...itemWithMaxStock,
+                    notes: savedNotes[item.menu_id] || item.notes,
+                };
+            }));
+            setCartItems(updatedItems);
+            setLoading(false);
+        };
+
+        fetchAllMaxStock();
     }, [items]);
 
     const handleDelete = async (index) => {
@@ -177,7 +195,7 @@ const CartItem = ({ items, setPrices, setGlobalCartItems, editedNotes, onNotesCh
                         <p className="text-left">Rp. {formatPrice(item.menu_price)}</p>
                     </div>
                     <div className="flex flex-row w-4/12">
-                        <QtyPicker className="flex justify-start" menuId={item.menu_id} initialQty={item.quantity} onQtyChange={handleQtyChange} />
+                        <QtyPicker className="flex justify-start" menuId={item.menu_id} initialQty={item.quantity} onQtyChange={handleQtyChange} maxStockCanBeMade={item.maxStockCanBeMade}/>
                     </div>
                     <div className="flex flex-row w-1/12 text-right">
                         <DeleteButton onClick={() => handleDelete(index)} className="flex justify-start" />

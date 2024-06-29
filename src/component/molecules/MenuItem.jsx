@@ -79,7 +79,7 @@ const MenuItem = ({ items }) => {
                         {item.isOutOfStock ? (
                             <p className="italic text-red-500">Out of stock</p>
                         ) : (
-                            <QtyPicker className="flex items-center justify-start mt-1" menuId={item.menu_id} initialQty={item.cart_qty || 0} onQtyChange={handleQtyChange} />
+                            <QtyPicker className="flex items-center justify-start mt-1" menuId={item.menu_id} initialQty={item.cart_qty || 0} onQtyChange={handleQtyChange} maxStockCanBeMade={item.maxStockCanBeMade} />
                         )}
                     </div>
                     <div className="flex flex-col w-4/12">
