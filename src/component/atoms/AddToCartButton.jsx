@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const AddToCartButton = ({ onClick, disabled }) => {
+const AddToCartButton = ({ onClick, disabled, isInCart }) => {
     const [loading, setLoading] = useState(false); // State for loading status
 
     const handleClick = async () => {
@@ -18,7 +18,7 @@ const AddToCartButton = ({ onClick, disabled }) => {
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C6.477 0 0 6.477 0 12h4zm2 5.291l-2.162-.88A8.015 8.015 0 014 12H0c0 2.021.388 3.936 1.081 5.627L6 17.29z"></path>
                     </svg>
                 ) : (
-                    'Add To Cart'
+                    isInCart ? 'Update to Cart' : 'Add to Cart'
                 )}
             </button>
         </div>

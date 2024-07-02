@@ -15,6 +15,7 @@ const DetailMenu = () => {
     const [notes, setNotes] = useState("");
     const [isOutOfStock, setIsOutOfStock] = useState(false);
     const [maxStock, setMaxStock] = useState(0);
+    const [isInCart, setIsInCart] = useState(false);
 
     useEffect(() => {
         const fetchMenuItems = async () => {
@@ -84,6 +85,7 @@ const DetailMenu = () => {
                             const savedNotes = JSON.parse(localStorage.getItem('cartNotes')) || {};
                             setNotes(savedNotes[selectedItem.menu_id] || '');
                             setQty(cartItem.quantity);
+                            setIsInCart(true);
                         }
                     } else {
                         console.error(result.error.message);
@@ -113,7 +115,7 @@ const DetailMenu = () => {
     const handleAddToCart = async () => {
         try {
             const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/cart`, {
-                method: 'POST',
+                method: isInCart ? 'PUT' : 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -200,7 +202,7 @@ const DetailMenu = () => {
                                             <p></p>
                                         )}
                                     </div>
-                                    <AddToCartButton onClick={handleAddToCart} disabled={qty === 0 || isOutOfStock}/>
+                                    <AddToCartButton onClick={handleAddToCart} disabled={qty === 0 || isOutOfStock} isInCart={isInCart} />
                                 </div>
                             )}
                         </div>
