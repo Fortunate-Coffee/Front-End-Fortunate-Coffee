@@ -23,6 +23,26 @@ const Login = () => {
         }
     }, [location]);
 
+    useEffect(() => {
+        const checkLoginExpiration = () => {
+            const loginTimestamp = localStorage.getItem("loginTimestamp");
+            if (loginTimestamp) {
+                const currentTime = new Date().getTime();
+                const timeElapsed = currentTime - loginTimestamp;
+                const threeHoursInMillis = 2 * 60 * 60 * 1000;
+                if (timeElapsed > threeHoursInMillis) {
+                    localStorage.removeItem("accessToken");
+                    localStorage.removeItem("userRole");
+                    localStorage.removeItem("loginTimestamp");
+                }
+            }
+        };
+
+        checkLoginExpiration();
+        const interval = setInterval(checkLoginExpiration, 1000 * 60); // Check every minute
+        return () => clearInterval(interval);
+    }, []);
+
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
@@ -40,6 +60,9 @@ const Login = () => {
             // Simpan token yang diterima di sini
             localStorage.setItem("accessToken", data.accessToken);
             localStorage.setItem("userRole", data.user); 
+
+            // Save the login timestamp
+            localStorage.setItem("loginTimestamp", new Date().getTime());
             setLoading(false);
             
             // Set success message and redirect
