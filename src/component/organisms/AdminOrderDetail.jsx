@@ -12,7 +12,7 @@ const AdminOrderDetail = ({ setShowOrderDetail, orderNo, updateOrderStatus }) =>
         const fetchOrderDetail = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/detail-order/${orderNo}/order`, {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/detail-order/${orderNo}/order`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -39,7 +39,7 @@ const AdminOrderDetail = ({ setShowOrderDetail, orderNo, updateOrderStatus }) =>
 
     const handleCompleteOrder = async () => {
         try {
-            const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/order/${orderNo}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/order/${orderNo}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

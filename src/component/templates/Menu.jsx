@@ -15,7 +15,7 @@ const Menu = () => {
     useEffect(() => {
         const fetchMenuItems = async () => {
             try {
-                const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/menu`);
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/menu`);
                 const data = await response.json();
 
                 // Filter item menu berdasarkan nama kategori
@@ -36,7 +36,7 @@ const Menu = () => {
 
         const fetchCartItemCount = async () => {
             try {
-                const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/cart');
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/cart`);
                 const result = await response.json();
                 if (response.ok) {
                     // Hitung jumlah item di keranjang belanja

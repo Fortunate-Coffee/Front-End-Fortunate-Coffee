@@ -28,7 +28,7 @@ const QtyPicker = ({ className, menuId, initialQty, onQtyChange, maxStockCanBeMa
 
     const addToCart = async () => {
         try {
-            const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/cart', {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/cart`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -48,7 +48,7 @@ const QtyPicker = ({ className, menuId, initialQty, onQtyChange, maxStockCanBeMa
 
     const removeFromCart = async () => {
         try {
-            const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/cart', {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/cart`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

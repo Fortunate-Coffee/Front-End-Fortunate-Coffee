@@ -11,7 +11,7 @@ const CartItem = ({ items, setPrices, setGlobalCartItems, editedNotes, onNotesCh
     useEffect(() => {
         const fetchMaxStock = async (item) => {
             try {
-                const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/menu/${item.menu_id}`);
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/menu/${item.menu_id}`);
                 const data = await response.json();
                 return { ...item, maxStockCanBeMade: data.maxStockCanBeMade };
             } catch (error) {
@@ -38,7 +38,7 @@ const CartItem = ({ items, setPrices, setGlobalCartItems, editedNotes, onNotesCh
 
     const handleDelete = async (index) => {
         try {
-            const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/cart/${cartItems[index].menu_id}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/cart/${cartItems[index].menu_id}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json"
@@ -88,7 +88,7 @@ const CartItem = ({ items, setPrices, setGlobalCartItems, editedNotes, onNotesCh
     // };
     const handleSaveNotes = async (menuId) => {
         try {
-            const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/cart/${menuId}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/cart/${menuId}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

@@ -50,7 +50,7 @@ const Login = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post("https://backend-fortunate-coffee.up.railway.app/v1/auth/login", {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/v1/auth/login`, {
                 username: username,
                 password: password
             });

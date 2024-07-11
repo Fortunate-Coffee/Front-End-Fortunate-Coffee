@@ -18,7 +18,7 @@ const AdminAddMenuForm = ({ setShowAddMenuForm, setShowAddMenuIngredientsForm })
         const fetchCategory = async () => {
             const token = localStorage.getItem('accessToken');
             try {
-                const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/category', {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/category`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     }
@@ -40,7 +40,7 @@ const AdminAddMenuForm = ({ setShowAddMenuForm, setShowAddMenuIngredientsForm })
         const fetchMenuNames = async () => {
             const token = localStorage.getItem('accessToken');
             try {
-                const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/menu', {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}p/api/v1/menu`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     }
@@ -86,7 +86,7 @@ const AdminAddMenuForm = ({ setShowAddMenuForm, setShowAddMenuIngredientsForm })
         formDataToSend.append('menu_desc', formData.menu_desc);
 
         try {
-            const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/menu', {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/menu`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

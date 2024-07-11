@@ -52,7 +52,7 @@ const AdminEditFoodIngredientsForm = ({ setShowEditFoodIngredientsForm, editForm
         setLoading(true);
     
         try {
-            const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/food-ingredients/${editFormData.food_ingredients_id}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/food-ingredients/${editFormData.food_ingredients_id}`, {
                 method: 'PUT',
                 body: JSON.stringify(updatedData),
                 headers: {

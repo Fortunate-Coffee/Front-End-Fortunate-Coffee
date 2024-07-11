@@ -9,7 +9,7 @@ const OrderButton = ({ cartItems, customerName, tableNumber, total, editedNotes 
         setLoading(true);
         try {
             // Step 1: Create the order
-            const orderResponse = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/order', {
+            const orderResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/order`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -31,7 +31,7 @@ const OrderButton = ({ cartItems, customerName, tableNumber, total, editedNotes 
 
             // Step 2: Create detail orders for the created order
             const orderId = orderResult.order_id;
-            const detailOrderResponse = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/detail-order', {
+            const detailOrderResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/detail-order`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -80,7 +80,7 @@ const OrderButton = ({ cartItems, customerName, tableNumber, total, editedNotes 
         setLoading(true);
         try {
             // Kirim permintaan checkout ke server
-            const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/cart/checkout', {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/cart/checkout`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

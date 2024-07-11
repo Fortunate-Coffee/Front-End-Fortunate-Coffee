@@ -15,7 +15,7 @@ const Searching = () => {
         if (value.length > 1) { // Trigger search when the input length is greater than 1
             try {
                 const formattedQuery = encodeURIComponent(value.toLowerCase()); // Convert to lowercase and encode URI
-                const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/find-menu/search?query=${formattedQuery}`);
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/find-menu/search?query=${formattedQuery}`);
                 const result = await response.json();
                 if (response.ok) {
                     setResults(result);
@@ -32,7 +32,7 @@ const Searching = () => {
 
     const handleResultClick = async (menuName) => {
         try {
-            const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/category`);
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/category`);
             const result = await response.json();
             if (response.ok) {
                 const categoryName = result.categoryName;

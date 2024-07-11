@@ -21,7 +21,7 @@ const DetailMenu = () => {
         const fetchMenuItems = async () => {
             try {
                 // Ambil semua menu dari backend
-                const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/menu`);
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/menu`);
                 const menus = await response.json();
 
                 // Cari menu berdasarkan menuName
@@ -29,7 +29,7 @@ const DetailMenu = () => {
 
                 if (menuItem) {
                     // Jika ditemukan, ambil detail menu berdasarkan ID
-                    const detailResponse = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/menu/${menuItem.menu_id}`);
+                    const detailResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/menu/${menuItem.menu_id}`);
                     const detailData = await detailResponse.json();
                     setSelectedItem(detailData);
                     
@@ -55,7 +55,7 @@ const DetailMenu = () => {
 
         const fetchCartItemCount = async () => {
             try {
-                const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/cart');
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/cart`);
                 const result = await response.json();
                 if (response.ok) {
                     // Hitung jumlah item di keranjang belanja
@@ -77,7 +77,7 @@ const DetailMenu = () => {
         const fetchCartItem = async () => {
             if (selectedItem) {
                 try {
-                    const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/cart`);
+                    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/cart`);
                     const result = await response.json();
                     if (response.ok) {
                         const cartItem = result.data.find(item => item.menu_id === selectedItem?.menu_id);
@@ -114,7 +114,7 @@ const DetailMenu = () => {
     };
     const handleAddToCart = async () => {
         try {
-            const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/cart`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/cart`, {
                 method: isInCart ? 'PUT' : 'POST',
                 headers: {
                     'Content-Type': 'application/json',
