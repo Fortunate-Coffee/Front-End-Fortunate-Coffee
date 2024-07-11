@@ -21,7 +21,7 @@ const AdminEditMenuForm = ({ setShowEditMenuForm, setShowEditMenuIngredientsForm
 
         const fetchCategory = async () => {
             try {
-                const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/category', {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/category`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -37,7 +37,7 @@ const AdminEditMenuForm = ({ setShowEditMenuForm, setShowEditMenuIngredientsForm
 
         const fetchMenuDetail = async () => {
             try {
-                const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/menu/${menuId}`, {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/menu/${menuId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -64,7 +64,7 @@ const AdminEditMenuForm = ({ setShowEditMenuForm, setShowEditMenuIngredientsForm
 
         const fetchMenuName = async () => {
             try {
-                const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/menu', {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/menu`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -132,7 +132,7 @@ const AdminEditMenuForm = ({ setShowEditMenuForm, setShowEditMenuIngredientsForm
         }
 
         try {
-            const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/menu/${menuId}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/menu/${menuId}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`

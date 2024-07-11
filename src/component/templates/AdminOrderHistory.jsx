@@ -26,7 +26,7 @@ const AdminOrderHistory = () => {
     // Function to fetch order details
     const fetchOrderDetails = async (orderId) => {
         try {
-            const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/detail-order/${orderId}/order`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/detail-order/${orderId}/order`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -144,7 +144,7 @@ const AdminOrderHistory = () => {
         const fetchOrders = async () => {
             setLoading(true);
             try {
-                const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/order', {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/order`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -162,7 +162,7 @@ const AdminOrderHistory = () => {
 
     const fetchData = async () => {
         setLoading(true);
-        let url = 'https://backend-fortunate-coffee.up.railway.app/api/v1/filtered-order';
+        let url = `${process.env.REACT_APP_API_URL}/api/v1/filtered-order`;
 
         const queryParams = new URLSearchParams();
         if (selectedDate) {

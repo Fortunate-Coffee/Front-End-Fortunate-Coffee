@@ -8,7 +8,7 @@ const MenuCategory = () => {
     useEffect(() => {
         const fetchCategory = async () => {
             try {
-                const response = await fetch("https://backend-fortunate-coffee.up.railway.app/api/v1/category");
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/category`);
                 if (!response.ok) {
                     throw new Error("Network response was not okay.");
                 }

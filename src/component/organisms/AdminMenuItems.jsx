@@ -27,7 +27,7 @@ const MenuItems = ({menu}) => {
             const token = localStorage.getItem('accessToken');
     
             // Mengirimkan permintaan hapus ke backend dengan token
-            const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/menu/${deleteMenuId}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/menu/${deleteMenuId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

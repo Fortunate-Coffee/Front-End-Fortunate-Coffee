@@ -28,7 +28,7 @@ const AdminMenu = () => {
         const fetchCategory = async () => {
             try {
                 setLoading(true);
-                const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/category', {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/category`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -43,7 +43,7 @@ const AdminMenu = () => {
 
         const fetchMenu = async () => {
             try {
-                const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/menu', {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/menu`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -71,7 +71,7 @@ const AdminMenu = () => {
         
         let url;
         if (selectedCategory === 'All') {
-            url = 'https://backend-fortunate-coffee.up.railway.app/api/v1/menu';
+            url = `${process.env.REACT_APP_API_URL}/api/v1/menu`;
         } else {
             const categoryId = getCategoryIdByName(selectedCategory);
             if (!categoryId) {
@@ -79,7 +79,7 @@ const AdminMenu = () => {
                 setLoading(false);
                 return;
             }
-            url = `https://backend-fortunate-coffee.up.railway.app/api/v1/menu/category/${categoryId}`;
+            url = `${process.env.REACT_APP_API_URL}/api/v1/menu/category/${categoryId}`;
         }
 
         try {

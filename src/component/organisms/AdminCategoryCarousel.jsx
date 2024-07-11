@@ -14,7 +14,7 @@ const AdminCategoryCarousel = () => {
 
   const fetchCategory = async () => {
     try {
-      const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/category');
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/category`);
       const data = await response.json();
       
       // Sort data by updatedAt in descending order
@@ -54,7 +54,7 @@ const AdminCategoryCarousel = () => {
       // Ambil token dari local storage
       const token = localStorage.getItem('accessToken');
   
-      const response = await fetch(`https://backend-fortunate-coffee.up.railway.app/api/v1/category/${id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/category/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`

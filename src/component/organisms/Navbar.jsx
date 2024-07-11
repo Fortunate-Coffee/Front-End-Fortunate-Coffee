@@ -8,7 +8,7 @@ const Navbar = () => {
     useEffect(() => {
         const fetchCartItemCount = async () => {
             try {
-                const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/cart');
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/cart`);
                 const result = await response.json();
                 if (response.ok) {
                     // Hitung jumlah item di keranjang belanja

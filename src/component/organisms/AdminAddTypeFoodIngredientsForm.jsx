@@ -19,7 +19,7 @@ const AdminAddTypeFoodIngredientsForm = ({ setShowAddTypeFoodIngredientsForm }) 
         const fetchIngredients = async () => {
             const token = localStorage.getItem('accessToken');
             try {
-                const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/food-ingredients', {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/food-ingredients`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     }
@@ -65,7 +65,7 @@ const AdminAddTypeFoodIngredientsForm = ({ setShowAddTypeFoodIngredientsForm }) 
 
 
         try {
-            const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/type-food-ingredients', {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/type-food-ingredients`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

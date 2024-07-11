@@ -22,7 +22,7 @@ const AdminStock = () => {
         const fetchFoodIngredients = async () => {
             const token = localStorage.getItem('accessToken');
             try {
-                const response = await fetch('https://backend-fortunate-coffee.up.railway.app/api/v1/food-ingredients', {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/food-ingredients`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     }
@@ -54,7 +54,7 @@ const AdminStock = () => {
 
     const fetchData = async () => {
         setLoading(true);
-        let url = `https://backend-fortunate-coffee.up.railway.app/api/v1/filtered-food-ingredients`;
+        let url = `${process.env.REACT_APP_API_URL}/api/v1/filtered-food-ingredients`;
 
         const queryParams = new URLSearchParams();
         if (selectedIngredient && selectedIngredient !== 'All') {
