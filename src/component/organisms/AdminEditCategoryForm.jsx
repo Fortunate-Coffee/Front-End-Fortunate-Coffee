@@ -71,7 +71,7 @@ const AdminEditCategoryForm = ({ setShowEditCategoryForm, editFormData, fetchCat
         setLoading(true);
 
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}api/v1/category/${editFormData.category_id}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/category/${editFormData.category_id}`, {
                 method: 'PUT',
                 body: data,
                 headers: {
