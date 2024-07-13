@@ -40,7 +40,7 @@ const AdminAddMenuForm = ({ setShowAddMenuForm, setShowAddMenuIngredientsForm })
         const fetchMenuNames = async () => {
             const token = localStorage.getItem('accessToken');
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}p/api/v1/menu`, {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/menu`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     }
