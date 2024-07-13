@@ -49,6 +49,7 @@ const Login = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setLoading(true);
         try {
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/v1/auth/login`, {
                 username: username,

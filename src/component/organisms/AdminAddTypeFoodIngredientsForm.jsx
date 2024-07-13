@@ -78,7 +78,7 @@ const AdminAddTypeFoodIngredientsForm = ({ setShowAddTypeFoodIngredientsForm }) 
         }
 
         if (detail_food_ingredients_type === 'Out' && Number(detail_food_ingredients_qty) > ingredientStock) {
-            setError(`Quantity exceeds available stock. Available stock: ${ingredientStock}`);
+            setError(`Qty exceeds available stock. Available stock: ${ingredientStock}`);
             setSuccess('');
             setLoading(false);
             return;
@@ -141,8 +141,8 @@ const AdminAddTypeFoodIngredientsForm = ({ setShowAddTypeFoodIngredientsForm }) 
                     <i className="fas fa-times"></i>
                 </button>
                 <h2 className="mb-5 text-center text-lg font-semibold">Add Type Food Ingredients</h2>
-                <form onSubmit={handleSubmit} className="flex flex-col items-center">
-                    <div className="my-2">
+                <form onSubmit={handleSubmit} className="my-2">
+                    <div className="flex flex-col justify-start">
                         <div className="flex items-center">
                             <label htmlFor="foodIngredients" className="w-20 me-5 block text-sm font-medium text-gray-700">Ingredients</label>
                             <select id="food_ingredients_id" name="food_ingredients_id" value={formData.food_ingredients_id} onChange={handleChange} className="border border-gray-300 rounded-md shadow-lg w-56 p-2 px-3 me-2">
