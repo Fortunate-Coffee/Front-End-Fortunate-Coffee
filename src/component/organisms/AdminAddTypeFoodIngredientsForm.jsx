@@ -7,6 +7,7 @@ const AdminAddTypeFoodIngredientsForm = ({ setShowAddTypeFoodIngredientsForm }) 
         detail_food_ingredients_qty: '',
         detail_food_ingredients_type: ''
     });
+    const [ingredientStock, setIngredientStock] = useState(0);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [loading, setLoading] = useState(false);
@@ -40,6 +41,25 @@ const AdminAddTypeFoodIngredientsForm = ({ setShowAddTypeFoodIngredientsForm }) 
         fetchIngredients();
     }, []);
 
+    const fetchIngredientStock = async (ingredientId) => {
+        const token = localStorage.getItem('accessToken');
+        try {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/food-ingredients/${ingredientId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+            const data = await response.json();
+            if (response.ok) {
+                setIngredientStock(data.food_ingredients_stock);
+            } else {
+                console.error('Error fetching ingredient stock:', data);
+            }
+        } catch (error) {
+            console.error('Error fetching ingredient stock:', error);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -52,6 +72,13 @@ const AdminAddTypeFoodIngredientsForm = ({ setShowAddTypeFoodIngredientsForm }) 
             console.log(food_ingredients_id);
             console.log(detail_food_ingredients_qty);
             console.log(detail_food_ingredients_type);
+            setSuccess('');
+            setLoading(false);
+            return;
+        }
+
+        if (detail_food_ingredients_type === 'Out' && Number(detail_food_ingredients_qty) > ingredientStock) {
+            setError(`Quantity exceeds available stock. Available stock: ${ingredientStock}`);
             setSuccess('');
             setLoading(false);
             return;
@@ -100,6 +127,10 @@ const AdminAddTypeFoodIngredientsForm = ({ setShowAddTypeFoodIngredientsForm }) 
             ...formData,
             [name]: value
         });
+
+        if (name === 'food_ingredients_id') {
+            fetchIngredientStock(value);
+        }
     };
 
 
