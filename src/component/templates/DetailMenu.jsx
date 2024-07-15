@@ -11,7 +11,6 @@ const DetailMenu = () => {
     const [selectedItem, setSelectedItem] = useState(null);
     const [loading, setLoading] = useState(true);
     const [qty, setQty] = useState(0);
-    const [previousQty, setPreviousQty] = useState(0);
     const [itemCount, setItemCount] = useState(0);
     const [notes, setNotes] = useState("");
     const [isOutOfStock, setIsOutOfStock] = useState(false);
@@ -87,7 +86,6 @@ const DetailMenu = () => {
                             setNotes(savedNotes[selectedItem.menu_id] || '');
                             setQty(cartItem.quantity);
                             setIsInCart(true);
-                            setPreviousQty(cartItem.quantity);
                         }
                     } else {
                         console.error(result.error.message);
@@ -133,10 +131,6 @@ const DetailMenu = () => {
             }
             const result = await response.json();
             console.log('Item added to Cart:', result);
-
-            const qtyDifference = qty - previousQty;
-            setItemCount(prevCount => prevCount + qtyDifference);
-            setPreviousQty(qty);
 
             // Update local storage notes upon successful addition
             const savedNotes = JSON.parse(localStorage.getItem('cartNotes')) || {};
