@@ -5,6 +5,7 @@ import AdminDeleteConfirm from './AdminDeleteConfirm';
 
 const AdminCategoryCarousel = () => {
   const [category, setCategory] = useState([]);
+  const [categoryInUse, setCategoryInUse] = useState([]);
   const [showAdminEditCategoryForm, setShowAdminEditCategoryForm] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [editFormData, setEditFormData] = useState({});
@@ -28,8 +29,19 @@ const AdminCategoryCarousel = () => {
     }
   };
 
+  const fetchCategoryInUse = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/category-used`);
+      const data = await response.json();
+      setCategoryInUse(data.map(cat => cat.category_id));
+    } catch (error) {
+      console.error('Error fetching categories in use:', error);
+    }
+  };
+
   useEffect(() => {
     fetchCategory();
+    fetchCategoryInUse();
   }, []);
 
   const settings = {
@@ -124,7 +136,12 @@ const AdminCategoryCarousel = () => {
                             <h2 className="text-center text-lg font-bold">{category.category_name}</h2>
                             <div className="flex justify-around text-sm">
                                 <button onClick={() => handleEdit(category.category_id)} className="text-green-200 font-light">Edit</button>
-                                <button onClick={() => openDeleteConfirm(category.category_id)} className="text-red-200 font-light">Delete</button>
+                                <button 
+                                  onClick={() => openDeleteConfirm(category.category_id)} 
+                                  className={`text-red-200 font-light ${categoryInUse.includes(category.category_id) ? 'cursor-not-allowed opacity-50' : ''}`}
+                                  disabled={categoryInUse.includes(category.category_id)}>
+                                  Delete
+                                </button>
                             </div>
                         </div>
                     </div>

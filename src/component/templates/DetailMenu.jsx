@@ -185,6 +185,7 @@ const DetailMenu = () => {
                                 <p className="text-red-500 mt-2">Out of stock</p>
                             ) : (
                                 <div>
+                                    <p className="text-xs text-red-500 italic">Max order : {selectedItem.maxStockCanBeMade}</p>
                                     <div className="py-2 font-extralight text-justify">
                                         <p>{selectedItem.menu_desc}</p>
                                     </div>

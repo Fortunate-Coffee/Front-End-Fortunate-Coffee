@@ -139,7 +139,7 @@ const AdminOrderDetail = ({ setShowOrderDetail, orderNo, updateOrderStatus }) =>
                                     </div>
                                     {item.detail_order_notes && (
                                         <div className="print:text-black print:border-none ms-8 mb-3 print:font-mono border border-[#43745B] bg-white text-[#43745B] text-xs italic px-2 py-1 w-48 rounded-lg">
-                                            <p className='w-48 print:font-mono'>Notes: {item.detail_order_notes}</p>
+                                            <p className='w-48 pe-3 print:font-mono truncate'>Notes: {item.detail_order_notes}</p>
                                         </div>
                                     )}
                                 </div>
