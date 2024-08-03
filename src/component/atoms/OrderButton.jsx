@@ -70,7 +70,7 @@ const OrderButton = ({ cartItems, customerName, tableNumber, total, editedNotes 
             await handleCheckout();
         } catch (error) {
             setSuccess(null);
-            setError(error.message);
+            setError('Please scan a barcode again!');
         } finally {
             setLoading(false);
         }
@@ -109,7 +109,7 @@ const OrderButton = ({ cartItems, customerName, tableNumber, total, editedNotes 
         } catch (error) {
             // Jika terjadi kesalahan, atur pesan kesalahan
             setSuccess(null);
-            setError(error.message);
+            setError('Please scan a barcode!');
         } finally {
             setLoading(false);
         }

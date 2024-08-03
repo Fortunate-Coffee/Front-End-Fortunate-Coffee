@@ -12,6 +12,7 @@ const AdminStockTable = ({ data, selectedType, foodIngredients }) => {
     const [deleteSuccess, setDeleteSuccess] = useState('');
     const [deleteError, setDeleteError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [ingredientsInUse, setIngredientsInUse] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -41,6 +42,29 @@ const AdminStockTable = ({ data, selectedType, foodIngredients }) => {
 
         fetchData();
     }, [selectedType]);
+
+    useEffect(() => {
+        const fetchIngredientsInUse = async () => {
+            const token = localStorage.getItem('accessToken');
+            try {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/food-ingredients-used`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    }
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    setIngredientsInUse(data.map(item => item.food_ingredients_id));
+                } else {
+                    console.error('Error fetching ingredients in use:', data);
+                }
+            } catch (error) {
+                console.error('Error fetching ingredients in use:', error);
+            }
+        };
+
+        fetchIngredientsInUse();
+    }, []);
 
     const handleEdit = (data) => {
         setEditFormData(data);
@@ -134,6 +158,7 @@ const AdminStockTable = ({ data, selectedType, foodIngredients }) => {
                         ) : (
                             sortedData.map((item, index) => {
                                 const { date, time } = formatDateTime(item.updatedAt);
+                                const isInUse = ingredientsInUse.includes(item.food_ingredients_id); // Menambahkan logika untuk menentukan apakah item ada dalam ingredientsInUse
                                 return (
                                     <tr key={index} className={index % 2 === 0 ? 'bg-white text-black' : 'bg-green-50 text-black'}>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
@@ -153,9 +178,13 @@ const AdminStockTable = ({ data, selectedType, foodIngredients }) => {
                                                 <Link to="#" onClick={() => handleEdit(item)}>
                                                     <i className="fa-solid fa-pen-to-square text-lg text-green-800 hover:scale-110"></i>
                                                 </Link>
-                                                <Link to="#" onClick={() => handleDeleteStock(item.food_ingredients_id)}>
-                                                    <i className="fa-solid fa-trash-can text-lg text-red-500 hover:scale-110"></i>
-                                                </Link>
+                                                <button
+                                                    onClick={() => handleDeleteStock(item.food_ingredients_id)}
+                                                    disabled={isInUse}
+                                                    className={`rounded ${isInUse ? 'text-red-500 hover:scale-110 cursor-not-allowed' : 'text-red-500 hover:scale-110'} transition`}
+                                                >
+                                                    <i className="fa-solid fa-trash-can text-lg"></i>
+                                                </button>
                                             </td>
                                         )}
                                     </tr>

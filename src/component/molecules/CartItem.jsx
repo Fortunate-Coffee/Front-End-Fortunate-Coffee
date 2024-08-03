@@ -175,7 +175,8 @@ const CartItem = ({ items, setPrices, setGlobalCartItems, editedNotes, onNotesCh
                                 <label className="italic text-sm text-[#4caf50]">Notes: </label>
                                 <input 
                                     type="text" 
-                                    className="bg-gray-200 rounded-lg px-2 py-1 truncate text-left font-light text-sm w-24 lg:w-full mx-1" 
+                                    maxLength={20}
+                                    className="bg-gray-200 rounded-lg px-2 py-1 truncate text-left font-light text-sm w-16 lg:w-full mx-1" 
                                     value={editedNotes[item.menu_id] !== undefined ? editedNotes[item.menu_id] : item.notes}
                                     onChange={(e) => onNotesChange(item.menu_id, e.target.value)}
                                     onFocus={() => handleFocus(item.menu_id)}
@@ -184,7 +185,7 @@ const CartItem = ({ items, setPrices, setGlobalCartItems, editedNotes, onNotesCh
                                 {focusedItemId === item.menu_id && (
                                     <button 
                                         type="button" 
-                                        className="ml-2 text-green-500" 
+                                        className="text-green-500" 
                                         onClick={() => handleSaveNotes(item.menu_id)}
                                     >
                                         <i className="fa-solid fa-check"></i>

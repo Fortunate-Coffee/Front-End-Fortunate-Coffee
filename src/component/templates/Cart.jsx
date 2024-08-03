@@ -95,7 +95,7 @@ const Cart = () => {
                             <CartItem items={cartItems} setPrices={setPrices} setGlobalCartItems={setCartItems} editedNotes={editedNotes} onNotesChange={handleNotesChange}/>
                             <div className="flex mt-10">
                                 <p className='flex items-center w-6/12 font-semibold'>Name</p>
-                                <input type="text" className="w-6/12 truncate bg-[#E8E8E8] font-semibold p-2 placeholder:font-medium block hover:border-none focus:outline-none rounded-xl text-center" placeholder="Your Name" value={customerName} onChange={e => setCustomerName(e.target.value)} />
+                                <input type="text" maxLength={20} className="w-6/12 truncate bg-[#E8E8E8] font-semibold p-2 placeholder:font-medium block hover:border-none focus:outline-none rounded-xl text-center" placeholder="Your Name" value={customerName} onChange={e => setCustomerName(e.target.value)} />
                             </div>
                             <div className="flex mt-3">
                                 <p className='flex items-center w-10/12 font-semibold'>Table Number</p>

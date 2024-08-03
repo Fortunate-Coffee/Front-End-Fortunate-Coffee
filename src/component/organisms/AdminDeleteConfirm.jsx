@@ -59,7 +59,7 @@ const AdminDeleteConfirm = ({ setShowDeleteConfirm, entityName, itemId, onConfir
                 {warningMessage && <p className="px-4 mt-2 text-red-600 text-left">{warningMessage}</p>}
                 {showInitialWarning ? (
                     <div className="flex flex-col items-center">
-                        <p className="my-2 font-semibold text-yellow-600 tracking-wide">WARNING! Deleting this parent will also delete all associated children. ({countdown}s)</p>
+                        <p className="my-2 font-semibold text-yellow-600 tracking-wide">WARNING! Deleting this item will remove it from the system permanently and cannot be undone. ({countdown}s)</p>
                     </div>
                 ) : (
                     <div className="mt-3 flex justify-center">

@@ -76,6 +76,7 @@ const MenuItem = ({ items }) => {
                     />
                     <div className="flex flex-col w-5/12">
                         <p className="text-left">{item.menu_name}</p>
+                        <p className="text-xs text-red-500 italic">Max order : {item.maxStockCanBeMade}</p>
                         {item.isOutOfStock ? (
                             <p className="italic text-red-500">Out of stock</p>
                         ) : (
