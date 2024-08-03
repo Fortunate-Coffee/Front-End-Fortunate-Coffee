@@ -180,8 +180,8 @@ const AdminStockTable = ({ data, selectedType, foodIngredients }) => {
                                                 </Link>
                                                 <button
                                                     onClick={() => handleDeleteStock(item.food_ingredients_id)}
-                                                    disabled={isInUse}
-                                                    className={`rounded ${isInUse ? 'text-red-500 hover:scale-110 cursor-not-allowed' : 'text-red-500 hover:scale-110'} transition`}
+                                                    disabled={!isInUse}
+                                                    className={`rounded ${!isInUse ? 'text-red-500 hover:scale-110 cursor-not-allowed' : 'text-red-500 hover:scale-110'} transition`}
                                                 >
                                                     <i className="fa-solid fa-trash-can text-lg"></i>
                                                 </button>
