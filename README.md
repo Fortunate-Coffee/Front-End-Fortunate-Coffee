@@ -4,7 +4,8 @@ This is The Final Project for Loving Nature Fortunate Coffee in Medan by Creatin
 
 ## 🛠️ The Result Preview
 
-<iframe src="https://ik.imagekit.io/fndsjy/Fortunate_Coffee/Simulasi%20FC.mp4?updatedAt=1723782367906" width="640" height="480"></iframe>
+[![Watch the video](https://via.placeholder.com/728x90.png?text=Click+here+to+watch+the+video)](https://ik.imagekit.io/fndsjy/Fortunate_Coffee/Simulasi%20FC.mp4?updatedAt=1723782367906)
+
 
 ## 🛠️ Tech Stack & Tools
 
